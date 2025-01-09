@@ -1,0 +1,19 @@
+<xpml><page quantity='0' pitch='24.0 mm'></xpml>G0
+n
+M0500
+O0214
+V0
+t1
+Kf0070
+<xpml></page></xpml><xpml><page quantity='1' pitch='24.0 mm'></xpml>L
+D11
+A2
+1W1D44000003400172,LA,@referans@@id@@OzelChar@
+ySPM
+1911A1000760008NURSAN
+1911C0600200001@referans@
+1911C0600110004@id@
+1911C0600110054P:@sira1@
+Q0001
+E
+<xpml></page></xpml><xpml><end/></xpml>

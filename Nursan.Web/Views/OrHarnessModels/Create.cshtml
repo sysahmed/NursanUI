@@ -1,0 +1,88 @@
+﻿@model Nursan.Domain.Entity.OrHarnessModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>OrHarnessModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Prefix" class="control-label"></label>
+                <input asp-for="Prefix" class="form-control" />
+                <span asp-validation-for="Prefix" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Family" class="control-label"></label>
+                <select asp-for="Family" class="form-control" asp-items="ViewBag.Family"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Suffix" class="control-label"></label>
+                <input asp-for="Suffix" class="form-control" />
+                <span asp-validation-for="Suffix" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HarnessModelName" class="control-label"></label>
+                <input asp-for="HarnessModelName" class="form-control" />
+                <span asp-validation-for="HarnessModelName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrAlertBaglantis" class="control-label"></label>
+                <select asp-for="OrAlertBaglantis" class="form-control" asp-items="ViewBag.AlertId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Release" class="control-label"></label>
+                <input asp-for="Release" class="form-control" />
+                <span asp-validation-for="Release" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Access" class="control-label"></label>
+                <select asp-for="Access" class="form-control" id="userroles">
+                    <option value='true'>True</option>
+                    <option value='false'>False</option>
+                </select>
+                <span asp-validation-for="Access" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Active" class="control-label"></label>
+                <select asp-for="Active" class="form-control" id="userroles">
+                    <option value='true'>True</option>
+                    <option value='false'>False</option>
+                </select>
+                <span asp-validation-for="Active" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SideCode" class="control-label"></label>
+                <input asp-for="SideCode" class="form-control" />
+                <span asp-validation-for="SideCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreateDate" class="control-label"></label>
+                <input asp-for="CreateDate" class="form-control" />
+                <span asp-validation-for="CreateDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdateDate" class="control-label"></label>
+                <input asp-for="UpdateDate" class="form-control" />
+                <span asp-validation-for="UpdateDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

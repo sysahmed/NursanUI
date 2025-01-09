@@ -1,0 +1,19 @@
+<xpml><page quantity='0' pitch='25.0 mm'></xpml>G0
+n
+M0500
+O0214
+V0
+t1
+Kf0070
+<xpml></page></xpml><xpml><page quantity='1' pitch='25.0 mm'></xpml>L
+D11
+H19
+A2
+1e2104200240029B@referans@@id@
+ySPM
+1911C1000070004@referans@@id@
+1911C0800800007NURSAN @eclntcode@ - FSB TEST OK
+1911A0600710040Date:@datetime@
+Q0001
+E
+<xpml></page></xpml><xpml><end/></xpml>

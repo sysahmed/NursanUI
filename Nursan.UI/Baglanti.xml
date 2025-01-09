@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config PLS="COM1" print="COM4" PrinterNormal="COM5" PrinterQR="COM5"  print1="1" print2="7" toplamRakkam="50" Hata="0" sicil="*397*391" tarih="" id="0">
+   <server Server="10.168.0.5">
+   </server>
+    <lserver LServer="localhost">
+   </lserver>
+  <form Form="FormYazakiNewId">
+  </form>
+  <density Density="2">
+  </density>
+  <saniye Saniye="5">
+  </saniye>
+    <sayi Sayi="true">
+  </sayi>
+</config>
+<!--
+		Form1
+		FormYazaki
+		FormYazakiNewId
+		FormNewProject
+		FormNewProjectBaypas
+		FormYazakiBaypas
+		-->

@@ -1,0 +1,29 @@
+SIZE 25 mm, 65 mm
+GAP 3 mm, 0 mm
+DIRECTION 0,0
+REFERENCE 0,0
+OFFSET 0 mm
+SET PEEL OFF
+SET CUTTER OFF
+SET PARTIAL_CUTTER OFF
+SET TEAR ON
+CLS
+CODEPAGE 1251
+TEXT 160,253,"0",90,7,7,"Coax Cable Test"
+TEXT 121,215,"0",90,8,7,"Config:@referans@"
+QRCODE 137,25,L,4,A,90,M2,S7,"@barcodeicerik@"
+TEXT 47,11,"0",90,6,6,"@barcodeicerik@"
+TEXT 160,25,"0",90,4,4,"@date@"
+TEXT 94,181,"0",90,4,4,"@sira1@"
+TEXT 48,180,"0",90,4,4,"@sira2@"
+TEXT 36,180,"0",90,4,4,"@sira3@"
+TEXT 79,181,"0",90,4,4,"@sira4@"
+TEXT 65,181,"0",90,4,4,"@sira5@"
+TEXT 22,179,"0",90,4,4,"@sira6@"
+TEXT 22,357,"0",90,4,4,"@sira7@"
+TEXT 36,358,"0",90,4,4,"@sira8@"
+TEXT 51,358,"0",90,4,4,"@sira9@"
+TEXT 65,358,"0",90,4,4,"@sira10@"
+TEXT 79,359,"0",90,4,4,"@sira11@"
+TEXT 94,359,"0",90,4,4,"@sira12@"
+PRINT 1,1

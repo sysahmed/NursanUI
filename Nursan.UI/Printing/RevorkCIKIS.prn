@@ -1,0 +1,18 @@
+<xpml><page quantity='0' pitch='25.0 mm'></xpml>G0
+n
+M0500
+O0214
+V0
+t1
+Kf0070
+<xpml></page></xpml><xpml><page quantity='1' pitch='25.0 mm'></xpml>L
+D11
+A2
+1W1D22000005200762,LA,@barcodeicerik@
+ySWT
+1911S5000320006P006P006@barcodeicerik@
+1911S5000830004P012P012Rework-CIKIS-@pcname@
+1911S5000150015P008P009Date:@datetime@
+Q0001
+E
+<xpml></page></xpml><xpml><end/></xpml>

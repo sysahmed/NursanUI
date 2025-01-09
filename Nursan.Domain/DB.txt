@@ -1,0 +1,47 @@
+﻿     ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+     modelBuilder.Entity<UrDonanimCount>().ToTable("UrDonanimCounts", builder => builder.IsTemporal());
+      -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+      enabled-migrations
+      add-migration ahmed
+      update-database
+     -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      Scaffold-DbContext "Server=10.168.0.5;Database=Uretimotomasyon;User Id=sa;Password=wrjkd34mk22;TrustServerCertificate=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir AmbarModels
+
+     -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      DialogResult  message=new MessagesBox();
+
+      UretimContext c0ntext=new UretimContext();
+
+      var result = 
+      context.Table1.Where(x => x.Column == degisken)
+      .Include(x => xTable2)              -----  Когато връзката е one to many  
+      .ThenInclude(x => x.Table3)         -----  Когато връзката е many to one
+
+      ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      .PadLeft(8,'0') До 8 карактера поставя нули в случая.
+      ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+     --// System.Data.SqlTypes.SqlNullValueException: 'Data is Null. This method or property cannot be called on Null values.'//--
+     За тази грешка провери пропертите на ентитито в модела дали имат ? за нул.
+
+     -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+      private void serialPort_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
+        {
+            buffer = buffer + _serialPort.ReadExisting();
+            if (buffer.Length != 0) //substring(buffer,buffer-2,1)='\n'
+            {
+                base.WindowState = FormWindowState.Maximized;
+                //Thread demoThread = new Thread(new ThreadStart(this.ThreadProcSafe));
+                //demoThread.Start();
+            }
+        }
+        //private void ThreadProcSafe()
+        //{
+        //    base.WindowState = FormWindowState.Maximized;
+        //}
+        /var output = replacements.Aggregate(content, (current, replacement) => current.Replace(replacement.Key, replacement.Value));
+      -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+   
