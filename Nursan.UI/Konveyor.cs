@@ -69,7 +69,7 @@ namespace Nursan.UI
                     _syBarcodeInputList[pi].BarcodeIcerik = txtBarcode.Text;
                     if (!txtBarcode.Text.StartsWith(_syBarcodeInputList[pi].OzelChar == null ? "" : _syBarcodeInputList[pi].OzelChar))
                     {
-                        proveri.MessageAyarla($"Yanlis Brcode Okudunuz!", Color.Red, lblMessage);https://more.superhosting.bg:2083/cpsess2597720033/frontend/jupiter/mail/delegatelist.html?email=bilgiilsem@nursanbulgaria.com
+                        proveri.MessageAyarla($"Yanlis Barcode Okudunuz!", Color.Red, lblMessage);
                         txtBarcode.Clear(); listBox1.Items.Clear(); pi = 0;
                         return;
                     }
@@ -77,6 +77,7 @@ namespace Nursan.UI
                     if (_syBarcodeInputList.Count == pi)
                     {
 
+                        
                         var veri = tork.GetTorkDonanimBarcode(_syBarcodeInputList);
                         listBox1.Items.Clear();
                         for (int i = 0; i < pi; i++)

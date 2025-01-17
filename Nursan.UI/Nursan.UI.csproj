@@ -78,7 +78,6 @@
 		<PackageReference Include="Realm" Version="11.7.0" />
 		<PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
 		<PackageReference Include="System.IO.Ports" Version="8.0.0" />
-		<PackageReference Include="TechBuddy.Middlewares.ExceptionHandling" Version="1.0.2" />
 	</ItemGroup>
 
 	<ItemGroup>
