@@ -135,15 +135,14 @@ namespace Nursan.UI
             }
             else
             {
-                label1.Text = $"Sicil Okuttunz!!!  - {istasyonmList.First().Name}";
+                label1.Text = $"Sicil Okuttunz!!!  - {istasyonce.Name}";
                 label1.ForeColor = Color.Red;
                 textBox1.Clear();
             }
         }
         private void ProcessStarPrefixedInput(string inputText)
         {
-            if (istasyonmList != null)
-            {
+
                 Nursan.Domain.Personal.Personal personal = GetPersonalInfo(inputText);
 
                 if (personal != null)
@@ -154,11 +153,9 @@ namespace Nursan.UI
                 {
                     HandleSicilNotFound();
                 }
-            }
-            else
-            {
+
                 textBox1.Clear();
-            }
+
         }
         private Nursan.Domain.Personal.Personal GetPersonalInfo(string inputText)
         {
@@ -168,7 +165,7 @@ namespace Nursan.UI
         private void ProcessPersonalInfo(Nursan.Domain.Personal.Personal personal)
         {
             DateTime date = OtherTools.GetValuesDatetime();
-            bool r1 = GitPersonalBak(istasyonmList.First(), personal.USER_CODE);
+            bool r1 = GitPersonalBak(istasyonce, personal.USER_CODE);
 
             if (r1 && personal.LAST_DIR == true)
             {
@@ -199,8 +196,8 @@ namespace Nursan.UI
                 Sicil = personal.USER_CODE,
                 FullName = $"{personal.FIRST_NAME} {personal.LAST_NAME}",
                 Department = personal.DEPARTMENT,
-                UrIstasyonId = istasyonmList.First().Id,
-                DayOfYear = $"{istasyonmList.First().Id}*{date.Year}{date.Month}{date.Day}",
+                UrIstasyonId = istasyonce.Id,
+                DayOfYear = $"{istasyonce.Id}*{date.Year}{date.Month}{date.Day}",
                 CreateDate = date,
                 UpdateDate = date
             });
@@ -209,9 +206,9 @@ namespace Nursan.UI
         }
         private void UpdatePersonalTakib(UrPersonalTakib urPersonalTakib, DateTime date)
         {
-            urPersonalTakib.UrIstasyonId = istasyonmList.First().Id;
+            urPersonalTakib.UrIstasyonId = istasyonce.Id;
             urPersonalTakib.UpdateDate = date;
-            urPersonalTakib.DayOfYear = $"{istasyonmList.First().Id}*{date.Year}{date.Month}{date.Day}";
+            urPersonalTakib.DayOfYear = $"{istasyonce.Id}*{date.Year}{date.Month}{date.Day}";
 
             _personal.UpdatePersonalTakib(urPersonalTakib);
             UpdateUIOnSuccess(_personal.GetPersonal(urPersonalTakib.Sicil).Data);
@@ -220,7 +217,7 @@ namespace Nursan.UI
         {
             textBox1.Clear();
             listBox1.Items.Add($"{personal.USER_CODE}-{personal.FIRST_NAME} {personal.LAST_NAME}");
-            label1.Text = $"Sicil Okuttunz!!!  - {istasyonmList.First().Name}";
+            label1.Text = $"Sicil Okuttunz!!!  - {istasyonce.Name}";
             label1.ForeColor = Color.Lime;
         }
         private void HandleInvalidPersonalInfo(bool? lastDir)
@@ -230,13 +227,13 @@ namespace Nursan.UI
                 ? "Bu Sicil Systemde Var!!!"
                 : "Bu Sicil Fabrikada Gozukmuyor!!!";
 
-            label1.Text = $"{message} - {istasyonmList.First().Name}";
+            label1.Text = $"{message} - {istasyonce.Name}";
             label1.ForeColor = Color.Red;
         }
         private void HandleSicilNotFound()
         {
             textBox1.Clear();
-            label1.Text = $"Bu Sicil Systemde Gozukmuyor!!! - {istasyonmList.First().Name}";
+            label1.Text = $"Bu Sicil Systemde Gozukmuyor!!! - {istasyonce.Name}";
             label1.ForeColor = Color.Red;
         }
         private void HandleException()

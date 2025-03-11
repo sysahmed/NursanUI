@@ -42,6 +42,12 @@ namespace Nursan.UI
         public static int h1; public static int w1;
         ITorkManager _torkmanager;
         IHarnesConfigServices _harnessConfig;
+        string connectionString = $"Data Source=200.2.10.5;Initial Catalog=UretimOtomasyon;User ID=sa;Password=wrjkd34mk22;TrustServerCertificate=True";
+        string tableName = "IzTorkDeger";
+        SpcCalculator calculator;
+
+
+
         public Tork(UnitOfWork repo, OpMashin makine, UrVardiya vardiya, List<UrIstasyon> istasyonList, List<UrModulerYapi> modulerYapiList, List<SyBarcodeInput> syBarcodeInputList, List<SyBarcodeOut> syBarcodeOutList, List<SyPrinter> syPrinterList, List<OrFamily> familyList)
         {
             _repo = repo;
@@ -66,6 +72,8 @@ namespace Nursan.UI
             _harnessConfig = new HarnessConfigManager(_repo);
             _torkaAktar = new TorkAktar(new Domain.TORKS.NursandatabaseContext(), repo);
             InitializeComponent();
+            calculator = new SpcCalculator(connectionString, tableName,cpkListBox);
+            calculator.CalculateCpK();
         }
         private async Task GitAktar()
         {
@@ -220,6 +228,7 @@ namespace Nursan.UI
                     _syBarcodeInputList.Add(_repo.GetRepository<SyBarcodeInput>().Get(x => x.Id == item.SysBarcodeInId).Data);
                 }
                 await GitAktar();
+                calculator.CalculateCpK();
                 return _syBarcodeInputList;
             }
             catch (Exception)
@@ -234,12 +243,13 @@ namespace Nursan.UI
                 string veriler = txtBarcode.Text.ToUpper().TrimEnd().TrimStart();
                 ReadOnlySpan<char> input = veriler;
                 BarcodeInput.BarcodeIcerik = input.Slice(1).ToString();
-                if (!txtBarcode.Text.StartsWith(_syBarcodeInputList.FirstOrDefault(x => x.Name.Equals("First", StringComparison.OrdinalIgnoreCase)).OzelChar))
-                {
-                    proveri.MessageAyarla($"Yanlis Donanim Okudunuz!", Color.Red, lblMessage);
-                    txtBarcode.Clear(); listBox1.Items.Clear(); pi = 0;
-                    return;
-                }
+                bool vericik = txtBarcode.Text.StartsWith(_syBarcodeInputList.FirstOrDefault(x => x.Name.Equals("First", StringComparison.OrdinalIgnoreCase)).OzelChar);
+                //if (!txtBarcode.Text.StartsWith(_syBarcodeInputList.FirstOrDefault(x => x.Name.Equals("First", StringComparison.OrdinalIgnoreCase)).OzelChar))
+                //{
+                //    proveri.MessageAyarla($"Yanlis Donanim Okudunuz!", Color.Red, lblMessage);
+                //    txtBarcode.Clear(); listBox1.Items.Clear(); pi = 0;
+                //    return;
+                //}
                 if (_syBarcodeInputList[pi].Name == "First")
                 {
                   
