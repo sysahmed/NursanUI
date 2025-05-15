@@ -2,6 +2,7 @@
 using Nursan.Persistanse.UnitOfWork;
 using Nursan.UI.Library;
 using Nursan.UI.OzelClasslar;
+using Nursan.Validations.SortedList;
 using Nursan.Validations.ValidationCode;
 using System.IO.Ports;
 
@@ -73,6 +74,28 @@ namespace Nursan.UI
                         txtBarcode.Clear(); listBox1.Items.Clear(); pi = 0;
                         return;
                     }
+                    // --- GK LOCKED CHECK ---
+                    var barkod = txtBarcode.Text.Substring(1);
+                    if (tork.IsAlertGkLocked(barkod))
+                    {
+                        // Вземи харнес модела за формата
+                        var harnessName = StringSpanConverter.ExtractText(barkod.AsSpan()).ToString();
+                        var harnessModel = _repo.GetRepository<OrHarnessModel>().Get(x => x.HarnessModelName == harnessName).Data;
+                        using (var dlg = new AlertGkLockedOpen(_repo, harnessModel))
+                        {
+                            if (dlg.ShowDialog() != DialogResult.OK)
+                            {
+                                proveri.MessageAyarla($"GK Locked не е отключена!", Color.Red, lblMessage);
+                                txtBarcode.Clear();
+                                return;
+                            }
+                            else
+                            {
+                                proveri.MessageAyarla($"GK Locked е отключена!", Color.Lime, lblMessage); listBox1.Items.Clear();txtBarcode.Clear(); return;
+                            }
+                        }
+                    }
+                    // --- END GK LOCKED CHECK ---
                     pi++;
                     if (_syBarcodeInputList.Count == pi)
                     {

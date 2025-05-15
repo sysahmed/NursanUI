@@ -55,6 +55,7 @@ namespace Nursan.UI
         {
             if (e.KeyCode == Keys.Enter)
             {
+                
                 if (!string.IsNullOrEmpty(txtBarcode.Text))
                 {
 
@@ -62,8 +63,8 @@ namespace Nursan.UI
                     {
                         _vardiya.Name = txtBarcode.Text;
                         sicilForm = new SicilOkumaAP(_repo, txtBarcode.Text);
-                        this.Hide();
                         sicilForm.ShowDialog();
+                        this.Hide();
                         // this.Dispose();
                         // this.Close();
                     }

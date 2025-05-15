@@ -10,25 +10,30 @@ using System.Threading.Tasks;
 
 namespace Nursan.UI.OzelClasslar
 {
-                
+
     public class SpcCalculator
     {
         private readonly string connectionString;
         private readonly string tableName;
-        private readonly ListBox listBox;
+        private readonly ListView listView;
         //private const double DefaultUsl = 10.0;
         //private const double DefaultLsl = 10.0;
-        private string makine = "FSB06";// Environment.MachineName;
+        private string makine =  Environment.MachineName;
+        List<double> cpks;
 
-        public SpcCalculator(string connectionString, string tableName, ListBox listBox)
+        public SpcCalculator(string connectionString, string tableName, ListView listView)
         {
             this.connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
             this.tableName = !string.IsNullOrWhiteSpace(tableName) ? tableName : throw new ArgumentNullException(nameof(tableName));
-            this.listBox = listBox ?? throw new ArgumentNullException(nameof(listBox));
+            this.listView = listView;//?? throw new ArgumentNullException(nameof(listBox));
+      
+            cpks = new List<double>();
+
         }
 
         public void CalculateCpK()
         {
+            listView.Items.Clear();
             try
             {
                 using var connection = new SqlConnection(connectionString);
@@ -47,44 +52,6 @@ namespace Nursan.UI.OzelClasslar
             }
         }
 
-        //private IEnumerable<string> GetTorkColumns(SqlConnection connection)
-        //{
-        //   // string tableName = "your_table_name";  // Името на таблицата
-        //    string makine = "FSB06";  // Името на компютъра (може да се вземе с Environment.MachineName)
-
-        //    string query = @"
-        //              SELECT COLUMN_NAME 
-        //              FROM INFORMATION_SCHEMA.COLUMNS 
-        //              WHERE TABLE_NAME = @TableName  
-        //              AND (
-        //                  COLUMN_NAME LIKE 'TORK[_][0-9]'  
-        //                  OR COLUMN_NAME = 'TORK_10'
-        //              )
-        //              AND EXISTS (
-        //                  SELECT 1 FROM " + tableName + @" WHERE MAKINE = @Makine
-        //              )
-        //              ORDER BY  
-        //              CASE    
-        //                  WHEN COLUMN_NAME = 'TORK_10' THEN 10    
-        //                  ELSE CAST(SUBSTRING(COLUMN_NAME, 6, 1) AS INT)  
-        //              END";
-
-        //    using var command = new SqlCommand(query, connection);
-        //    command.Parameters.AddWithValue("@TableName", tableName);
-        //    command.Parameters.AddWithValue("@Makine", makine);
-
-        //    using var reader = command.ExecuteReader();
-        //    var columns = new List<string>();
-        //    while (reader.Read())
-        //    {
-        //        var columnName = reader["COLUMN_NAME"].ToString();
-        //        if (columnName != null)
-        //        {
-        //            columns.Add(columnName);
-        //        }
-        //    }
-        //    return columns;
-        //}
         private IEnumerable<string> GetTorkColumns(SqlConnection connection)
         {
             //MAKINE='{makine}' AND
@@ -116,16 +83,15 @@ namespace Nursan.UI.OzelClasslar
 
         private void AddToListBox(string text)
         {
-            if (listBox.InvokeRequired)
+            if (listView.InvokeRequired)
             {
-                listBox.Invoke(new Action(() => listBox.Items.Add(text)));
+                listView.Invoke(new Action(() => listView.Items.Add(text)));
             }
             else
             {
-                listBox.Items.Add(text);
+                listView.Items.Add(text);
             }
         }
-
 
         private double CalculateCpK(List<double> values)
         {
@@ -165,7 +131,6 @@ namespace Nursan.UI.OzelClasslar
 
             return (usl, lsl);
         }
-
         private void ProcessLastRows(SqlConnection connection, List<string> columns)
         {
 
@@ -184,12 +149,6 @@ namespace Nursan.UI.OzelClasslar
                 AddToListBox("Няма данни за обработка.");
                 return;
             }
-
-            //var firstId = dataTable.Rows[0]["NR"];
-            //var lastId = dataTable.Rows[dataTable.Rows.Count - 1]["NR"];
-            //AddToListBox($"Анализ на редове от ID {lastId} до ID {firstId}");
-            //1AddToListBox("");
-
             foreach (var columnName in columns)
             {
                 var values = dataTable.AsEnumerable()
@@ -229,31 +188,21 @@ namespace Nursan.UI.OzelClasslar
 
                 if (cpk is not 0)
                 {
-                    if (cpk < 1.33)
-                    {
-                        listBox.BackColor = Color.Red;
-                        listBox.ForeColor = Color.White;
-
-                    }
-                    else
-                    {
-                        listBox.BackColor = Color.Lime;
-                        listBox.ForeColor = Color.White;
-                    }
-
                     AddToListBox($"{columnName} - CPK: {cpk:F3}");
-                    // AddToListBox($");
-                    // AddToListBox($"  Средна стойност: {mean:F3}");
-                    // AddToListBox($"  Стандартно отклонение: {sigma:F3}");
-                    //AddToListBox($"  Брой измервания: {values.Count}");
-                    // AddToListBox($"  Min: {values.Min():F3}");
-                    // AddToListBox($"  Max: {values.Max():F3}");
-                    //AddToListBox(""); 
+                    cpks.Add(cpk);
                 }
             }
+            bool color = cpks.Any(x => x < 1.33);
+            if (color)
+            {
+                listView.BackColor = Color.Red;
+                listView.ForeColor = Color.White;
+            }
+            else
+            {
+                listView.BackColor = Color.Lime;
+                listView.ForeColor = Color.White;
+            }
         }
-
-
     }
-
 }

@@ -72,9 +72,12 @@ namespace Nursan.UI
             _harnessConfig = new HarnessConfigManager(_repo);
             _torkaAktar = new TorkAktar(new Domain.TORKS.NursandatabaseContext(), repo);
             InitializeComponent();
-            calculator = new SpcCalculator(connectionString, tableName,cpkListBox);
+            //listView1.Items.Clear();
+            calculator = new SpcCalculator(connectionString, tableName, cpkListView);
             calculator.CalculateCpK();
+
         }
+
         private async Task GitAktar()
         {
             await _torkaAktar.ExecuteTorkAktar();
@@ -228,6 +231,7 @@ namespace Nursan.UI
                     _syBarcodeInputList.Add(_repo.GetRepository<SyBarcodeInput>().Get(x => x.Id == item.SysBarcodeInId).Data);
                 }
                 await GitAktar();
+                listView1.Items.Clear();
                 calculator.CalculateCpK();
                 return _syBarcodeInputList;
             }
@@ -252,7 +256,7 @@ namespace Nursan.UI
                 //}
                 if (_syBarcodeInputList[pi].Name == "First")
                 {
-                  
+
                     _id = _torkmanager.GetTorkConfigId(BarcodeInput).Data;
                     _config = _harnessConfig.Get(x => x.OrHarnessModelId == _id.HarnesModelId).Data;
                     if (_config != null)
@@ -398,7 +402,22 @@ namespace Nursan.UI
 
         private async void lblToplam_Click(object sender, EventArgs e)
         {
-           await GitAktar();
+            await GitAktar();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            calculator.CalculateCpK();
+        }
+
+        private void Tork_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void Tork_ForeColorChanged(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

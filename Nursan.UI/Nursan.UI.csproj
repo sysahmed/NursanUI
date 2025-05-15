@@ -74,6 +74,7 @@
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.1" />
 		<PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.10" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="org.matheval" Version="1.0.0.3" />
 		<PackageReference Include="Realm" Version="11.7.0" />
 		<PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
@@ -81,7 +82,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Nursan.aAriza\Nursan.Ariza\Nursan.Ariza.csproj" />
 		<ProjectReference Include="..\Nursan.Business\Nursan.Business.csproj" />
+		<ProjectReference Include="..\Nursan.Caching\Nursan.Caching.csproj" />
 		<ProjectReference Include="..\Nursan.Core\Nursan.Core.csproj" />
 		<ProjectReference Include="..\Nursan.Domain\Nursan.Domain.csproj" />
 		<ProjectReference Include="..\Nursan.Licenzing\Nursan.Licenzing.csproj" />
