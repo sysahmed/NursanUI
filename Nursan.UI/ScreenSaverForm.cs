@@ -5,6 +5,7 @@ using Nursan.Domain.Personal;
 using Nursan.Persistanse.UnitOfWork;
 using Nursan.Personal.Valadation;
 using Nursan.Validations.ValidationCode;
+using Nursan.XMLTools;
 using System.ComponentModel;
 
 
@@ -44,8 +45,8 @@ namespace Nursan.UI
             pers = new PersonalValidasyonu(new UnitOfWorPersonal(new PersonalContext()), new UnitOfWork(new UretimOtomasyonContext()));
             this.timer1.Interval = XMLIslemi.XmlScreenSaniye();
             timer1.Enabled = true;
-            tork = new TorkService(new UnitOfWork(new UretimOtomasyonContext()),new UrVardiya {Name=vardiya } );
-            istasyonce =tork.GetIstasyon();
+            tork = new TorkService(new UnitOfWork(new UretimOtomasyonContext()), new UrVardiya { Name = vardiya });
+            istasyonce = tork.GetIstasyon();
             urPersonalTakibs = pers.GetPersonalTakib(istasyonce).Data;
             date = OtherTools.GetValuesDatetime();
         }
@@ -278,7 +279,7 @@ namespace Nursan.UI
                     //            //mainForm.lblCountProductions.AutoSize = true;
                     //            //mainForm.lblCountProductions.MaximumSize = new Size(mainForm.Width - 20, 0);
                     //            mainForm.lblCountProductions.Text = string.Join(" | ", listBox1.Items.Cast<string>());
-                                
+
                     //            // Преоразмеряваме формата според лейбъла
                     //            int newWidth = mainForm.lblCountProductions.Width + 40;
                     //            mainForm.Width = Math.Max(newWidth, mainForm.MinimumSize.Width);
@@ -289,7 +290,7 @@ namespace Nursan.UI
                     //        //mainForm.lblCountProductions.AutoSize = true;
                     //        //mainForm.lblCountProductions.MaximumSize = new Size(mainForm.Width - 20, 0);
                     //        mainForm.lblCountProductions.Text = string.Join(" | ", listBox1.Items.Cast<string>());
-                            
+
                     //        // Преоразмеряваме формата според лейбъла
                     //        int newWidth = mainForm.lblCountProductions.Width + 40;
                     //        mainForm.Width = Math.Max(newWidth, mainForm.MinimumSize.Width);
@@ -312,7 +313,7 @@ namespace Nursan.UI
         private int GitSytemDeAyiklaVesay(string? sicil)
         {
             var result = SayiIzlemeSIcilBagizliService.SayiHesapla(sicil, _vardiya);
-            return  ((int)istasyonce.Realadet + result);
+            return ((int)istasyonce.Realadet + result);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -322,11 +323,24 @@ namespace Nursan.UI
                 timer1.Stop();
                 var items = listBox1.Items.Cast<string>().ToList();
                 var mainForm = Application.OpenForms.OfType<ElTest>().FirstOrDefault();
-                if (mainForm != null && mainForm.lblCountProductions != null)
+                if (XMLSeverIp.ElTestCount())
                 {
-                    if (mainForm.InvokeRequired)
+                    if (mainForm != null && mainForm.lblCountProductions != null)
                     {
-                        mainForm.Invoke(new Action(() =>
+                        if (mainForm.InvokeRequired)
+                        {
+                            mainForm.Invoke(new Action(() =>
+                            {
+                                //mainForm.lblCountProductions.AutoSize = true;
+                                //mainForm.lblCountProductions.MaximumSize = new Size(mainForm.Width - 20, 0);
+                                mainForm.lblCountProductions.Text = string.Join(" | ", items);
+
+                                // Преоразмеряваме формата според лейбъла
+                                int newWidth = mainForm.lblCountProductions.Width + 40;
+                                mainForm.Width = Math.Max(newWidth, mainForm.MinimumSize.Width);
+                            }));
+                        }
+                        else
                         {
                             //mainForm.lblCountProductions.AutoSize = true;
                             //mainForm.lblCountProductions.MaximumSize = new Size(mainForm.Width - 20, 0);
@@ -335,17 +349,7 @@ namespace Nursan.UI
                             // Преоразмеряваме формата според лейбъла
                             int newWidth = mainForm.lblCountProductions.Width + 40;
                             mainForm.Width = Math.Max(newWidth, mainForm.MinimumSize.Width);
-                        }));
-                    }
-                    else
-                    {
-                        //mainForm.lblCountProductions.AutoSize = true;
-                        //mainForm.lblCountProductions.MaximumSize = new Size(mainForm.Width - 20, 0);
-                        mainForm.lblCountProductions.Text = string.Join(" | ", items);
-
-                        // Преоразмеряваме формата според лейбъла
-                        int newWidth = mainForm.lblCountProductions.Width + 40;
-                        mainForm.Width = Math.Max(newWidth, mainForm.MinimumSize.Width);
+                        }
                     }
                 }
                 this.Close();
@@ -367,6 +371,6 @@ namespace Nursan.UI
             this.Close();
         }
 
-     
+
     }
 }

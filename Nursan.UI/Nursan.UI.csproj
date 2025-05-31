@@ -55,6 +55,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="tessdata\**" />
+	  <EmbeddedResource Remove="tessdata\**" />
+	  <None Remove="tessdata\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<None Remove="AlertTanitma.Designer.cs~RF5acbeb5.TMP" />
 		<None Remove="Revork.resx~RF58398f5.TMP" />
 	</ItemGroup>
@@ -154,10 +160,6 @@
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="tessdata\" />
 	</ItemGroup>
 
 </Project>
