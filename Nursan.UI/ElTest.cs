@@ -42,7 +42,7 @@ namespace Nursan.UI
         private Label labelStatus;
         private ComboBox comboBoxAction;
         private System.Windows.Forms.Timer expandTimer;
-        private int targetWidth = 300;
+        private int targetWidth = 800;
         private int targetHeight = 200;
         private int expandStep = 20; // колко пиксела да се увеличава на стъпка
         private List<Button> dynamicTicketButtons = new List<Button>();
@@ -154,7 +154,7 @@ namespace Nursan.UI
                 // Размерът на формата - както беше в началото
                 int formWidth = lblCountProductions.Right + 5;
                 int formHeight = Math.Max(btnAriza.Height, lblCountProductions.Height) + 10;
-                this.Size = new Size(formWidth, formHeight);
+                //this.Size = new Size(formWidth, formHeight);
 
                 isExpanded = false;
             }
@@ -761,7 +761,7 @@ namespace Nursan.UI
             if (newWidth >= targetWidth) newWidth = targetWidth;
             if (newHeight >= targetHeight) newHeight = targetHeight;
 
-            this.Size = new Size(newWidth, newHeight);
+            //this.Size = new Size(newWidth, newHeight);
 
             if (this.Width >= targetWidth && this.Height >= targetHeight)
             {
@@ -906,7 +906,7 @@ namespace Nursan.UI
                 // Размерът на формата - както беше в началото
                 int formWidth = lblCountProductions.Right + 5;
                 int formHeight = Math.Max(btnAriza.Height, lblCountProductions.Height) + 10;
-                this.Size = new Size(formWidth, formHeight);
+               // this.Size = new Size(formWidth, formHeight);
                 
                 isExpanded = false;
             }

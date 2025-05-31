@@ -10,6 +10,8 @@
   </density>
   <saniye Saniye="5">
   </saniye>
+  <screenSaniye ScreenSaniye="5">
+  </screenSaniye>
     <sayi Sayi="true">
   </sayi>
 </config>
