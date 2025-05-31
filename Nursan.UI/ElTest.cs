@@ -79,7 +79,7 @@ namespace Nursan.UI
             lblCountProductions.ForeColor = Color.Red;
             lblCountProductions.BackColor = Color.Fuchsia;
             lblCountProductions.Font = new Font(lblCountProductions.Font.FontFamily, 16, FontStyle.Bold);
-            lblCountProductions.Text = "0111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
+            lblCountProductions.Text = "0";
 
             GitDirektoryBac();
             this.watcher1 = new FileSystemWatcher(pathc[0], format);
@@ -109,6 +109,9 @@ namespace Nursan.UI
         {
             if (!isExpanded)
             {
+                // Първо зареждаме бутоните
+                LoadTicketButtons();
+
                 // Показваме всички контроли
                 foreach (Control control in this.Controls)
                 {
@@ -119,12 +122,22 @@ namespace Nursan.UI
                 this.BackColor = Color.Fuchsia;
                 this.TransparencyKey = Color.Fuchsia;
 
-                // Зареждаме бутоните
-                LoadTicketButtons();
+                // Увеличаваме размера на формата
+                this.Width = Screen.PrimaryScreen.WorkingArea.Width;
+                this.Height = 300;
+
                 isExpanded = true;
             }
             else
             {
+                // Първо премахваме динамичните бутони
+                foreach (var btn in dynamicTicketButtons)
+                {
+                    this.Controls.Remove(btn);
+                    btn.Dispose();
+                }
+                dynamicTicketButtons.Clear();
+
                 // Скриваме всички контроли освен бутона Ариза и лейбъла
                 foreach (Control control in this.Controls)
                 {
@@ -133,7 +146,16 @@ namespace Nursan.UI
                         control.Visible = false;
                     }
                 }
-                // Не пипаме размера на формата!
+
+                // Върни формата в малък и прозрачен режим
+                this.TransparencyKey = Color.Fuchsia;
+                this.BackColor = Color.Fuchsia;
+                
+                // Размерът на формата - както беше в началото
+                int formWidth = lblCountProductions.Right + 5;
+                int formHeight = Math.Max(btnAriza.Height, lblCountProductions.Height) + 10;
+                this.Size = new Size(formWidth, formHeight);
+
                 isExpanded = false;
             }
         }
@@ -776,75 +798,80 @@ namespace Nursan.UI
 
         private void LoadTicketButtons()
         {
-            // Премахни стари бутони, ако има
-            foreach (var btn in dynamicTicketButtons)
+            try
             {
-                this.Controls.Remove(btn);
-                btn.Dispose();
+                // Премахни стари бутони, ако има
+                foreach (var btn in dynamicTicketButtons)
+                {
+                    this.Controls.Remove(btn);
+                    btn.Dispose();
+                }
+                dynamicTicketButtons.Clear();
+
+                int btnWidth = 200;
+                int btnHeight = 40;
+                int marginX = 10;
+                int marginY = 10;
+                int startY = btnAriza.Bottom + 20;
+
+                var tickets = _repo.GetRepository<SyTicketName>().GetAll(null);
+                if (tickets == null || !tickets.Data.Any())
+                {
+                    MessageBox.Show("Няма налични билети за зареждане.", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                int totalButtons = tickets.Data.Count();
+                int screenWidth = Screen.PrimaryScreen.WorkingArea.Width;
+                int maxColumns = Math.Max(1, screenWidth / (btnWidth + marginX));
+                int buttonsPerRow = Math.Min(maxColumns, Math.Max(1, (int)Math.Ceiling(Math.Sqrt(totalButtons))));
+
+                int count = 0;
+                foreach (var ticket in tickets.Data)
+                {
+                    int row = count / buttonsPerRow;
+                    int col = count % buttonsPerRow;
+
+                    Button btn = new Button();
+                    btn.Text = ticket.TiketName;
+                    btn.Width = btnWidth;
+                    btn.Height = btnHeight;
+                    btn.Left = 30 + col * (btnWidth + marginX);
+                    btn.Top = startY + row * (btnHeight + marginY);
+                    
+                    // Модерен дизайн на бутона
+                    btn.FlatStyle = FlatStyle.Flat;
+                    btn.FlatAppearance.BorderSize = 1;
+                    btn.BackColor = Color.FromArgb(45, 45, 48);
+                    btn.ForeColor = Color.Red;
+                    btn.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+                    btn.Cursor = Cursors.Hand;
+                    
+                    // Добавяме hover ефект
+                    btn.MouseEnter += (s, e) => {
+                        Button b = s as Button;
+                        b.BackColor = Color.FromArgb(0, 122, 204);
+                        b.ForeColor = Color.White;
+                    };
+                    btn.MouseLeave += (s, e) => {
+                        Button b = s as Button;
+                        b.BackColor = Color.FromArgb(45, 45, 48);
+                        b.ForeColor = Color.Red;
+                    };
+
+                    btn.Tag = ticket;
+                    btn.Click += TicketButton_Click;
+
+                    this.Controls.Add(btn);
+                    dynamicTicketButtons.Add(btn);
+
+                    count++;
+                }
             }
-            dynamicTicketButtons.Clear();
-
-            int btnWidth = 200;
-            int btnHeight = 40;
-            int marginX = 10;
-            int marginY = 10;
-            int startY = btnAriza.Bottom + 20;
-
-            var tickets = _repo.GetRepository<SyTicketName>().GetAll(null);
-            if (tickets == null || !tickets.Data.Any())
+            catch (Exception ex)
             {
-                MessageBox.Show("Няма налични билети за зареждане.", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
+                mes.messanger($"Грешка при зареждане на бутоните: {ex.Message}");
             }
-
-            int totalButtons = tickets.Data.Count();
-            int screenWidth = Screen.PrimaryScreen.WorkingArea.Width;
-            int maxColumns = Math.Max(1, screenWidth / (btnWidth + marginX));
-            int buttonsPerRow = Math.Min(maxColumns, Math.Max(1, (int)Math.Ceiling(Math.Sqrt(totalButtons))));
-
-            int count = 0;
-            foreach (var ticket in tickets.Data)
-            {
-                int row = count / buttonsPerRow;
-                int col = count % buttonsPerRow;
-
-                Button btn = new Button();
-                btn.Text = ticket.TiketName;
-                btn.Width = btnWidth;
-                btn.Height = btnHeight;
-                btn.Left = 30 + col * (btnWidth + marginX);
-                btn.Top = startY + row * (btnHeight + marginY);
-                
-                // Модерен дизайн на бутона
-                btn.FlatStyle = FlatStyle.Flat;
-                btn.FlatAppearance.BorderSize = 1;
-                btn.BackColor = Color.FromArgb(45, 45, 48);
-                btn.ForeColor = Color.Red;
-                btn.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
-                btn.Cursor = Cursors.Hand;
-                
-                // Добавяме hover ефект
-                btn.MouseEnter += (s, e) => {
-                    Button b = s as Button;
-                    b.BackColor = Color.FromArgb(0, 122, 204);
-                    b.ForeColor = Color.White;
-                };
-                btn.MouseLeave += (s, e) => {
-                    Button b = s as Button;
-                    b.BackColor = Color.FromArgb(45, 45, 48);
-                    b.ForeColor = Color.Red;
-                };
-
-                btn.Tag = ticket;
-                btn.Click += TicketButton_Click;
-
-                this.Controls.Add(btn);
-                dynamicTicketButtons.Add(btn);
-
-                count++;
-            }
-
-            // Премахваме автоматичното преоразмеряване на формата!
         }
 
         private void TicketButton_Click(object sender, EventArgs e)
@@ -855,7 +882,7 @@ namespace Nursan.UI
             {
                 AddTicket(ticket.TiketName, ticket.Description);
 
-                // Скрий бутоните и върни формата в начален режим
+                // Първо премахваме динамичните бутони
                 foreach (var b in dynamicTicketButtons)
                 {
                     this.Controls.Remove(b);
@@ -863,20 +890,25 @@ namespace Nursan.UI
                 }
                 dynamicTicketButtons.Clear();
 
-                // Върни формата в малък и прозрачен режим
-                this.TransparencyKey = Color.Fuchsia;
-                this.BackColor = Color.Fuchsia;
+                // Скриваме всички контроли освен бутона Ариза и лейбъла
                 foreach (Control control in this.Controls)
                 {
                     if (control != btnAriza && control != lblCountProductions)
+                    {
                         control.Visible = false;
-                    else
-                        control.Visible = true;
+                    }
                 }
+
+                // Върни формата в малък и прозрачен режим
+                this.TransparencyKey = Color.Fuchsia;
+                this.BackColor = Color.Fuchsia;
+                
                 // Размерът на формата - както беше в началото
                 int formWidth = lblCountProductions.Right + 5;
                 int formHeight = Math.Max(btnAriza.Height, lblCountProductions.Height) + 10;
                 this.Size = new Size(formWidth, formHeight);
+                
+                isExpanded = false;
             }
         }
     }
