@@ -5,6 +5,7 @@ namespace Nursan.Validations.ValidationCode
 {
     public class TarihHesapla
     {
+        
         //private string sqlConn = "Server=localhost;Database=UretimOtomasyon;User Id=sa;Password=Eda.801120;";
         //private static string sqlConnn = "Server=localhost;Database=UretimOtomasyon;User Id=sa;Password=Eda.801120;";
         // private string sqlConn = "Server=200.2.10.5;Database=UretimOtomasyon;User Id=sa;Password=wrjkd34mk22;";

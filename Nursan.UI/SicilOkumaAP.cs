@@ -29,7 +29,7 @@ namespace Nursan.UI
         private string _vardiyaString;
         private List<UrPersonalTakib> urPersonalTakibs;
         private UrPersonalTakib urPersonalTakibsTek;
-        private IEnumerable<UrIstasyon> istasyonmList;
+        //private IEnumerable<UrIstasyon> istasyonmList;
 
         private Nursan.Domain.Personal.Personal personalTek;
         private DateTime date;
@@ -49,6 +49,7 @@ namespace Nursan.UI
             _personal = new PersonalValidasyonu(new UnitOfWorPersonal(new PersonalContext()), new UnitOfWork(new UretimOtomasyonContext()));
             tork = new TorkService(new UnitOfWork(new UretimOtomasyonContext()), new UrVardiya { Name = _vardiyaString });
             istasyonce = tork.GetIstasyon();
+           
             urPersonalTakibs = _personal.GetPersonalTakib(istasyonce).Data;
             date = OtherTools.GetValuesDatetime();
             InitializeComponent();
@@ -142,7 +143,8 @@ namespace Nursan.UI
         }
         private void ProcessStarPrefixedInput(string inputText)
         {
-
+            if (istasyonce != null)
+            {
                 Nursan.Domain.Personal.Personal personal = GetPersonalInfo(inputText);
 
                 if (personal != null)
@@ -153,9 +155,11 @@ namespace Nursan.UI
                 {
                     HandleSicilNotFound();
                 }
-
+            }
+            else
+            {
                 textBox1.Clear();
-
+            }
         }
         private Nursan.Domain.Personal.Personal GetPersonalInfo(string inputText)
         {
@@ -289,17 +293,9 @@ namespace Nursan.UI
         }
         private int GitSytemDeAyiklaVesay(string? sicil)
         {
-
-            // sayim = new SayiIzlemeSIcilBagizliService(istasyonce);
             var result = SayiIzlemeSIcilBagizliService.SayiHesapla(sicil, _vardiyaString);
             return ((int)istasyonce.Realadet + result);
         }
-        //private int GitSytemDeAyiklaVesay(string? sicil)
-        //{
-        //    istasyonce = _stationHellper.GetIstasyons(_vardiyaString).First();
-        //    sayim = new SayiIzlemeSIcilBagizliService(istasyonce);
-        //    return SayiIzlemeSIcilBagizliService.SayiHesapla(sicil, _vardiyaString);
-        //}
         private void GetSicilSayisal()
         {
             listBox1.Items.Clear();

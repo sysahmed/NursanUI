@@ -90,6 +90,7 @@ namespace Nursan.Validations.ValidationCode
                        { "PFBRef", GitBarcodePFBRefDenetle },
                        { "PFBRefSerial", GitBarcodePFBRefSerialBak },
                        { "Final", syBarcodeInput.Count > 1 ? GitFinalBarcodeBak : GetFirstBarcodeBak },
+                       { "FinalGK", syBarcodeInput.Count > 1 ? GitFinalBarcodeBak : GetFirstBarcodeBak },
                        { "Tork", GitBarcodeTork},
                        { "AntenKablo", GitBarcodeAntenKablosu },
                        { "Sicil", SicilBakDegerle },
@@ -133,7 +134,7 @@ namespace Nursan.Validations.ValidationCode
                 var combinedBarcode = $"{barcode[0]}{barcode[1]}";
 
                 // Условна логика с минимизирани извиквания
-                return barcodeCount.Count() == 0 ? ConfigCek(combinedBarcode) : ProcessBarcodes(combinedBarcode);
+                return barcodeCount?.Count() == 0 ? ConfigCek(combinedBarcode) : ProcessBarcodes(combinedBarcode);
             }
             catch (ErrorExceptionHandller ex)
             {
@@ -188,6 +189,7 @@ namespace Nursan.Validations.ValidationCode
             {
                 try
                 {
+
                     result = BarcodeDegerle(item);
 
                     if (!result.Success)
@@ -199,8 +201,23 @@ namespace Nursan.Validations.ValidationCode
                     {
                         case "SeriNo Okundu!":
                         case "OK":
-                            sayitakip = 0;
-                            return new Result(true, $"{_orHarnessConfig.ConfigTork}{_donanimCount.IdDonanim}");
+                            if (istayon.ModulerYapiId == 1)
+                            {
+                                sayitakip = 0;
+                                return new Result(true, $"{_orHarnessConfig.ConfigTork}{_donanimCount.IdDonanim}");
+                            }
+                            else
+                            {
+                                if (barcode.Count > 1)
+                                {
+                                    break;
+                                }
+                                else
+                                {
+                                    return new Result(true, "OK");
+                                }
+
+                            }
 
                         case "Donanim Yazdirildi!":
                             return new Result(true, $"Donanim Sisteme Kayit Oldu! {_donanimCount.IdDonanim}");
@@ -303,6 +320,7 @@ namespace Nursan.Validations.ValidationCode
             long? gelenVeri = long.Parse(arg.BarcodeIcerik);
             izCoaxCableCount = _repo.GetRepository<IzCoaxCableCount>().Get(x => x.CoaxTutulanId == gelenVeri).Data;
             var result1 = _repo.GetRepository<OrHarnessModel>().Get(x => x.Id == izCoaxCableCount.HarnessModelId).Data;
+
             if (result1.HarnessModelName == _orHarnessModel.HarnessModelName)
                 return new Result(true, "Coax Kablo Tamam!");
             return new Result(false, "Coax Kablo Uyusmuyor!");
@@ -436,6 +454,13 @@ namespace Nursan.Validations.ValidationCode
                     break;
 
                 case EtapConstants.KONVEYOR:
+                    GitDegerleHerseySToplamV769(_donanimCount.IdDonanim.ToString());
+                    sayitakip = 0;
+                    if (family.FamilyName != "14401")
+                    {
+                        GitSytemdeBirinciVeYaSonBak(bar);
+                    }
+                    break;
                 case EtapConstants.GOZKONTROL:
                 case EtapConstants.PAKET:
                     sayitakip = 0;
@@ -457,7 +482,7 @@ namespace Nursan.Validations.ValidationCode
                 default:
                     break;
             }
-  
+
         }
 
         private void HandleTorkEtap()
@@ -614,6 +639,7 @@ namespace Nursan.Validations.ValidationCode
             }
             catch (ErrorExceptionHandller ex)
             {
+                Messaglama.MessagException(ex.Message);
                 return new Result(false, ex.Message);
             }
             return new Result(true, "OK");
@@ -672,6 +698,7 @@ namespace Nursan.Validations.ValidationCode
             }
             catch (ErrorExceptionHandller ex)
             {
+                Messaglama.MessagException(ex.Message);
                 return null;
             }
         }
@@ -683,7 +710,7 @@ namespace Nursan.Validations.ValidationCode
                 string[] parcala = StringSpanConverter.SplitWithoutAllocationReturnArray(bar.BarcodeIcerik.AsSpan(), bar.ParcalamaChar.Value);
                 string suffix = Regex.Replace(parcala[2], bar.RegexString, "");
                 _donanimCount.DonanimReferans = bar.BarcodeIcerik;
-                _donanimCount.IdDonanim = StringSpanConverter.GetCharsIsDigitPadingLeft(parcala[2].AsSpan(), (int)bar.PadLeft); 
+                _donanimCount.IdDonanim = StringSpanConverter.GetCharsIsDigitPadingLeft(parcala[2].AsSpan(), (int)bar.PadLeft);
                 _donanimCount.VardiyaId = vardiya.Id;
                 _donanimCount.MashinId = makine.Id;
                 _donanimCount.UrIstasyonId = istayon.Id;
@@ -695,6 +722,7 @@ namespace Nursan.Validations.ValidationCode
             }
             catch (ErrorExceptionHandller ex)
             {
+                Messaglama.MessagException(ex.Message);
                 return null;
             }
         }
@@ -723,6 +751,7 @@ namespace Nursan.Validations.ValidationCode
             }
             catch (ErrorExceptionHandller ex)
             {
+                Messaglama.MessagException(ex.Message);
                 return new DataResult<IzGenerateId>(izGeneraciq, true, Message.DoanimIDOkutunuz);
             }
 
@@ -935,6 +964,7 @@ namespace Nursan.Validations.ValidationCode
             }
             catch (ErrorExceptionHandller ex)
             {
+                Messaglama.MessagException(ex.Message);
                 return new SuccessDataResults<IzToplamV769>(null, "Hata Systemde Bulunamadi!");
             }
         }
@@ -968,6 +998,7 @@ namespace Nursan.Validations.ValidationCode
             }
             catch (ErrorExceptionHandller ex)
             {
+                Messaglama.MessagException(ex.Message);
                 return new SuccessDataResults<IzToplamV769>(null, $"Грешка: {ex.Message}");
             }
         }
@@ -1115,7 +1146,7 @@ namespace Nursan.Validations.ValidationCode
             else if (istasNewPaketVarmi.ModulerYapi.Etap == "ElTest")
                 izToplam.Eltestb = true;
         }
- 
+
 
         public SuccessDataResults<IzToplamV769> GitDegerleHerseySToplamV769(string barcode)
         {
@@ -1138,7 +1169,7 @@ namespace Nursan.Validations.ValidationCode
                 var istas = modulerList.FirstOrDefault(x => x.Id == istayon.ModulerYapiId);
                 try
                 {
-                    istasNewPaketVarmi = istasyonListce.Where(x => x.Toplam > istayon.Toplam).MinBy(x=>x.Toplam);
+                    istasNewPaketVarmi = istasyonListce.Where(x => x.Toplam > istayon.Toplam).MinBy(x => x.Toplam);
                 }
 
                 catch (ErrorExceptionHandller ex)
@@ -1368,6 +1399,7 @@ namespace Nursan.Validations.ValidationCode
             }
             catch (ErrorExceptionHandller ex)
             {
+                Messaglama.MessagException(ex.Message);
                 return new SuccessDataResults<IzToplamV769>(null, "Hata Systemde Bulunamadi!");
             }
         }
@@ -1389,6 +1421,7 @@ namespace Nursan.Validations.ValidationCode
             }
             catch (ErrorExceptionHandller ex)
             {
+                Messaglama.MessagException(ex.Message);
                 return false;
             }
         }
@@ -1400,6 +1433,7 @@ namespace Nursan.Validations.ValidationCode
             }
             catch (ErrorExceptionHandller ex)
             {
+                Messaglama.MessagException(ex.Message);
                 return null;
             }
         }
@@ -1412,6 +1446,7 @@ namespace Nursan.Validations.ValidationCode
             }
             catch (ErrorExceptionHandller ex)
             {
+                Messaglama.MessagException(ex.Message);
                 return null;
             }
         }
@@ -1419,10 +1454,11 @@ namespace Nursan.Validations.ValidationCode
         {
             try
             {
-                return _repo.GetRepository<UrIstasyon>().GetAll(x=> x.ModulerYapiId != null).Data;
+                return _repo.GetRepository<UrIstasyon>().GetAll(x => x.ModulerYapiId != null).Data;
             }
             catch (ErrorExceptionHandller ex)
             {
+                Messaglama.MessagException(ex.Message);
                 return null;
             }
         }
@@ -1443,6 +1479,7 @@ namespace Nursan.Validations.ValidationCode
             }
             catch (ErrorExceptionHandller ex)
             {
+                Messaglama.MessagException(ex.Message);
                 return null;
             }
         }
@@ -1455,8 +1492,9 @@ namespace Nursan.Validations.ValidationCode
                 var idres = StringSpanConverter.GetCharsIsDigit(res[2]);
                 return _repo.GetRepository<IzDonanimCount>().GetAll(x => x.IdDonanim == idres).Data;
             }
-            catch (ErrorExceptionHandller)
+            catch (ErrorExceptionHandller ex)
             {
+                Messaglama.MessagException(ex.Message);
                 return null;
             }
         }
@@ -1468,8 +1506,9 @@ namespace Nursan.Validations.ValidationCode
                 vardiya = _repo.GetRepository<UrVardiya>().Get(x => x.Name == vardyaString).Data;
                 return vardiya;
             }
-            catch (ErrorExceptionHandller)
+            catch (ErrorExceptionHandller ex)
             {
+                Messaglama.MessagException(ex.Message);
                 return null;
             }
         }
@@ -1487,8 +1526,9 @@ namespace Nursan.Validations.ValidationCode
                     return null;
                 }
             }
-            catch (ErrorExceptionHandller)
+            catch (ErrorExceptionHandller ex)
             {
+                Messaglama.MessagException(ex.Message);
                 return null;
             }
         }
@@ -1500,8 +1540,9 @@ namespace Nursan.Validations.ValidationCode
                 family = _repo.GetRepository<OrFamily>().Get(x => x.Id == istayon.FamilyId).Data;
                 return family;
             }
-            catch (ErrorExceptionHandller)
+            catch (ErrorExceptionHandller ex)
             {
+                Messaglama.MessagException(ex.Message);
                 return null;
             }
         }
@@ -1513,12 +1554,13 @@ namespace Nursan.Validations.ValidationCode
                 modulerList = _repo.GetRepository<UrModulerYapi>().GetAll(null).Data;
                 return modulerList;
             }
-            catch (ErrorExceptionHandller)
+            catch (ErrorExceptionHandller ex)
             {
+                Messaglama.MessagException(ex.Message);
                 return null;
             }
         }
-        public DataResult<IzDonanimCount> AddDonanimCountSigorta(SyBarcodeInput barcode, IzGenerateId data,UrIstasyon istasyon)
+        public DataResult<IzDonanimCount> AddDonanimCountSigorta(SyBarcodeInput barcode, IzGenerateId data, UrIstasyon istasyon)
         {
             try
             {
@@ -1546,6 +1588,7 @@ namespace Nursan.Validations.ValidationCode
             }
             catch (ErrorExceptionHandller ex)
             {
+                Messaglama.MessagException(ex.Message);
                 // Връщаме DataResult с информация за грешката
                 return new DataResult<IzDonanimCount>(null, false, ex.Message);
             }
@@ -1554,7 +1597,7 @@ namespace Nursan.Validations.ValidationCode
         //#R2X6-15K867-ACB_02181980
 
         // Метод за създаване на IzDonanimCount
-        private IzDonanimCount CreateDonanimCountSigorta(SyBarcodeInput barcode, IzGenerateId data, int idDonanim,UrIstasyon istasyon)
+        private IzDonanimCount CreateDonanimCountSigorta(SyBarcodeInput barcode, IzGenerateId data, int idDonanim, UrIstasyon istasyon)
         {
             return new IzDonanimCount
             {
@@ -1598,6 +1641,7 @@ namespace Nursan.Validations.ValidationCode
             }
             catch (ErrorExceptionHandller ex)
             {
+                Messaglama.MessagException(ex.Message);
                 // Връщаме DataResult с информация за грешката
                 return new DataResult<IzDonanimCount>(null, false, ex.Message);
             }
@@ -1622,8 +1666,6 @@ namespace Nursan.Validations.ValidationCode
                 UpdateDate = TarihHesapla.GetSystemDate()
             };
         }
-
-        
         public Result GitElTestBarcodeBas(SyBarcodeInput Barcode)
         {
             try
@@ -1658,8 +1700,9 @@ namespace Nursan.Validations.ValidationCode
 
                 return result;
             }
-            catch (ErrorExceptionHandller)
+            catch (ErrorExceptionHandller ex)
             {
+                Messaglama.MessagException(ex.Message);
                 return null;
             }
         }
@@ -1704,8 +1747,9 @@ namespace Nursan.Validations.ValidationCode
                 }
                 return result;
             }
-            catch (ErrorExceptionHandller)
+            catch (ErrorExceptionHandller ex)
             {
+                Messaglama.MessagException(ex.Message);
                 return null;
             }
         }
@@ -1726,8 +1770,9 @@ namespace Nursan.Validations.ValidationCode
                 barcodece.IdDonanim = StringSpanConverter.GetCharsIsDigitPadingLeft(barcodece.BarcodeIcerik.AsSpan(), (int)barcodece.PadLeft).ToString();
                 return barcodece;
             }
-            catch (ErrorExceptionHandller)
+            catch (ErrorExceptionHandller ex)
             {
+                Messaglama.MessagException(ex.Message);
                 return null;
             }
         }
@@ -1780,8 +1825,9 @@ namespace Nursan.Validations.ValidationCode
 
                 return new SuccessDataResults<SyBarcodeOut>(null, message);
             }
-            catch (ErrorExceptionHandller)
+            catch (ErrorExceptionHandller ex)
             {
+                Messaglama.MessagException(ex.Message);
                 // Обработка на грешката
                 return null; // Препоръчително е да има по-подробна обработка на грешките
             }
@@ -1805,8 +1851,9 @@ namespace Nursan.Validations.ValidationCode
                     return new SuccessDataResults<UrKonveyorNumara>(null, Message.PanoBulunamadi);
                 }
             }
-            catch (ErrorExceptionHandller)
+            catch (ErrorExceptionHandller ex)
             {
+                Messaglama.MessagException(ex.Message);
                 return null;
             }
         }
@@ -1820,9 +1867,22 @@ namespace Nursan.Validations.ValidationCode
                 _repo.GetRepository<IzGenerateId>().Update(donanim);
                 _repo.SaveChanges();
             }
-            catch (ErrorExceptionHandller)
+            catch (ErrorExceptionHandller ex)
             {
+                Messaglama.MessagException(ex.Message);
             }
+        }
+        public bool IsAlertGkLocked(string barcode)
+        {
+            var harness = StringSpanConverter.SafeSubSpan(barcode.AsSpan(), 0, barcode.Length - 8).ToString();
+            var harnes = _repo.GetRepository<OrHarnessModel>().Get(x => x.HarnessModelName == harness).Data;
+            if (harnes == null)
+            {
+                return false; // няма такъв харнес, не е заключено
+            }
+            var alertNumber = harnes.AlertNumber;
+            var alertGk = _repo.GetRepository<OrAlertGk>().Get(x => x.AlertNumber == alertNumber).Data;
+            return alertGk == null; // true ако няма запис (заключено)
         }
     }
 }

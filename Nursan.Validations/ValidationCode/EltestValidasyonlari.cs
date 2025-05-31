@@ -87,6 +87,23 @@ namespace Nursan.Validations.ValidationCode
             }
             return flag;
         }
+        public decimal GetPcId()
+        {
+            var pcName = _repoIslemler.GetRepositoryAmbar<PcName>().Get(x => x.Pcname1 == Environment.MachineName).Data;
+            try
+            {
+                if (pcName.Pcid == 0)
+                {
+                    return 0;
+                }
+                return pcName.Pcid;
+            }
+            catch (Exception)
+            {
+
+                return 0;
+            }
+        }
         //DateTime time; int? idDonanim; int idi = 0; string[] values = null;
         public void GelenVeri(List<string> lines)
         {

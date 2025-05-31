@@ -20,13 +20,13 @@ public partial class Personal : BaseEntityPersonal
     [Column("CARD_ID")]
     public long? CARD_ID { get; set; }
     [Column("DEPARTMENT")]
-    public long DEPARTMENT { get; set; }
+    public long? DEPARTMENT { get; set; }
     [Column("JOB_POSITION")]
-    public long JOB_POSITION { get; set; }
+    public long? JOB_POSITION { get; set; }
     [Column("LAST_DIR")]
     public bool? LAST_DIR { get; set; }
     [Column("DIR_CHANGE")]
     public DateTime? DIR_CHANGE { get; set; }
 
-    public virtual Department DepartmentNavigation { get; set; } = null!;
+    public virtual Department? DepartmentNavigation { get; set; } = null!;
 }

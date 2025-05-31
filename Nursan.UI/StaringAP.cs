@@ -45,17 +45,12 @@ namespace Nursan.UI
         {
 
         }
-        private void Staring_Load(object sender, EventArgs e)
-        {
-
-        }
-
+       
         string names;
         private void txtBarcode_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                
                 if (!string.IsNullOrEmpty(txtBarcode.Text))
                 {
 
@@ -63,7 +58,7 @@ namespace Nursan.UI
                     {
                         _vardiya.Name = txtBarcode.Text;
                         sicilForm = new SicilOkumaAP(_repo, txtBarcode.Text);
-                        sicilForm.ShowDialog();
+                        sicilForm.Show();
                         this.Hide();
                         // this.Dispose();
                         // this.Close();

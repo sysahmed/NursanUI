@@ -28,8 +28,9 @@ namespace Nursan.UI
             // labelWarning
             // 
             labelWarning.AutoSize = true;
+            labelWarning.BackColor = Color.Red;
             labelWarning.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            labelWarning.ForeColor = Color.DarkRed;
+            labelWarning.ForeColor = SystemColors.ButtonHighlight;
             labelWarning.Location = new Point(18, 14);
             labelWarning.Name = "labelWarning";
             labelWarning.Size = new Size(375, 24);
@@ -38,18 +39,19 @@ namespace Nursan.UI
             // 
             // labelInfo
             // 
-            labelInfo.AutoSize = true;
+            labelInfo.BackColor = Color.Red;
             labelInfo.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            labelInfo.ForeColor = SystemColors.ButtonHighlight;
             labelInfo.Location = new Point(18, 47);
             labelInfo.Name = "labelInfo";
-            labelInfo.Size = new Size(594, 20);
+            labelInfo.Size = new Size(412, 79);
             labelInfo.TabIndex = 1;
             labelInfo.Text = "Сканирайте първо целия баркод (с ID), после баркод с Alert Number.";
             // 
             // textBoxBarcode1
             // 
             textBoxBarcode1.Font = new Font("Microsoft Sans Serif", 16F);
-            textBoxBarcode1.Location = new Point(21, 84);
+            textBoxBarcode1.Location = new Point(18, 129);
             textBoxBarcode1.Name = "textBoxBarcode1";
             textBoxBarcode1.PlaceholderText = "Сканирайте целия баркод (с ID)";
             textBoxBarcode1.Size = new Size(412, 32);
@@ -58,7 +60,7 @@ namespace Nursan.UI
             // textBoxBarcode2
             // 
             textBoxBarcode2.Font = new Font("Microsoft Sans Serif", 16F);
-            textBoxBarcode2.Location = new Point(21, 131);
+            textBoxBarcode2.Location = new Point(18, 176);
             textBoxBarcode2.Name = "textBoxBarcode2";
             textBoxBarcode2.PlaceholderText = "Сканирайте баркод с Alert Number";
             textBoxBarcode2.Size = new Size(412, 32);
@@ -68,7 +70,8 @@ namespace Nursan.UI
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(455, 188);
+            BackColor = Color.Red;
+            ClientSize = new Size(455, 237);
             Controls.Add(textBoxBarcode2);
             Controls.Add(textBoxBarcode1);
             Controls.Add(labelInfo);

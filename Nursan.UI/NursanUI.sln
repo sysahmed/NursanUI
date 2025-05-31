@@ -32,10 +32,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nursan.XMLTools", "..\Nursa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nursan.Personal", "..\Nursan.Personal\Nursan.Personal.csproj", "{9146B412-770C-4BDD-B790-8C51E6C7DA50}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nursan.Caching", "..\Nursan.Caching\Nursan.Caching.csproj", "{E6EDF5CA-3BDE-EA92-7AE4-116E99EB25AD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nursan.Ariza", "..\..\Nursan.aAriza\Nursan.Ariza\Nursan.Ariza.csproj", "{B3AD7306-A100-488A-A542-54A7549C087F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -124,22 +120,6 @@ Global
 		{9146B412-770C-4BDD-B790-8C51E6C7DA50}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9146B412-770C-4BDD-B790-8C51E6C7DA50}.Release|x86.ActiveCfg = Release|Any CPU
 		{9146B412-770C-4BDD-B790-8C51E6C7DA50}.Release|x86.Build.0 = Release|Any CPU
-		{E6EDF5CA-3BDE-EA92-7AE4-116E99EB25AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E6EDF5CA-3BDE-EA92-7AE4-116E99EB25AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E6EDF5CA-3BDE-EA92-7AE4-116E99EB25AD}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{E6EDF5CA-3BDE-EA92-7AE4-116E99EB25AD}.Debug|x86.Build.0 = Debug|Any CPU
-		{E6EDF5CA-3BDE-EA92-7AE4-116E99EB25AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E6EDF5CA-3BDE-EA92-7AE4-116E99EB25AD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E6EDF5CA-3BDE-EA92-7AE4-116E99EB25AD}.Release|x86.ActiveCfg = Release|Any CPU
-		{E6EDF5CA-3BDE-EA92-7AE4-116E99EB25AD}.Release|x86.Build.0 = Release|Any CPU
-		{B3AD7306-A100-488A-A542-54A7549C087F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B3AD7306-A100-488A-A542-54A7549C087F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B3AD7306-A100-488A-A542-54A7549C087F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{B3AD7306-A100-488A-A542-54A7549C087F}.Debug|x86.Build.0 = Debug|Any CPU
-		{B3AD7306-A100-488A-A542-54A7549C087F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B3AD7306-A100-488A-A542-54A7549C087F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B3AD7306-A100-488A-A542-54A7549C087F}.Release|x86.ActiveCfg = Release|Any CPU
-		{B3AD7306-A100-488A-A542-54A7549C087F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

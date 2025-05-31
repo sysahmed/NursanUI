@@ -37,22 +37,16 @@
             button1 = new Button();
             button2 = new Button();
             label1 = new Label();
-            pictureBox1 = new PictureBox();
             lblVersion = new Label();
             txtRevork = new TextBox();
-            pictureBox2 = new PictureBox();
+            lblCountProductions = new Label();
+            btnAriza = new Button();
             contextMenuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             SuspendLayout();
             // 
             // notifyIcon
             // 
-            notifyIcon.BalloonTipText = "System Calisiyot!";
-            notifyIcon.BalloonTipTitle = "NursaUI";
-            notifyIcon.Icon = (Icon)resources.GetObject("notifyIcon.Icon");
-            notifyIcon.Text = "notifyIcon1";
-            notifyIcon.Visible = true;
+            resources.ApplyResources(notifyIcon, "notifyIcon");
             notifyIcon.MouseDoubleClick += notifyIcon_MouseDoubleClick;
             notifyIcon.MouseUp += notifyIcon_MouseUp;
             // 
@@ -61,119 +55,86 @@
             contextMenuStrip1.ImageScalingSize = new Size(20, 20);
             contextMenuStrip1.Items.AddRange(new ToolStripItem[] { openToolStripMenuItem, closeToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new Size(104, 48);
+            resources.ApplyResources(contextMenuStrip1, "contextMenuStrip1");
             // 
             // openToolStripMenuItem
             // 
             openToolStripMenuItem.Name = "openToolStripMenuItem";
-            openToolStripMenuItem.Size = new Size(103, 22);
-            openToolStripMenuItem.Text = "Open";
+            resources.ApplyResources(openToolStripMenuItem, "openToolStripMenuItem");
             openToolStripMenuItem.Click += openToolStripMenuItem_Click;
             // 
             // closeToolStripMenuItem
             // 
             closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            closeToolStripMenuItem.Size = new Size(103, 22);
-            closeToolStripMenuItem.Text = "Close";
+            resources.ApplyResources(closeToolStripMenuItem, "closeToolStripMenuItem");
             closeToolStripMenuItem.Click += closeToolStripMenuItem_Click;
             // 
             // button1
             // 
-            button1.FlatStyle = FlatStyle.Flat;
-            button1.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
-            button1.Location = new Point(125, -1);
-            button1.Margin = new Padding(3, 2, 3, 2);
+            resources.ApplyResources(button1, "button1");
             button1.Name = "button1";
-            button1.Size = new Size(35, 33);
-            button1.TabIndex = 1;
-            button1.Text = "-";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
             // button2
             // 
-            button2.FlatStyle = FlatStyle.Flat;
-            button2.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
-            button2.Location = new Point(166, -1);
-            button2.Margin = new Padding(3, 2, 3, 2);
+            resources.ApplyResources(button2, "button2");
             button2.Name = "button2";
-            button2.Size = new Size(33, 33);
-            button2.TabIndex = 2;
-            button2.Text = "X";
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 
             // label1
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe MDL2 Assets", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(-1, 49);
+            resources.ApplyResources(label1, "label1");
             label1.Name = "label1";
-            label1.Size = new Size(195, 16);
-            label1.TabIndex = 3;
-            label1.Text = "Test Masa 769 Proje Sistemi";
-            // 
-            // pictureBox1
-            // 
-            pictureBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            pictureBox1.Image = Properties.Resources.nursan_logo;
-            pictureBox1.Location = new Point(10, 8);
-            pictureBox1.Margin = new Padding(3, 2, 3, 2);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(58, 0);
-            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox1.TabIndex = 4;
-            pictureBox1.TabStop = false;
             // 
             // lblVersion
             // 
-            lblVersion.AutoSize = true;
-            lblVersion.Location = new Point(139, 34);
+            resources.ApplyResources(lblVersion, "lblVersion");
             lblVersion.Name = "lblVersion";
-            lblVersion.Size = new Size(41, 15);
-            lblVersion.TabIndex = 5;
-            lblVersion.Text = "V.1.0.0";
             lblVersion.Click += label2_Click;
             // 
             // txtRevork
             // 
-            txtRevork.Location = new Point(9, 74);
+            resources.ApplyResources(txtRevork, "txtRevork");
             txtRevork.Name = "txtRevork";
-            txtRevork.Size = new Size(189, 23);
-            txtRevork.TabIndex = 6;
             // 
-            // pictureBox2
+            // lblCountProductions
             // 
-            pictureBox2.Image = Properties.Resources.nursan_logo;
-            pictureBox2.Location = new Point(4, -1);
-            pictureBox2.Margin = new Padding(3, 2, 3, 2);
-            pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(115, 36);
-            pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox2.TabIndex = 7;
-            pictureBox2.TabStop = false;
+            lblCountProductions.BackColor = Color.Transparent;
+            lblCountProductions.FlatStyle = FlatStyle.Flat;
+            resources.ApplyResources(lblCountProductions, "lblCountProductions");
+            lblCountProductions.ForeColor = Color.Lime;
+            lblCountProductions.Name = "lblCountProductions";
+            // 
+            // btnAriza
+            // 
+            btnAriza.AutoEllipsis = true;
+            btnAriza.BackColor = Color.Transparent;
+            resources.ApplyResources(btnAriza, "btnAriza");
+            btnAriza.ForeColor = Color.Lime;
+            btnAriza.Name = "btnAriza";
+            btnAriza.TabStop = false;
+            btnAriza.UseVisualStyleBackColor = false;
             // 
             // ElTest
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            resources.ApplyResources(this, "$this");
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(206, 109);
-            Controls.Add(pictureBox2);
+            Controls.Add(btnAriza);
+            Controls.Add(lblCountProductions);
             Controls.Add(txtRevork);
             Controls.Add(lblVersion);
-            Controls.Add(pictureBox1);
             Controls.Add(label1);
             Controls.Add(button2);
             Controls.Add(button1);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
-            Icon = (Icon)resources.GetObject("$this.Icon");
+            FormBorderStyle = FormBorderStyle.None;
             Name = "ElTest";
-            Text = "ElTest";
+            TopMost = true;
+            TransparencyKey = Color.Transparent;
             Load += ElTest_Load;
             Move += ElTest_Move;
             contextMenuStrip1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -187,9 +148,9 @@
         private Button button1;
         private Button button2;
         private Label label1;
-        private PictureBox pictureBox1;
         private Label lblVersion;
         private TextBox txtRevork;
-        private PictureBox pictureBox2;
+        private Button btnAriza;
+        public Label lblCountProductions;
     }
 }

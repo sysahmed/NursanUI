@@ -1,104 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DirectedGraph DataVirtualized="True" Layout="Sugiyama" ZoomLevel="-1" xmlns="http://schemas.microsoft.com/vs/2009/dgml">
   <Nodes>
-    <Node Id="(@1 @7 @15 Member=(@41 OverloadingParameters=[@42,(@30 @31 Type=IzGenerateId),@43]))" Category="CodeSchema_Method" Bounds="-2.78373377005077,423.174222363716,108.8,25.96" CodeSchemaProperty_IsConstructor="True" CodeSchemaProperty_IsPublic="True" CommonLabel="DirectPrinting" Icon="CodeSchema_Method" Label="DirectPrinting" />
-    <Node Id="(@1 @7 @15 Member=(@41 OverloadingParameters=[@42,@39,@43,(@26 @27 Type=Int32)]))" Category="CodeSchema_Method" Bounds="136.016254022918,423.174252881294,108.8,25.96" CodeSchemaProperty_IsConstructor="True" CodeSchemaProperty_IsPublic="True" CommonLabel="DirectPrinting" Icon="CodeSchema_Method" Label="DirectPrinting" />
-    <Node Id="(@1 @7 @15 Member=(@41 OverloadingParameters=[@42,@39,@43]))" Category="CodeSchema_Method" Bounds="-2.78373377005089,479.13427485395,108.8,25.96" CodeSchemaProperty_IsConstructor="True" CodeSchemaProperty_IsPublic="True" CommonLabel="DirectPrinting" Icon="CodeSchema_Method" Label="DirectPrinting" />
-    <Node Id="(@1 @7 @15 Member=(@41 OverloadingParameters=[@42,@43,(@30 Namespace=Nursan.Domain.ModelsDisposible Type=HarnesDonanimCoax)]))" Category="CodeSchema_Method" Bounds="136.016244664194,479.134254101997,108.8,25.96" CodeSchemaProperty_IsConstructor="True" CodeSchemaProperty_IsPublic="True" CommonLabel="DirectPrinting" Icon="CodeSchema_Method" Label="DirectPrinting" />
-    <Node Id="@10" Category="CodeSchema_Namespace" Bounds="-664.163419566943,-339.19024884203,585.323266398112,429.801" CodeSchemaProperty_IsPublic="True" CodeSchemaProperty_IsStatic="True" CommonLabel="Nursan.UI" DelayedChildNodesState="Incomplete" Group="Expanded" Label="Nursan.UI" />
-    <Node Id="@12" Category="CodeSchema_Namespace" Bounds="317.590868733724,-345.390270278118,481.453327907986,317.880843166853" CodeSchemaProperty_IsPublic="True" CodeSchemaProperty_IsStatic="True" CommonLabel="Nursan.Validations.ValidationCode" DelayedChildNodesState="Incomplete" Group="Expanded" Label="Nursan.Validations.ValidationCode" />
-    <Node Id="@13" Category="CodeSchema_Class" Bounds="-240.226819835498,-299.189821949934,141.386666666667,141.9203" CodeSchemaProperty_IsPublic="True" CommonLabel="AntenKablo" DelayedChildNodesState="Incomplete" Group="Expanded" Icon="CodeSchema_Class" Label="AntenKablo" />
-    <Node Id="@14" Category="CodeSchema_Class" Bounds="337.590869954427,-133.469770277594,196.643333333333,85.9602" CodeSchemaProperty_IsPublic="True" CommonLabel="BarcodeValidation" DelayedChildNodesState="Incomplete" Group="Expanded" Icon="CodeSchema_Class" Label="BarcodeValidation" />
-    <Node Id="@16" Category="CodeSchema_Class" Bounds="-22.7837337700507,383.174098608833,287.599987792969,141.9203" CodeSchemaProperty_IsPublic="True" CommonLabel="DirectPrinting" DelayedChildNodesState="Incomplete" Group="Expanded" Icon="CodeSchema_Class" Label="DirectPrinting" />
-    <Node Id="@18" Category="CodeSchema_Class" Bounds="516.04419664171,-305.390127111266,263,141.9203" CodeSchemaProperty_IsPublic="True" CommonLabel="EtiketBasma" DelayedChildNodesState="Incomplete" Group="Expanded" Icon="CodeSchema_Class" Label="EtiketBasma" />
-    <Node Id="@19" Category="CodeSchema_Class" Bounds="-472.776753307178,-71.3096488420302,160.966666666667,141.9203" CodeSchemaProperty_IsPublic="True" CommonLabel="R_SChanges" DelayedChildNodesState="Incomplete" Group="Expanded" Icon="CodeSchema_Class" Label="R_SChanges" />
-    <Node Id="@2" Category="CodeSchema_Assembly" Bounds="-62.7837337700509,303.173898608832,367.6,261.92" CommonLabel="Nursan.Core" DelayedChildNodesState="Incomplete" Group="Expanded" Label="Nursan.Core.dll" UseManualLocation="True" />
-    <Node Id="@21" Category="CodeSchema_Class" Bounds="-644.163419566943,-299.19014884203,208.606682535808,197.8804" CodeSchemaProperty_IsPublic="True" CommonLabel="Revork" DelayedChildNodesState="Incomplete" Group="Expanded" Icon="CodeSchema_Class" Label="Revork" />
-    <Node Id="@22" Category="CodeSchema_Class" Bounds="-405.55681658029,-299.189821949934,135.330068969727,141.9203" CodeSchemaProperty_IsPublic="True" CommonLabel="RevorkGiris" DelayedChildNodesState="Incomplete" Group="Expanded" Icon="CodeSchema_Class" Label="RevorkGiris" />
-    <Node Id="@23" Category="CodeSchema_Class" Bounds="-644.163419566943,-71.3096488420301,141.386666666667,141.9203" CodeSchemaProperty_IsPublic="True" CommonLabel="Sigorta" DelayedChildNodesState="Incomplete" Group="Expanded" Icon="CodeSchema_Class" Label="Sigorta" />
-    <Node Id="@24" Category="CodeSchema_Class" Bounds="564.234211018881,-133.469727111266,196.643333333333,85.9602" CodeSchemaProperty_IsPublic="True" CommonLabel="TorkService" DelayedChildNodesState="Incomplete" Group="Expanded" Icon="CodeSchema_Class" Label="TorkService" />
-    <Node Id="@25" Category="CodeSchema_Class" Bounds="337.590868733724,-305.390170277594,148.453333333333,141.9203" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" CommonLabel="ValidationCode" DelayedChildNodesState="Incomplete" Group="Expanded" Icon="CodeSchema_Class" Label="ValidationCode" />
-    <Node Id="@28" Category="CodeSchema_Method" Bounds="357.59088812934,-265.390070277594,90.6500000000001,25.9600000000001" CodeSchemaProperty_IsPublic="True" CommonLabel="ConfigCek" Icon="CodeSchema_Method" Label="ConfigCek" />
-    <Node Id="@32" Category="CodeSchema_Method" Bounds="-220.226749034716,-259.189667677473,97.1566666666668,25.96" CodeSchemaProperty_IsPrivate="True" CommonLabel="BarcodeBas" Icon="CodeSchema_Method" Label="BarcodeBas" />
-    <Node Id="@33" Category="CodeSchema_Method" Bounds="-624.16341061512,-31.3096780534494,91.6133333333332,25.96" CodeSchemaProperty_IsPrivate="True" CommonLabel="BarodeBas" Icon="CodeSchema_Method" Label="BarodeBas" />
-    <Node Id="@35" Category="CodeSchema_Method" Bounds="-452.776753307178,24.6502828840506,120.966666666667,25.96" CodeSchemaProperty_IsPrivate="True" CommonLabel="textBox1_KeyUp" Icon="CodeSchema_Method" Label="textBox1_KeyUp" />
-    <Node Id="@36" Category="CodeSchema_Method" Bounds="-624.163403697803,-147.2697076555,168.606666666667,25.96" CodeSchemaProperty_IsPrivate="True" CommonLabel="txtBarcodeReader_KeyUp" Icon="CodeSchema_Method" Label="txtBarcodeReader_KeyUp" />
-    <Node Id="@37" Category="CodeSchema_Method" Bounds="-624.163419566943,-203.229676222395,150.136666666667,25.96" CodeSchemaProperty_IsPrivate="True" CommonLabel="txtExplanation_KeyUp" Icon="CodeSchema_Method" Label="txtExplanation_KeyUp" />
-    <Node Id="@38" Category="CodeSchema_Method" Bounds="536.044204915365,-209.429927110742,128.573333333333,25.96" CodeSchemaProperty_IsPublic="True" CommonLabel="BarodeBasHarnes" Icon="CodeSchema_Method" Label="BarodeBasHarnes" />
-    <Node Id="@4" Category="CodeSchema_Assembly" Bounds="-684.163419566943,-379.19034884203,625.323333333333,489.8" CommonLabel="Nursan.UI" DelayedChildNodesState="Incomplete" Group="Expanded" Label="Nursan.UI.dll" UseManualLocation="True" />
-    <Node Id="@40" Category="CodeSchema_Method" Bounds="536.04419664171,-265.390027110742,91.6133333333332,25.96" CodeSchemaProperty_IsPublic="True" CommonLabel="BarodeBas" Icon="CodeSchema_Method" Label="BarodeBas" />
-    <Node Id="@44" Category="CodeSchema_Method" Bounds="357.590869954427,-93.4696702775942,156.643333333333,25.96" CodeSchemaProperty_IsPrivate="True" CommonLabel="GitBakbarcodeBasaymi" Icon="CodeSchema_Method" Label="GitBakbarcodeBasaymi" />
-    <Node Id="@45" Category="CodeSchema_Method" Bounds="584.234211018881,-93.4696271112655,156.643333333333,25.96" CodeSchemaProperty_IsPrivate="True" CommonLabel="GitBakbarcodeBasaymi" Icon="CodeSchema_Method" Label="GitBakbarcodeBasaymi" />
-    <Node Id="@46" Category="CodeSchema_Method" Bounds="-385.556747610563,-203.229676222395,95.3299999999999,25.96" CodeSchemaProperty_IsConstructor="True" CodeSchemaProperty_IsPublic="True" CommonLabel="RevorkGiris" Icon="CodeSchema_Method" Label="RevorkGiris" />
-    <Node Id="@47" Category="CodeSchema_Field" Bounds="-385.556816580289,-259.189667677473,66.97,25.96" CodeSchemaProperty_IsPrivate="True" CommonLabel="_print" Icon="CodeSchema_Field" Label="_print" />
-    <Node Id="@48" Category="CodeSchema_Field" Bounds="-624.163419160042,-259.189667677473,67.0333333333333,25.96" CodeSchemaProperty_IsPrivate="True" CommonLabel="direct" Icon="CodeSchema_Field" Label="direct" />
-    <Node Id="@49" Category="CodeSchema_Field" Bounds="-220.226819835498,-203.229676222395,101.386666666667,25.96" CodeSchemaProperty_IsPrivate="True" CommonLabel="directPrintin" Icon="CodeSchema_Field" Label="directPrintin" />
-    <Node Id="@50" Category="CodeSchema_Field" Bounds="657.657529975043,-265.390027111266,101.386666666667,25.96" CodeSchemaProperty_IsPrivate="True" CommonLabel="directPrintin" Icon="CodeSchema_Field" Label="directPrintin" />
-    <Node Id="@51" Category="CodeSchema_Field" Bounds="-624.163419566943,24.6502828840506,101.386666666667,25.96" CodeSchemaProperty_IsPrivate="True" CommonLabel="directPrintin" Icon="CodeSchema_Field" Label="directPrintin" />
-    <Node Id="@52" Category="CodeSchema_Field" Bounds="357.590868733724,-209.429970277594,108.453333333333,25.96" CodeSchemaProperty_IsPrivate="True" CommonLabel="directPrinting" Icon="CodeSchema_Field" Label="directPrinting" />
-    <Node Id="@53" Category="CodeSchema_Field" Bounds="-452.776745576058,-31.3096780534494,78.7533333333333,25.96" CodeSchemaProperty_IsPrivate="True" CommonLabel="printing" Icon="CodeSchema_Field" Label="printing" />
-    <Node Id="@6" Category="CodeSchema_Assembly" Bounds="297.590888352928,-385.390374796958,521.453333333333,377.881047685692" CommonLabel="Nursan.Validations" DelayedChildNodesState="Incomplete" Group="Expanded" Label="Nursan.Validations.dll" UseManualLocation="True" />
-    <Node Id="@8" Category="CodeSchema_Namespace" Bounds="-42.7837337700509,343.173998608833,327.599987792969,201.9205" CodeSchemaProperty_IsPublic="True" CodeSchemaProperty_IsStatic="True" CommonLabel="Nursan.Core.Printing" DelayedChildNodesState="Incomplete" Group="Expanded" Label="Nursan.Core.Printing" />
+    <Node Id="@10" Category="CodeSchema_Method" Bounds="232.188333333333,175.96,86.1666666666667,25.96" CodeSchemaProperty_IsPrivate="True" CommonLabel="Watcher1" Icon="CodeSchema_Method" Label="Watcher1" />
+    <Node Id="@11" Category="CodeSchema_Method" Bounds="223.223333333333,120,104.096666666667,25.96" CodeSchemaProperty_IsPublic="True" CommonLabel="WatcherStart" Icon="CodeSchema_Method" Label="WatcherStart" />
+    <Node Id="@2" Category="CodeSchema_Assembly" Bounds="0,0,387.32,261.92" CommonLabel="Nursan.UI" DelayedChildNodesState="Incomplete" Group="Expanded" Label="Nursan.UI.dll" />
+    <Node Id="@4" Category="CodeSchema_Namespace" Bounds="20,40,347.32,201.92" CodeSchemaProperty_IsPublic="True" CodeSchemaProperty_IsStatic="True" CommonLabel="Nursan.UI" DelayedChildNodesState="Incomplete" Group="Expanded" Label="Nursan.UI" />
+    <Node Id="@6" Category="CodeSchema_Class" Bounds="40,80,307.32,141.92" CodeSchemaProperty_IsPublic="True" CommonLabel="ElTest" DelayedChildNodesState="Incomplete" Group="Expanded" Icon="CodeSchema_Class" Label="ElTest" />
+    <Node Id="@9" Category="CodeSchema_Method" Bounds="60,120,132.543333333333,25.96" CodeSchemaProperty_IsPrivate="True" CommonLabel="Watcher1_Created" Icon="CodeSchema_Method" Label="Watcher1_Created" />
   </Nodes>
   <Links>
-    <Link Source="@10" Target="@13" Category="Contains" FetchingParent="@10" />
-    <Link Source="@10" Target="@19" Category="Contains" FetchingParent="@10" />
-    <Link Source="@10" Target="@21" Category="Contains" FetchingParent="@10" />
-    <Link Source="@10" Target="@22" Category="Contains" FetchingParent="@10" />
-    <Link Source="@10" Target="@23" Category="Contains" FetchingParent="@10" />
-    <Link Source="@12" Target="@14" Category="Contains" FetchingParent="@12" />
-    <Link Source="@12" Target="@18" Category="Contains" FetchingParent="@12" />
-    <Link Source="@12" Target="@24" Category="Contains" FetchingParent="@12" />
-    <Link Source="@12" Target="@25" Category="Contains" FetchingParent="@12" />
-    <Link Source="@13" Target="@32" Category="Contains" FetchingParent="@13" />
-    <Link Source="@13" Target="@49" Category="Contains" FetchingParent="@13" />
-    <Link Source="@14" Target="@44" Category="Contains" FetchingParent="@14" />
-    <Link Source="@16" Target="(@1 @7 @15 Member=(@41 OverloadingParameters=[@42,(@30 @31 Type=IzGenerateId),@43]))" Category="Contains" FetchingParent="@16" />
-    <Link Source="@16" Target="(@1 @7 @15 Member=(@41 OverloadingParameters=[@42,@39,@43,(@26 @27 Type=Int32)]))" Category="Contains" FetchingParent="@16" />
-    <Link Source="@16" Target="(@1 @7 @15 Member=(@41 OverloadingParameters=[@42,@39,@43]))" Category="Contains" FetchingParent="@16" />
-    <Link Source="@16" Target="(@1 @7 @15 Member=(@41 OverloadingParameters=[@42,@43,(@30 Namespace=Nursan.Domain.ModelsDisposible Type=HarnesDonanimCoax)]))" Category="Contains" FetchingParent="@16" />
-    <Link Source="@18" Target="@38" Category="Contains" FetchingParent="@18" />
-    <Link Source="@18" Target="@40" Category="Contains" FetchingParent="@18" />
-    <Link Source="@18" Target="@50" Category="Contains" FetchingParent="@18" />
-    <Link Source="@19" Target="@35" Category="Contains" FetchingParent="@19" />
-    <Link Source="@19" Target="@53" Category="Contains" FetchingParent="@19" />
-    <Link Source="@2" Target="@8" Category="Contains" FetchingParent="@2" />
-    <Link Source="@21" Target="@36" Category="Contains" FetchingParent="@21" />
-    <Link Source="@21" Target="@37" Category="Contains" FetchingParent="@21" />
-    <Link Source="@21" Target="@48" Category="Contains" FetchingParent="@21" />
-    <Link Source="@22" Target="@46" Category="Contains" FetchingParent="@22" />
-    <Link Source="@22" Target="@47" Category="Contains" FetchingParent="@22" />
-    <Link Source="@23" Target="@33" Category="Contains" FetchingParent="@23" />
-    <Link Source="@23" Target="@51" Category="Contains" FetchingParent="@23" />
-    <Link Source="@24" Target="@45" Category="Contains" FetchingParent="@24" />
-    <Link Source="@25" Target="@28" Category="Contains" FetchingParent="@25" />
-    <Link Source="@25" Target="@52" Category="Contains" FetchingParent="@25" />
-    <Link Source="@28" Target="@16" Bounds="765.446456049998,201.920010070801,125.565807964612,389.3144869587" />
-    <Link Source="@32" Target="@16" Bounds="522.269589927749,145.959995727539,335.658030534203,446.645219942" />
-    <Link Source="@33" Target="@16" Bounds="139.768910131386,373.840000610352,624.685830829441,238.748160474292" />
-    <Link Source="@35" Target="@16" Bounds="323.805875568057,429.79999206543,440.718142939981,179.12525915103" />
-    <Link Source="@36" Target="@16" Bounds="167.844433123404,257.880001525879,612.239713447521,337.574404848957" />
-    <Link Source="@37" Target="@16" Bounds="156.124086845421,201.920010070801,637.767235758416,393.157146107662" />
-    <Link Source="@38" Target="@16" Bounds="924.545850200996,257.880001525879,32.8485925532897,332.963479191921" />
-    <Link Source="@4" Target="@10" Category="Contains" FetchingParent="@4" />
-    <Link Source="@40" Target="@16" Bounds="920.566592438014,201.920010070801,18.994408253062,388.890705929887" />
-    <Link Source="@44" Target="@16" Bounds="799.383523056951,373.840000610352,85.9439233759923,217.589304289002" />
-    <Link Source="@45" Target="@16" Bounds="943.399175157896,373.840280569356,73.134847557354,217.429360361955" />
-    <Link Source="@46" Target="@16" Bounds="361.637686305454,201.920010070801,464.144502720962,392.072255760494" />
-    <Link Source="@47" Target="@16" Bounds="346.200995393542,145.959995727539,486.703219752802,447.74664524314" />
-    <Link Source="@48" Target="@16" Bounds="113.384311208399,145.959995727539,687.12895262097,448.917518738584" />
-    <Link Source="@49" Target="@16" Bounds="525.460560345345,201.920010070801,326.225910694909,390.969632277108" />
-    <Link Source="@50" Target="@16" Bounds="941.43358414509,201.920010070801,121.219567070415,389.286955880658" />
-    <Link Source="@51" Target="@16" Bounds="151.889944978894,429.79999206543,612.387716964581,192.947705771818" />
-    <Link Source="@52" Target="@16" Bounds="774.626898880928,257.880001525879,114.69613676972,333.409499045376" />
-    <Link Source="@53" Target="@16" Bounds="297.816458516353,373.840000610352,467.700583454498,224.40128019884" />
-    <Link Source="@6" Target="@12" Category="Contains" FetchingParent="@6" />
-    <Link Source="@8" Target="@16" Category="Contains" FetchingParent="@8" />
+    <Link Source="@11" Target="@10" Bounds="275.271667480469,145.960006713867,0,21" />
+    <Link Source="@2" Target="@4" Category="Contains" FetchingParent="@2" />
+    <Link Source="@4" Target="@6" Category="Contains" FetchingParent="@4" />
+    <Link Source="@6" Target="@10" Category="Contains" FetchingParent="@6" />
+    <Link Source="@6" Target="@11" Category="Contains" FetchingParent="@6" />
+    <Link Source="@6" Target="@9" Category="Contains" FetchingParent="@6" />
+    <Link Source="@9" Target="@10" Bounds="160.832427978516,145.960006713867,71.4530944824219,26.8356628417969" />
   </Links>
   <Categories>
     <Category Id="CodeSchema_Assembly" Label="Assembly" BasedOn="File" CanBeDataDriven="True" DefaultAction="Microsoft.Contains" Icon="CodeSchema_Assembly" NavigationActionLabel="Assemblies" />
     <Category Id="CodeSchema_Class" Label="Class" BasedOn="CodeSchema_Type" CanBeDataDriven="True" DefaultAction="Node:Both:CodeSchema_Member" Icon="CodeSchema_Class" NavigationActionLabel="Classes" />
-    <Category Id="CodeSchema_Field" Label="Field" BasedOn="CodeSchema_Member" CanBeDataDriven="True" DefaultAction="Microsoft.Contains" Icon="CodeSchema_Field" NavigationActionLabel="Fields" />
     <Category Id="CodeSchema_Member" Label="Member" CanBeDataDriven="True" DefaultAction="Microsoft.Contains" Icon="CodeSchema_Field" NavigationActionLabel="Members" />
     <Category Id="CodeSchema_Method" Label="Method" BasedOn="CodeSchema_Member" CanBeDataDriven="True" DefaultAction="Link:Forward:CodeSchema_Calls" Icon="CodeSchema_Method" NavigationActionLabel="Methods" />
     <Category Id="CodeSchema_Namespace" Label="Namespace" CanBeDataDriven="True" DefaultAction="Node:Both:CodeSchema_Type" Icon="CodeSchema_Namespace" NavigationActionLabel="Namespaces" />
@@ -110,8 +31,6 @@
     <Property Id="Bounds" DataType="System.Windows.Rect" />
     <Property Id="CanBeDataDriven" Label="CanBeDataDriven" Description="CanBeDataDriven" DataType="System.Boolean" />
     <Property Id="CanLinkedNodesBeDataDriven" Label="CanLinkedNodesBeDataDriven" Description="CanLinkedNodesBeDataDriven" DataType="System.Boolean" />
-    <Property Id="CodeSchemaProperty_IsAbstract" Label="Is Abstract" Description="Flag to indicate member is 'Abstract' does not provide a full implementation" DataType="System.Boolean" />
-    <Property Id="CodeSchemaProperty_IsConstructor" Label="Is Constructor" Description="Flag to indicate the method is a constructor" DataType="System.Boolean" />
     <Property Id="CodeSchemaProperty_IsPrivate" Label="Is Private" Description="Flag to indicate the scope is Private" DataType="System.Boolean" />
     <Property Id="CodeSchemaProperty_IsPublic" Label="Is Public" Description="Flag to indicate the scope is Public" DataType="System.Boolean" />
     <Property Id="CodeSchemaProperty_IsStatic" Label="Is Static" Description="Flag to indicate the member is a static member" DataType="System.Boolean" />
@@ -123,7 +42,7 @@
     <Property Id="FetchingParent" DataType="Microsoft.VisualStudio.GraphModel.GraphNodeId" />
     <Property Id="Group" Label="Group" Description="Display the node as a group" DataType="Microsoft.VisualStudio.GraphModel.GraphGroupStyle" />
     <Property Id="GroupLabel" DataType="System.String" />
-    <Property Id="Icon" Label="Icon" Description="Icon" DataType="System.String" />
+    <Property Id="Icon" Label="Icon" DataType="System.String" />
     <Property Id="IncomingActionLabel" Label="IncomingActionLabel" Description="IncomingActionLabel" DataType="System.String" />
     <Property Id="IsContainment" DataType="System.Boolean" />
     <Property Id="IsEnabled" DataType="System.Boolean" />
@@ -132,78 +51,31 @@
     <Property Id="NavigationActionLabel" Label="NavigationActionLabel" Description="NavigationActionLabel" DataType="System.String" />
     <Property Id="OutgoingActionLabel" Label="OutgoingActionLabel" Description="OutgoingActionLabel" DataType="System.String" />
     <Property Id="TargetType" DataType="System.Type" />
-    <Property Id="UseManualLocation" DataType="System.Boolean" />
     <Property Id="Value" DataType="System.String" />
     <Property Id="ValueLabel" DataType="System.String" />
     <Property Id="Visibility" Label="Visibility" Description="Defines whether a node in the graph is visible or not" DataType="System.Windows.Visibility" />
     <Property Id="ZoomLevel" DataType="System.String" />
   </Properties>
   <QualifiedNames>
-    <Name Id="ArrayRank" Label="Array Rank" ValueType="System.String" />
     <Name Id="Assembly" Label="Assembly" ValueType="Uri" />
-    <Name Id="GenericArguments" Label="Generic Arguments" ValueType="Microsoft.VisualStudio.GraphModel.GraphNodeIdCollection" />
-    <Name Id="GenericParameterCount" Label="Generic Parameter Count" ValueType="System.String" />
     <Name Id="Member" Label="Member" ValueType="System.Object" />
     <Name Id="Name" Label="Name" ValueType="System.String" />
     <Name Id="Namespace" Label="Namespace" ValueType="System.String" />
     <Name Id="OverloadingParameters" Label="Parameter" ValueType="Microsoft.VisualStudio.GraphModel.GraphNodeIdCollection" Formatter="NameValueNoEscape" />
-    <Name Id="ParentType" Label="Parent Type" ValueType="System.Object" />
     <Name Id="Type" Label="Type" ValueType="System.Object" />
   </QualifiedNames>
   <IdentifierAliases>
-    <Alias n="1" Uri="Assembly=$(bc0af479-7fd8-499b-9fde-61ec8bf14b51.OutputPathUri)" />
+    <Alias n="1" Uri="Assembly=$(48e78cac-6b08-4262-80e1-fdfb6c971f9e.OutputPathUri)" />
     <Alias n="2" Id="(@1)" />
-    <Alias n="3" Uri="Assembly=$(48e78cac-6b08-4262-80e1-fdfb6c971f9e.OutputPathUri)" />
-    <Alias n="4" Id="(@3)" />
-    <Alias n="5" Uri="Assembly=$(b9b98b93-09e2-4a9d-9397-140e3f089c1d.OutputPathUri)" />
-    <Alias n="6" Id="(@5)" />
-    <Alias n="7" Id="Namespace=Nursan.Core.Printing" />
-    <Alias n="8" Id="(@1 @7)" />
-    <Alias n="9" Id="Namespace=Nursan.UI" />
-    <Alias n="10" Id="(@3 @9)" />
-    <Alias n="11" Id="Namespace=Nursan.Validations.ValidationCode" />
-    <Alias n="12" Id="(@5 @11)" />
-    <Alias n="13" Id="(@3 @9 Type=AntenKablo)" />
-    <Alias n="14" Id="(@5 @11 Type=BarcodeValidation)" />
-    <Alias n="15" Id="Type=DirectPrinting" />
-    <Alias n="16" Id="(@1 @7 @15)" />
-    <Alias n="17" Id="Type=EtiketBasma" />
-    <Alias n="18" Id="(@5 @11 @17)" />
-    <Alias n="19" Id="(@3 @9 Type=R_SChanges)" />
-    <Alias n="20" Id="Type=Revork" />
-    <Alias n="21" Id="(@3 @9 @20)" />
-    <Alias n="22" Id="(@3 @9 Type=RevorkGiris)" />
-    <Alias n="23" Id="(@3 @9 Type=Sigorta)" />
-    <Alias n="24" Id="(@5 @11 Type=TorkService)" />
-    <Alias n="25" Id="(@5 @11 Type=ValidationCode)" />
-    <Alias n="26" Uri="Assembly=$(ProgramFilesUri)/dotnet/packs/Microsoft.NETCore.App.Ref/7.0.14/ref/net7.0/System.Runtime.dll" />
-    <Alias n="27" Id="Namespace=System" />
-    <Alias n="28" Id="(@5 @11 Type=ValidationCode Member=(Name=ConfigCek OverloadingParameters=[(@26 @27 Type=String)]))" />
-    <Alias n="29" Uri="Assembly=$(ProgramFilesUri)/dotnet/packs/Microsoft.NETCore.App.Ref/7.0.14/ref/net7.0/System.Collections.dll" />
-    <Alias n="30" Uri="Assembly=$(01148c56-1391-42ae-a8fb-304e651c78a8.OutputPathUri)" />
-    <Alias n="31" Id="Namespace=Nursan.Domain.Entity" />
-    <Alias n="32" Id="(@3 @9 Type=AntenKablo Member=(Name=BarcodeBas OverloadingParameters=[(@29 Namespace=System.Collections.Generic Type=(Name=List GenericParameterCount=1 GenericArguments=[(@30 @31 Type=IzCoaxCableCount)])),(@30 Namespace=Nursan.Domain.ModelsDisposible Type=HarnesDonanimCoax)]))" />
-    <Alias n="33" Id="(@3 @9 Type=Sigorta Member=(Name=BarodeBas OverloadingParameters=[(@26 @27 Type=(Name=String ArrayRank=1 ParentType=String)),(@30 Namespace=Nursan.Domain.ModelsDisposible Type=HarnesDonanimHedef)]))" />
-    <Alias n="34" Uri="Assembly=$(ProgramFilesUri)/dotnet/packs/Microsoft.WindowsDesktop.App.Ref/7.0.14/ref/net7.0/System.Windows.Forms.dll" />
-    <Alias n="35" Id="(@3 @9 Type=R_SChanges Member=(Name=textBox1_KeyUp OverloadingParameters=[(@26 @27 Type=Object),(@34 Namespace=System.Windows.Forms Type=KeyEventArgs)]))" />
-    <Alias n="36" Id="(@3 @9 @20 Member=(Name=txtBarcodeReader_KeyUp OverloadingParameters=[(@26 @27 Type=Object),(@34 Namespace=System.Windows.Forms Type=KeyEventArgs)]))" />
-    <Alias n="37" Id="(@3 @9 @20 Member=(Name=txtExplanation_KeyUp OverloadingParameters=[(@26 @27 Type=Object),(@34 Namespace=System.Windows.Forms Type=KeyEventArgs)]))" />
-    <Alias n="38" Id="(@5 @11 @17 Member=(Name=BarodeBasHarnes OverloadingParameters=[(@26 @27 Type=(Name=String ArrayRank=1 ParentType=String)),(@30 @31 Type=OrHarnessModel)]))" />
-    <Alias n="39" Id="(@30 @31 Type=IzDonanimCount)" />
-    <Alias n="40" Id="(@5 @11 @17 Member=(Name=BarodeBas OverloadingParameters=[@39,(@30 @31 Type=OrHarnessModel)]))" />
-    <Alias n="41" Id="Name=.ctor" />
-    <Alias n="42" Id="(@30 @31 Type=SyBarcodeOut)" />
-    <Alias n="43" Id="(@30 @31 Type=SyPrinter)" />
-    <Alias n="44" Id="(@5 @11 Type=BarcodeValidation Member=(Name=GitBakbarcodeBasaymi OverloadingParameters=[(@30 @31 Type=IzGenerateId),@39,@42,@43]))" />
-    <Alias n="45" Id="(@5 @11 Type=TorkService Member=(Name=GitBakbarcodeBasaymi OverloadingParameters=[(@30 @31 Type=IzGenerateId),@39,@42,@43]))" />
-    <Alias n="46" Id="(@3 @9 Type=RevorkGiris Member=(@41 OverloadingParameters=[(@26 @27 Type=String),@16,@42,(@29 Namespace=System.Collections.Generic Type=(Name=List GenericParameterCount=1 GenericArguments=[@39])),(@29 Namespace=System.Collections.Generic Type=(Name=List GenericParameterCount=1 GenericArguments=[(@30 @31 Type=UrIstasyon)]))]))" />
-    <Alias n="47" Id="(@3 @9 Type=RevorkGiris Member=_print)" />
-    <Alias n="48" Id="(@3 @9 @20 Member=direct)" />
-    <Alias n="49" Id="(@3 @9 Type=AntenKablo Member=directPrintin)" />
-    <Alias n="50" Id="(@5 @11 @17 Member=directPrintin)" />
-    <Alias n="51" Id="(@3 @9 Type=Sigorta Member=directPrintin)" />
-    <Alias n="52" Id="(@5 @11 Type=ValidationCode Member=directPrinting)" />
-    <Alias n="53" Id="(@3 @9 Type=R_SChanges Member=printing)" />
+    <Alias n="3" Id="Namespace=Nursan.UI" />
+    <Alias n="4" Id="(@1 @3)" />
+    <Alias n="5" Id="Type=ElTest" />
+    <Alias n="6" Id="(@1 @3 @5)" />
+    <Alias n="7" Uri="Assembly=$(ProgramFilesUri)/dotnet/packs/Microsoft.NETCore.App.Ref/8.0.14/ref/net8.0/System.Runtime.dll" />
+    <Alias n="8" Uri="Assembly=$(ProgramFilesUri)/dotnet/packs/Microsoft.NETCore.App.Ref/8.0.14/ref/net8.0/System.IO.FileSystem.Watcher.dll" />
+    <Alias n="9" Id="(@1 @3 @5 Member=(Name=Watcher1_Created OverloadingParameters=[(@7 Namespace=System Type=Object),(@8 Namespace=System.IO Type=FileSystemEventArgs)]))" />
+    <Alias n="10" Id="(@1 @3 @5 Member=(Name=Watcher1 OverloadingParameters=[(@7 Namespace=System Type=String),(@7 Namespace=System Type=String)]))" />
+    <Alias n="11" Id="(@1 @3 @5 Member=WatcherStart)" />
   </IdentifierAliases>
   <Styles>
     <Style TargetType="Node" GroupLabel="Results" ValueLabel="True">
@@ -423,15 +295,7 @@
     </Style>
   </Styles>
   <Paths>
-    <Path Id="01148c56-1391-42ae-a8fb-304e651c78a8.OutputPath" Value="D:\QSYNCDEVELOPMENT\UretimYazilim\NursanUI\Nursan.Domain\bin\Debug\net7.0\Nursan.Domain.dll" />
-    <Path Id="01148c56-1391-42ae-a8fb-304e651c78a8.OutputPathUri" Value="file:///D:/QSYNCDEVELOPMENT/UretimYazilim/NursanUI/Nursan.Domain/bin/Debug/net7.0/Nursan.Domain.dll" />
-    <Path Id="48e78cac-6b08-4262-80e1-fdfb6c971f9e.OutputPath" Value="D:\QSYNCDEVELOPMENT\UretimYazilim\NursanUI\Nursan.UI\bin\Debug\net7.0-windows\Nursan.UI.dll" />
-    <Path Id="48e78cac-6b08-4262-80e1-fdfb6c971f9e.OutputPathUri" Value="file:///D:/QSYNCDEVELOPMENT/UretimYazilim/NursanUI/Nursan.UI/bin/Debug/net7.0-windows/Nursan.UI.dll" />
-    <Path Id="b9b98b93-09e2-4a9d-9397-140e3f089c1d.OutputPath" Value="D:\QSYNCDEVELOPMENT\UretimYazilim\NursanUI\Nursan.Validations\bin\Debug\net7.0\Nursan.Validations.dll" />
-    <Path Id="b9b98b93-09e2-4a9d-9397-140e3f089c1d.OutputPathUri" Value="file:///D:/QSYNCDEVELOPMENT/UretimYazilim/NursanUI/Nursan.Validations/bin/Debug/net7.0/Nursan.Validations.dll" />
-    <Path Id="bc0af479-7fd8-499b-9fde-61ec8bf14b51.OutputPath" Value="D:\QSYNCDEVELOPMENT\UretimYazilim\NursanUI\Nursan.Core\bin\Debug\net7.0\Nursan.Core.dll" />
-    <Path Id="bc0af479-7fd8-499b-9fde-61ec8bf14b51.OutputPathUri" Value="file:///D:/QSYNCDEVELOPMENT/UretimYazilim/NursanUI/Nursan.Core/bin/Debug/net7.0/Nursan.Core.dll" />
-    <Path Id="ProgramFiles" Value="C:\Program Files" />
+    <Path Id="48e78cac-6b08-4262-80e1-fdfb6c971f9e.OutputPathUri" Value="file:///D:/NewQNAP/UretimYazilim/NursanUI/Nursan.UI/bin/Debug/net8.0-windows8.0/Nursan.UI.dll" />
     <Path Id="ProgramFilesUri" Value="file:///C:/Program Files" />
   </Paths>
 </DirectedGraph>

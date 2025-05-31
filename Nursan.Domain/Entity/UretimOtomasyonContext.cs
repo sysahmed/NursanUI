@@ -18,9 +18,9 @@ namespace Nursan.Domain.Entity
         }
         public virtual DbSet<OrOzelReferans> OrOzelReferans { get; set; }
         public virtual DbSet<Arac1> Arac1s { get; set; }
-
+        public virtual DbSet<OrAlertGk> OrAlertGk { get; set; }
         public virtual DbSet<Arac2> Arac2s { get; set; }
-
+        public virtual DbSet<SyTicketName> SyTicketName { get; set; }
         public virtual DbSet<Arac3> Arac3s { get; set; }
 
         public virtual DbSet<ErErrorCode> ErErrorCodes { get; set; }

@@ -42,7 +42,7 @@ namespace Nursan.UI
         List<IzCoaxCableCount> izCoaxCableCounts;
         SyBarcodeOut _sysBarcodOut;
         DirectPrinting directPrintin;
-        // TorkService torkServices;
+       // TorkService torkServices;
         private int sayiCount;
         public AntenKablo(string sicil, UnitOfWork repo)
         {
@@ -71,7 +71,7 @@ namespace Nursan.UI
             int lsth = listReferansSec.Size.Height;
             contex = new();
             generateIdDonanimManager = new GenrateIdDonanimManager(_repo);
-            // torkServices = new TorkService(repo, vardiya);
+           // torkServices = new TorkService(repo, vardiya);
 
         }
         private void StaticDegisken()
@@ -258,12 +258,8 @@ namespace Nursan.UI
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
                         }
-                    }
-                    else
-                    {
-                        MessageBox.Show("Barkod yanlış", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }

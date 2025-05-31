@@ -170,7 +170,6 @@
             Name = "StaringAP";
             Text = "StaringAP";
             WindowState = FormWindowState.Maximized;
-            Load += Staring_Load;
             ((System.ComponentModel.ISupportInitialize)fileSystemWatcher1).EndInit();
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();

@@ -10,7 +10,7 @@
             output = getparchalama;
             return output;
         }
-        public static int GetCharsIsDigitPadingLeft(ReadOnlySpan<char> span,int padingLeft)
+        public static int GetCharsIsDigitPadingLeft(ReadOnlySpan<char> span, int padingLeft)
         {
             int startIndex = span.Length - padingLeft;
 
@@ -95,6 +95,64 @@
 
             // Връщаме резултата като масив от низове
             return result.ToArray();
+        }
+        public static ReadOnlySpan<char> SafeSubSpan(ReadOnlySpan<char> span, int start, int length)
+        {
+            // Проверка за празен span
+            if (span.IsEmpty)
+                return ReadOnlySpan<char>.Empty;
+
+            // Нормализиране на start параметъра
+            if (start < 0)
+                start = 0;
+
+            // Проверка дали началната позиция е в обхвата
+            if (start >= span.Length)
+                return ReadOnlySpan<char>.Empty;
+
+            // Проверка за отрицателна дължина
+            if (length < 0)
+                return ReadOnlySpan<char>.Empty;
+
+            // Корекция на дължината, ако надвишава размера на span
+            if (start + length > span.Length)
+                length = span.Length - start;
+
+            // Проверка дали коригираната дължина е валидна
+            if (length == 0)
+                return ReadOnlySpan<char>.Empty;
+
+            try
+            {
+                return span.Slice(start, length);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                // Ако все пак възникне изключение, връщаме празен span
+                return ReadOnlySpan<char>.Empty;
+            }
+        }
+        public static ReadOnlySpan<char> ExtractText(ReadOnlySpan<char> input)
+        {
+            if (input.IsEmpty)
+                return input;
+
+            for (int i = input.Length - 1; i >= 0; i--)
+            {
+                if (!char.IsDigit(input[i]))
+                    return input.Slice(0, i + 1);
+            }
+            return input;
+        }
+
+        public static ReadOnlySpan<char> ExtractDigits(ReadOnlySpan<char> input)
+        {
+            for (int i = input.Length - 1; i >= 0; i--)
+            {
+                if (!char.IsDigit(input[i]))
+                    return input.Slice(i + 1);
+            }
+            return ReadOnlySpan<char>.Empty;
         }
 
     }

@@ -10,22 +10,22 @@ namespace Nursan.UI
 {
     public partial class GozKontrol : Form
     {
-        //private static List<SyBarcodeOut> _syBarcodeOutList;
-        //private static List<SyPrinter> _syPrinterList;
-        //private static List<OrFamily> _familyList;
-        //private static List<UrModulerYapi> _modulerYapiList;
-        //SyBarcodeInput BarcodeInput = new SyBarcodeInput();
-        //SerialPort _serialPort;
-        //BarcodeValidation barcode;
-        //string pfbSerial;
-        //int brtSayi = 0;
+        private static List<SyBarcodeOut> _syBarcodeOutList;
+        private static List<SyPrinter> _syPrinterList;
+        private static List<OrFamily> _familyList;
+        private static List<UrModulerYapi> _modulerYapiList;
+        SyBarcodeInput BarcodeInput = new SyBarcodeInput();
+        SerialPort _serialPort;
+        BarcodeValidation barcode;
+        string pfbSerial;
+        int brtSayi = 0;
         private static UnitOfWork _repo;
         private static OpMashin _makine;
         private static UrVardiya _vardiya;
         private static List<UrIstasyon> _istasyonList;
         private static List<SyBarcodeInput> _syBarcodeInputList;
         CountDegerValidations _countDegerValidations;
-        int pi;
+        int pi; string barkodGk;
         static int brcodeVCount;
         Proveri proveri = new Proveri();
         //List<SyBarcodeInput> Barcode = new List<SyBarcodeInput>();
@@ -33,11 +33,11 @@ namespace Nursan.UI
         public GozKontrol(UnitOfWork repo, OpMashin makine, UrVardiya vardiya, List<UrIstasyon> istasyonList, List<UrModulerYapi> modulerYapiList, List<SyBarcodeInput> syBarcodeInputList, List<SyBarcodeOut> syBarcodeOutList, List<SyPrinter> syPrinterList, List<OrFamily> familyList)
         {
 
-            //brtSayi = brcodeVCount;
-            //_modulerYapiList = modulerYapiList;
-            //_syBarcodeOutList = syBarcodeOutList;
-            //_syPrinterList = syPrinterList;
-            //_familyList = familyList;
+             brtSayi = brcodeVCount;
+             _modulerYapiList = modulerYapiList;
+             _syBarcodeOutList = syBarcodeOutList;
+             _syPrinterList = syPrinterList;
+             _familyList = familyList;
             _repo = repo;
             _makine = makine;
             _vardiya = vardiya;
@@ -66,6 +66,48 @@ namespace Nursan.UI
             {
                 if (_vardiya.Name != txtBarcode.Text)
                 {
+                    if (txtBarcode.Text.StartsWith("#"))
+                        barkodGk = txtBarcode.Text.Substring(1);
+                    else
+                        barkodGk = txtBarcode.Text;
+
+                    if (tork.IsAlertGkLocked(barkodGk))
+                    {
+                        // Вземи харнес модела за формата
+                        string harnessName;
+                        try
+                        {
+                            harnessName = StringSpanConverter.ExtractText(barkodGk.AsSpan()).ToString();
+                        }
+                        catch (ArgumentOutOfRangeException ex)
+                        {
+                            proveri.MessageAyarla($"Невалиден баркод: '{barkodGk}'", Color.Red, lblMessage);
+                            txtBarcode.Clear();
+                            return;
+                        }
+                        var harnessModel = _repo.GetRepository<OrHarnessModel>().Get(x => x.HarnessModelName == harnessName).Data;
+                        using (var dlg = new AlertGkLockedOpen(_repo, harnessModel))
+                        {
+                            if (dlg.ShowDialog() != DialogResult.OK)
+                            {
+                                lblMessage.Text= "GK Locked не е отключена!";
+                                lblMessage.ForeColor = Color.Red;
+                                //proveri.MessageAyarla($"GK Locked не е отключена!", Color.Red, lblMessage);
+                                //txtBarcode.Clear();
+                                return;
+                            }
+                            else
+                            {
+                                lblMessage.Text = "GK Locked е отключена!";
+                                lblMessage.ForeColor = Color.Lime;
+                                //proveri.MessageAyarla($"GK Locked е отключена!", Color.Lime, lblMessage);
+                                //listBox1.Items.Clear();
+                                //txtBarcode.Clear();
+                                return;
+                            }
+                        }
+                    }
+
                     listBox1.Items.Add(txtBarcode.Text);
                     _syBarcodeInputList[pi].BarcodeIcerik = txtBarcode.Text;
                     if (!txtBarcode.Text.StartsWith(_syBarcodeInputList[pi].OzelChar == null ? "" : _syBarcodeInputList[pi].OzelChar))
@@ -74,28 +116,14 @@ namespace Nursan.UI
                         txtBarcode.Clear(); listBox1.Items.Clear(); pi = 0;
                         return;
                     }
-                    // --- GK LOCKED CHECK ---
-                    var barkod = txtBarcode.Text.Substring(1);
-                    if (tork.IsAlertGkLocked(barkod))
+                    listBox1.Items.Add(txtBarcode.Text);
+                    _syBarcodeInputList[pi].BarcodeIcerik = txtBarcode.Text;
+                    if (!txtBarcode.Text.StartsWith(_syBarcodeInputList[pi].OzelChar == null ? "" : _syBarcodeInputList[pi].OzelChar))
                     {
-                        // Вземи харнес модела за формата
-                        var harnessName = StringSpanConverter.ExtractText(barkod.AsSpan()).ToString();
-                        var harnessModel = _repo.GetRepository<OrHarnessModel>().Get(x => x.HarnessModelName == harnessName).Data;
-                        using (var dlg = new AlertGkLockedOpen(_repo, harnessModel))
-                        {
-                            if (dlg.ShowDialog() != DialogResult.OK)
-                            {
-                                proveri.MessageAyarla($"GK Locked не е отключена!", Color.Red, lblMessage);
-                                txtBarcode.Clear();
-                                return;
-                            }
-                            else
-                            {
-                                proveri.MessageAyarla($"GK Locked е отключена!", Color.Lime, lblMessage); listBox1.Items.Clear();txtBarcode.Clear(); return;
-                            }
-                        }
+                        proveri.MessageAyarla($"Yanlis Brcode Okudunuz!", Color.Red, lblMessage);
+                        txtBarcode.Clear(); listBox1.Items.Clear(); pi = 0;
+                        return;
                     }
-                    // --- END GK LOCKED CHECK ---
                     pi++;
                     if (_syBarcodeInputList.Count == pi)
                     {

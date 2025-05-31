@@ -43,6 +43,7 @@ namespace Nursan.UI
             _vardiya = vardiya;
             pers = new PersonalValidasyonu(new UnitOfWorPersonal(new PersonalContext()), new UnitOfWork(new UretimOtomasyonContext()));
             this.timer1.Interval = XMLIslemi.XmlScreenSaniye();
+            timer1.Enabled = true;
             tork = new TorkService(new UnitOfWork(new UretimOtomasyonContext()),new UrVardiya {Name=vardiya } );
             istasyonce =tork.GetIstasyon();
             urPersonalTakibs = pers.GetPersonalTakib(istasyonce).Data;
@@ -160,7 +161,7 @@ namespace Nursan.UI
             tableLayoutPanel3.Size = new Size(607, 198);
             tableLayoutPanel3.TabIndex = 0;
             tableLayoutPanel3.UseWaitCursor = true;
-            tableLayoutPanel3.Paint += tableLayoutPanel3_Paint;
+
             // 
             // button1
             // 
@@ -248,25 +249,63 @@ namespace Nursan.UI
         }
         private void ScreenSaverForm_Load(object sender, EventArgs e)
         {
-            base.Bounds = Screen.AllScreens[this._ScreenNumber].Bounds;
-            System.Windows.Forms.Cursor.Hide();
-            base.TopMost = true;
-
-            var veriler = urPersonalTakibs.Count() == 0 ? null : urPersonalTakibs;
-            if (veriler != null)
+            try
             {
-                string[] parca = veriler.First().DayOfYear.Split('*');
-                string datece = $"{date.Year}{date.Month}{date.Day}";
+                base.Bounds = Screen.AllScreens[this._ScreenNumber].Bounds;
+                base.TopMost = true;
 
-                foreach (var item in urPersonalTakibs)
+                var veriler = urPersonalTakibs?.Count() == 0 ? null : urPersonalTakibs;
+                if (veriler != null)
                 {
-                    listBox1.Items.Add($"{item.Sicil}-{item.FullName}-{GitSytemDeAyiklaVesay(item.Sicil)}");
+                    string[] parca = veriler.First().DayOfYear.Split('*');
+                    string datece = $"{date.Year}{date.Month}{date.Day}";
+
+                    listBox1.Items.Clear();
+
+                    foreach (var item in urPersonalTakibs)
+                    {
+                        string itemText = $"{item.Sicil}-{item.FullName}-{GitSytemDeAyiklaVesay(item.Sicil)}";
+                        listBox1.Items.Add(itemText);
+                    }
+
+                    var mainForm = Application.OpenForms.OfType<ElTest>().FirstOrDefault();
+                    if (mainForm != null && mainForm.lblCountProductions != null)
+                    {
+                        if (mainForm.InvokeRequired)
+                        {
+                            mainForm.Invoke(new Action(() =>
+                            {
+                                //mainForm.lblCountProductions.AutoSize = true;
+                                //mainForm.lblCountProductions.MaximumSize = new Size(mainForm.Width - 20, 0);
+                                mainForm.lblCountProductions.Text = string.Join(" | ", listBox1.Items.Cast<string>());
+                                
+                                // Преоразмеряваме формата според лейбъла
+                                int newWidth = mainForm.lblCountProductions.Width + 40;
+                                mainForm.Width = Math.Max(newWidth, mainForm.MinimumSize.Width);
+                            }));
+                        }
+                        else
+                        {
+                            //mainForm.lblCountProductions.AutoSize = true;
+                            //mainForm.lblCountProductions.MaximumSize = new Size(mainForm.Width - 20, 0);
+                            mainForm.lblCountProductions.Text = string.Join(" | ", listBox1.Items.Cast<string>());
+                            
+                            // Преоразмеряваме формата според лейбъла
+                            int newWidth = mainForm.lblCountProductions.Width + 40;
+                            mainForm.Width = Math.Max(newWidth, mainForm.MinimumSize.Width);
+                        }
+                    }
                 }
-              
+                else
+                {
+                    timer1.Stop();
+                }
+
+                timer1.Start();
             }
-            else
+            catch (Exception ex)
             {
-                timer1.Stop();
+                MessageBox.Show($"Грешка при зареждане на формата: {ex.Message}", "Грешка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -278,8 +317,44 @@ namespace Nursan.UI
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            //this.Dispose();
-            base.Close();
+            try
+            {
+                timer1.Stop();
+                var items = listBox1.Items.Cast<string>().ToList();
+                var mainForm = Application.OpenForms.OfType<ElTest>().FirstOrDefault();
+                if (mainForm != null && mainForm.lblCountProductions != null)
+                {
+                    if (mainForm.InvokeRequired)
+                    {
+                        mainForm.Invoke(new Action(() =>
+                        {
+                            //mainForm.lblCountProductions.AutoSize = true;
+                            //mainForm.lblCountProductions.MaximumSize = new Size(mainForm.Width - 20, 0);
+                            mainForm.lblCountProductions.Text = string.Join(Environment.NewLine, items);
+                            
+                            // Преоразмеряваме формата според лейбъла
+                            int newWidth = mainForm.lblCountProductions.Width + 40;
+                            mainForm.Width = Math.Max(newWidth, mainForm.MinimumSize.Width);
+                        }));
+                    }
+                    else
+                    {
+                        //mainForm.lblCountProductions.AutoSize = true;
+                        //mainForm.lblCountProductions.MaximumSize = new Size(mainForm.Width - 20, 0);
+                        mainForm.lblCountProductions.Text = string.Join(Environment.NewLine, items);
+                        
+                        // Преоразмеряваме формата според лейбъла
+                        int newWidth = mainForm.lblCountProductions.Width + 40;
+                        mainForm.Width = Math.Max(newWidth, mainForm.MinimumSize.Width);
+                    }
+                }
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Грешка при затваряне на формата: {ex.Message}", "Грешка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -292,9 +367,6 @@ namespace Nursan.UI
             this.Close();
         }
 
-        private void tableLayoutPanel3_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
+     
     }
 }

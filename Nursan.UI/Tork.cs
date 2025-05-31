@@ -42,12 +42,6 @@ namespace Nursan.UI
         public static int h1; public static int w1;
         ITorkManager _torkmanager;
         IHarnesConfigServices _harnessConfig;
-        string connectionString = $"Data Source=200.2.10.5;Initial Catalog=UretimOtomasyon;User ID=sa;Password=wrjkd34mk22;TrustServerCertificate=True";
-        string tableName = "IzTorkDeger";
-        SpcCalculator calculator;
-
-
-
         public Tork(UnitOfWork repo, OpMashin makine, UrVardiya vardiya, List<UrIstasyon> istasyonList, List<UrModulerYapi> modulerYapiList, List<SyBarcodeInput> syBarcodeInputList, List<SyBarcodeOut> syBarcodeOutList, List<SyPrinter> syPrinterList, List<OrFamily> familyList)
         {
             _repo = repo;
@@ -72,12 +66,7 @@ namespace Nursan.UI
             _harnessConfig = new HarnessConfigManager(_repo);
             _torkaAktar = new TorkAktar(new Domain.TORKS.NursandatabaseContext(), repo);
             InitializeComponent();
-            //listView1.Items.Clear();
-            calculator = new SpcCalculator(connectionString, tableName, cpkListView);
-            calculator.CalculateCpK();
-
         }
-
         private async Task GitAktar()
         {
             await _torkaAktar.ExecuteTorkAktar();
@@ -231,8 +220,6 @@ namespace Nursan.UI
                     _syBarcodeInputList.Add(_repo.GetRepository<SyBarcodeInput>().Get(x => x.Id == item.SysBarcodeInId).Data);
                 }
                 await GitAktar();
-                listView1.Items.Clear();
-                calculator.CalculateCpK();
                 return _syBarcodeInputList;
             }
             catch (Exception)
@@ -247,16 +234,15 @@ namespace Nursan.UI
                 string veriler = txtBarcode.Text.ToUpper().TrimEnd().TrimStart();
                 ReadOnlySpan<char> input = veriler;
                 BarcodeInput.BarcodeIcerik = input.Slice(1).ToString();
-                bool vericik = txtBarcode.Text.StartsWith(_syBarcodeInputList.FirstOrDefault(x => x.Name.Equals("First", StringComparison.OrdinalIgnoreCase)).OzelChar);
-                //if (!txtBarcode.Text.StartsWith(_syBarcodeInputList.FirstOrDefault(x => x.Name.Equals("First", StringComparison.OrdinalIgnoreCase)).OzelChar))
-                //{
-                //    proveri.MessageAyarla($"Yanlis Donanim Okudunuz!", Color.Red, lblMessage);
-                //    txtBarcode.Clear(); listBox1.Items.Clear(); pi = 0;
-                //    return;
-                //}
+                if (!txtBarcode.Text.StartsWith(_syBarcodeInputList.FirstOrDefault(x => x.Name.Equals("First", StringComparison.OrdinalIgnoreCase)).OzelChar))
+                {
+                    proveri.MessageAyarla($"Yanlis Donanim Okudunuz!", Color.Red, lblMessage);
+                    txtBarcode.Clear(); listBox1.Items.Clear(); pi = 0;
+                    return;
+                }
                 if (_syBarcodeInputList[pi].Name == "First")
                 {
-
+                  
                     _id = _torkmanager.GetTorkConfigId(BarcodeInput).Data;
                     _config = _harnessConfig.Get(x => x.OrHarnessModelId == _id.HarnesModelId).Data;
                     if (_config != null)
@@ -402,22 +388,7 @@ namespace Nursan.UI
 
         private async void lblToplam_Click(object sender, EventArgs e)
         {
-            await GitAktar();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            calculator.CalculateCpK();
-        }
-
-        private void Tork_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void Tork_ForeColorChanged(object sender, EventArgs e)
-        {
-            Application.Exit();
+           await GitAktar();
         }
     }
 }

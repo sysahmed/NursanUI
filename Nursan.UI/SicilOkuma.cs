@@ -47,22 +47,22 @@ namespace Nursan.UI
                 HandleException();
             }
         }
-        //private void GetSicilSayisal()
-        //{
+        private void GetSicilSayisal()
+        {
 
-        //    var result = _personal.GetPersonalTakib(istasyonce).Data;
-        //    foreach (var item in result)
-        //    {
-        //        listBox1.Items.Add($"{item.Sicil}-{item.FullName}-{GitSytemDeAyiklaVesay(item.Sicil)}");
-        //    }
-        //}
-        //private int GitSytemDeAyiklaVesay(string? sicil)
-        //{
+            var result = _personal.GetPersonalTakib(istasyonce).Data;
+            foreach (var item in result)
+            {
+                listBox1.Items.Add($"{item.Sicil}-{item.FullName}-{GitSytemDeAyiklaVesay(item.Sicil)}");
+            }
+        }
+        private int GitSytemDeAyiklaVesay(string? sicil)
+        {
 
-        //    //sayim = new SayiIzlemeSIcilBagizliService(istasyonce);
-        //    var result = SayiIzlemeSIcilBagizliService.SayiHesapla(sicil, _vardiyaString);
-        //    return ((int)istasyonce.Realadet + result);
-        //}
+            //sayim = new SayiIzlemeSIcilBagizliService(istasyonce);
+            var result = SayiIzlemeSIcilBagizliService.SayiHesapla(sicil, _vardiya);
+            return ((int)istasyonce.Realadet + result);
+        }
 
         private void ProcessEnterKeyPress()
         {
@@ -111,7 +111,8 @@ namespace Nursan.UI
         private Nursan.Domain.Personal.Personal GetPersonalInfo(string inputText)
         {
             string sicilNumber = inputText.Substring(1);
-            return _personal.GetPersonal(sicilNumber).Data;
+            var result= _personal.GetPersonal(sicilNumber).Data;
+            return result;
         }
         private void ProcessPersonalInfo(Nursan.Domain.Personal.Personal personal)
         {
@@ -211,7 +212,7 @@ namespace Nursan.UI
             listBox1.Items.Clear();
             base.Bounds = Screen.AllScreens[this._ScreenNumber].Bounds;
             
-            System.Windows.Forms.Cursor.Hide();
+            //System.Windows.Forms.Cursor.Hide();
             base.TopMost = true;
             foreach (var item in urPersonalTakibs)
             {
