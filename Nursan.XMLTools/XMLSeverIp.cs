@@ -7,7 +7,12 @@ namespace Nursan.XMLTools
         public XMLSeverIp()
         {
         }
-
+        public static bool ElTestCount()
+        {
+            XmlNode xmlNodes = BaglantiDosyasiAc.GitDosyaAc().SelectSingleNode("config").SelectSingleNode("eltestcount");
+            var result = xmlNodes.Attributes["EltestCount"].InnerText;
+            return Convert.ToBoolean(result);
+        }
         public static String XmlServerIP()
         {
             XmlNode xmlNodes = BaglantiDosyasiAc.GitDosyaAc().SelectSingleNode("config").SelectSingleNode("server");

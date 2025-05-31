@@ -7,6 +7,7 @@ using Nursan.Logging.Messages;
 using Nursan.Persistanse.UnitOfWork;
 using Nursan.Validations.SortedList;
 using Nursan.Validations.ValidationCode;
+using Nursan.XMLTools;
 using SQLitePCL;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -103,6 +104,22 @@ namespace Nursan.UI
             expandTimer.Tick += ExpandTimer_Tick;
 
             btnAriza.Click += btnAriza_Click;
+            GetEltestountActivDeactiv();
+        }
+
+        private void GetEltestountActivDeactiv()
+        {
+           if(XMLSeverIp.ElTestCount())
+            {
+           
+                lblCountProductions.Enabled= true;
+                lblCountProductions.Visible = true;
+            }
+            else
+            {
+                lblCountProductions.Enabled = false;
+                lblCountProductions.Visible = false;
+            }
         }
 
         private void btnAriza_Click(object sender, EventArgs e)
