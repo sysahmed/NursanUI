@@ -56,7 +56,7 @@
             // txtSeriNomer
             // 
             txtSeriNomer.Dock = DockStyle.Fill;
-            txtSeriNomer.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            txtSeriNomer.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
             txtSeriNomer.Location = new Point(3, 3);
             txtSeriNomer.Multiline = true;
             txtSeriNomer.Name = "txtSeriNomer";
@@ -66,7 +66,7 @@
             // txtActivaciq
             // 
             txtActivaciq.Dock = DockStyle.Fill;
-            txtActivaciq.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            txtActivaciq.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             txtActivaciq.Location = new Point(3, 341);
             txtActivaciq.Name = "txtActivaciq";
             txtActivaciq.Size = new Size(460, 39);
@@ -75,7 +75,7 @@
             // btnActiv
             // 
             btnActiv.Dock = DockStyle.Fill;
-            btnActiv.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            btnActiv.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             btnActiv.Location = new Point(3, 380);
             btnActiv.Name = "btnActiv";
             btnActiv.Size = new Size(460, 130);

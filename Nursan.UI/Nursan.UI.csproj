@@ -18,19 +18,15 @@
 		<Company>$(Ahmed AHMED NBG)</Company>
 		<BaseOutputPath></BaseOutputPath>
 		<!--tuk se dobavq Native AOT-->
-		<!--<OutputType>WinExe</OutputType>
-		<TargetFramework>net8.0-windows8.0</TargetFramework>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
 		<UseWindowsForms>true</UseWindowsForms>
-		<PublishAot>true</PublishAot>
-		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
-		<SelfContained>true</SelfContained>
 		<PublishSingleFile>true</PublishSingleFile>
-		<StripSymbols>true</StripSymbols>
-		<InvariantGlobalization>false</InvariantGlobalization>
-		<EnableDynamicLoading>false</EnableDynamicLoading>
-		--><!--timing--><!--
-		<PublishTrimmed>false</PublishTrimmed>-->
-		<!--tuk se dobavq Native AOT-->
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+		<SelfContained>false</SelfContained>
+		<!-- По-малък размер -->
+		<Trimmed>false</Trimmed>
+		<!-- изрично изключи trimming -->
 
 	</PropertyGroup>
 
@@ -55,9 +51,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="tessdata\**" />
-	  <EmbeddedResource Remove="tessdata\**" />
-	  <None Remove="tessdata\**" />
+		<Compile Remove="tessdata\**" />
+		<EmbeddedResource Remove="tessdata\**" />
+		<None Remove="tessdata\**" />
 	</ItemGroup>
 
 	<ItemGroup>
