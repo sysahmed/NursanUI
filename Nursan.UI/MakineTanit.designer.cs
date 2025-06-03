@@ -313,7 +313,7 @@
             // 
             // btnMYRefres
             // 
-            btnMYRefres.BackColor = Color.Fuchsia;
+            btnMYRefres.BackColor = Color.WhiteSmoke;
             btnMYRefres.Dock = DockStyle.Fill;
             btnMYRefres.FlatStyle = FlatStyle.Flat;
             btnMYRefres.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point);
@@ -623,7 +623,7 @@
             // 
             // btnRefres
             // 
-            btnRefres.BackColor = Color.Fuchsia;
+            btnRefres.BackColor = Color.WhiteSmoke;
             btnRefres.Dock = DockStyle.Fill;
             btnRefres.FlatStyle = FlatStyle.Flat;
             btnRefres.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point);

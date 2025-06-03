@@ -60,8 +60,8 @@ namespace Nursan.UI
             this.StartPosition = FormStartPosition.Manual;
             this.Location = new Point(0, 0);
             this.ShowInTaskbar = true;
-            this.BackColor = Color.Fuchsia;
-            this.TransparencyKey = Color.Fuchsia;
+            this.BackColor = Color.WhiteSmoke;
+            this.TransparencyKey = Color.WhiteSmoke;
 
             // Разпъни формата по цялата ширина на екрана и височина 300px
             this.Left = 0;
@@ -72,13 +72,13 @@ namespace Nursan.UI
             // Настройваме бутона Ариза
             btnAriza.FlatStyle = FlatStyle.Flat;
             btnAriza.FlatAppearance.BorderSize = 0;
-            btnAriza.BackColor = Color.Fuchsia;
+            btnAriza.BackColor = Color.WhiteSmoke;
             btnAriza.ForeColor = Color.Red;
             btnAriza.Text = "Ariza";
 
             // Настройваме лейбъла
             lblCountProductions.ForeColor = Color.Red;
-            lblCountProductions.BackColor = Color.Fuchsia;
+            lblCountProductions.BackColor = Color.WhiteSmoke;
             lblCountProductions.Font = new Font(lblCountProductions.Font.FontFamily, 16, FontStyle.Bold);
             lblCountProductions.Text = "0";
 
@@ -136,8 +136,8 @@ namespace Nursan.UI
                 }
 
                 // Запазваме прозрачността
-                this.BackColor = Color.Fuchsia;
-                this.TransparencyKey = Color.Fuchsia;
+                this.BackColor = Color.WhiteSmoke;
+                this.TransparencyKey = Color.WhiteSmoke;
 
                 // Увеличаваме размера на формата
                 this.Width = Screen.PrimaryScreen.WorkingArea.Width;
@@ -165,8 +165,8 @@ namespace Nursan.UI
                 }
 
                 // Върни формата в малък и прозрачен режим
-                this.TransparencyKey = Color.Fuchsia;
-                this.BackColor = Color.Fuchsia;
+                this.TransparencyKey = Color.WhiteSmoke;
+                this.BackColor = Color.WhiteSmoke;
                 
                 // Размерът на формата - както беше в началото
                 int formWidth = lblCountProductions.Right + 5;
@@ -802,7 +802,7 @@ namespace Nursan.UI
                     Ariza = tiketName,
                     // Islem = description,
                     Tarih = DateTime.Now,
-                    Role = 7,
+                    Role = 5,
                     PcId = pcId,
                     Active = true
 
@@ -917,8 +917,8 @@ namespace Nursan.UI
                 }
 
                 // Върни формата в малък и прозрачен режим
-                this.TransparencyKey = Color.Fuchsia;
-                this.BackColor = Color.Fuchsia;
+                this.TransparencyKey = Color.WhiteSmoke;
+                this.BackColor = Color.WhiteSmoke;
                 
                 // Размерът на формата - както беше в началото
                 int formWidth = lblCountProductions.Right + 5;
