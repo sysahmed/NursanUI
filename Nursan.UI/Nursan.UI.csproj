@@ -115,6 +115,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="KlipV1.cs">
+		  <SubType>Form</SubType>
+		</Compile>
 		<Compile Update="Gromet.cs" />
 		<Compile Update="KlipTest.cs" />
 		<Compile Update="GozKontrol.cs" />

@@ -97,7 +97,7 @@ namespace Nursan.UI
                             {
                                 case 3:
                                     Messaglama.MessagYaz($"Etap:{result.ModulerYapiEtap},Makine{result.Makine},Istasyon{result.Istasyon},Family        {result.FamilyName}");
-                                    Application.Run(new KlipTest(unitOfWork));
+                                    Application.Run(new KlipV1(unitOfWork));
                                     break;
                                 case 4:
                                     Messaglama.MessagYaz($"Etap:{result.ModulerYapiEtap},Makine{result.Makine},Istasyon{result.Istasyon},Family        {result.FamilyName}");
