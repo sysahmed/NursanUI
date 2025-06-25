@@ -88,6 +88,7 @@ namespace Nursan.UI
                         var harnessModel = _repo.GetRepository<OrHarnessModel>().Get(x => x.HarnessModelName == harnessName).Data;
                         using (var dlg = new AlertGkLockedOpen(_repo, harnessModel))
                         {
+
                             if (dlg.ShowDialog() != DialogResult.OK)
                             {
                                 lblMessage.Text= "GK Locked не е отключена!";

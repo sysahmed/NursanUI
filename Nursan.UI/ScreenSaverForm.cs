@@ -268,7 +268,21 @@ namespace Nursan.UI
                         string itemText = $"{item.Sicil}-{item.FullName}-{GitSytemDeAyiklaVesay(item.Sicil)}";
                         listBox1.Items.Add(itemText);
                     }
+                    var mainForm = Application.OpenForms.OfType<ElTest>().FirstOrDefault();
 
+                    if (mainForm != null && mainForm.lblCountProductions != null)
+                    {
+                        UpdateLabelAndResize(mainForm, mainForm.lblCountProductions);
+                    }
+                    else
+                    {
+                        // Не опитвай да dispose-ваш null обекти
+                        var mainFormK = Application.OpenForms.OfType<KlipV1>().FirstOrDefault();
+                        if (mainFormK != null && mainFormK.lblCountProductions != null)
+                        {
+                            UpdateLabelAndResize(mainFormK, mainFormK.lblCountProductions);
+                        }
+                    }
                     //var mainForm = Application.OpenForms.OfType<ElTest>().FirstOrDefault();
                     //if (mainForm != null && mainForm.lblCountProductions != null)
                     //{
@@ -296,6 +310,34 @@ namespace Nursan.UI
                     //        mainForm.Width = Math.Max(newWidth, mainForm.MinimumSize.Width);
                     //    }
                     //}
+                    //else
+                    //{
+                        
+                    //    var mainFormK = Application.OpenForms.OfType<KlipV1>().FirstOrDefault();
+                    //    if (mainFormK.InvokeRequired)
+                    //    {
+                    //        mainFormK.Invoke(new Action(() =>
+                    //        {
+                    //            //mainForm.lblCountProductions.AutoSize = true;
+                    //            //mainForm.lblCountProductions.MaximumSize = new Size(mainForm.Width - 20, 0);
+                    //            mainForm.lblCountProductions.Text = string.Join(" | ", listBox1.Items.Cast<string>());
+
+                    //            // Преоразмеряваме формата според лейбъла
+                    //            int newWidth = mainForm.lblCountProductions.Width + 40;
+                    //            mainForm.Width = Math.Max(newWidth, mainFormK.MinimumSize.Width);
+                    //        }));
+                    //    }
+                    //    else
+                    //    {
+                    //        //mainForm.lblCountProductions.AutoSize = true;
+                    //        //mainForm.lblCountProductions.MaximumSize = new Size(mainForm.Width - 20, 0);
+                    //        mainFormK.lblCountProductions.Text = string.Join(" | ", listBox1.Items.Cast<string>());
+
+                    //        // Преоразмеряваме формата според лейбъла
+                    //        int newWidth = mainFormK.lblCountProductions.Width + 40;
+                    //        mainFormK.Width = Math.Max(newWidth, mainFormK.MinimumSize.Width);
+                    //    }
+                    //}
                 }
                 else
                 {
@@ -309,7 +351,24 @@ namespace Nursan.UI
                 MessageBox.Show($"Грешка при зареждане на формата: {ex.Message}", "Грешка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        private void UpdateLabelAndResize(Form form, Label label)
+        {
+            Action updateAction = () =>
+            {
+                label.Text = string.Join(" | ", listBox1.Items.Cast<string>());
+                int newWidth = label.Width + 40;
+                form.Width = Math.Max(newWidth, form.MinimumSize.Width);
+            };
 
+            if (form.InvokeRequired)
+            {
+                form.Invoke(updateAction);
+            }
+            else
+            {
+                updateAction();
+            }
+        }
         private int GitSytemDeAyiklaVesay(string? sicil)
         {
             var result = SayiIzlemeSIcilBagizliService.SayiHesapla(sicil, _vardiya);

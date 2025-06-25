@@ -1,4 +1,4 @@
-﻿using Nursan.Business.Manager;
+﻿ using Nursan.Business.Manager;
 using Nursan.Core.Printing;
 using Nursan.Domain.Entity;
 using Nursan.Logging.Messages;
