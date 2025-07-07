@@ -1,4 +1,5 @@
-﻿using Nursan.Core.Printing;
+﻿using Nursan.Business.Manager;
+using Nursan.Core.Printing;
 using Nursan.Domain.Entity;
 using Nursan.Persistanse.UnitOfWork;
 using Nursan.Validations.ValidationCode;
@@ -71,7 +72,20 @@ namespace Nursan.UI
             {
                 tork.GetRepository<IzDonanimCount>().Delete(item.Id);
             }
-
+            try
+            {
+                var coaxveriler = tork.GetRepository<IzCoaxCableCount>().GetAll(x => x.DonanimRederansId == systemden.Id).Data;
+                if (coaxveriler != null)
+                {
+                    foreach (var coax in coaxveriler)
+                    {
+                        tork.GetRepository<IzCoaxCableCount>().Delete(coax.Id);
+                    }
+                }
+            }
+            catch (ErrorExceptionHandller)
+            {
+            }
             return true;
             //listBox1.Items.Remove(listBox1.SelectedItems[i]);
         }
