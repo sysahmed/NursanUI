@@ -74,12 +74,14 @@ namespace Nursan.UI
             }
             try
             {
-                var coaxveriler = tork.GetRepository<IzCoaxCableCount>().GetAll(x => x.DonanimRederansId == systemden.Id).Data;
+                var coaxveriler = tork.GetRepository<IzCoaxCableCount>().GetAll(x => x.DonanimRederansId == systemden.IdDonanim).Data;
                 if (coaxveriler != null)
                 {
                     foreach (var coax in coaxveriler)
                     {
-                        tork.GetRepository<IzCoaxCableCount>().Delete(coax.Id);
+                        coax.DonanimRederansId = null;
+                        tork.GetRepository<IzCoaxCableCount>().Update(coax);
+                        tork.SaveChanges();
                     }
                 }
             }

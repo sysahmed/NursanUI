@@ -49,7 +49,7 @@ namespace Nursan.UI
         private List<Button> dynamicTicketButtons = new List<Button>();
         string _vardiya;
         private bool isExpanded = false; // Добавяме променлива за проследяване на състоянието
-
+        private string lastScreenshotPath = null;
         public ElTest(UnitOfWork repo)
         {
             InitializeComponent();
@@ -121,7 +121,7 @@ namespace Nursan.UI
                 lblCountProductions.Visible = false;
             }
         }
-
+    
         private void btnAriza_Click(object sender, EventArgs e)
         {
             if (!isExpanded)
@@ -792,26 +792,26 @@ namespace Nursan.UI
                 LoadTicketButtons();
             }
         }
-        public void AddTicket(string tiketName, string description)
-        {
-            decimal? pcId = _elTest.GetPcId();
-            using (var context = new AmbarContext())
-            {
-                var islemler = new Islemler
-                {
-                    Ariza = tiketName,
-                    // Islem = description,
-                    Tarih = DateTime.Now,
-                    Role = 5,
-                    PcId = pcId,
-                    Active = true
+        //public void AddTicket(string tiketName, string description)
+        //{
+        //    decimal? pcId = _elTest.GetPcId();
+        //    using (var context = new AmbarContext())
+        //    {
+        //        var islemler = new Islemler
+        //        {
+        //            Ariza = tiketName,
+        //            // Islem = description,
+        //            Tarih = DateTime.Now,
+        //            Role = 5,
+        //            PcId = pcId,
+        //            Active = true
 
-                    // ... други полета по желание
-                };
-                context.Islemlers.Add(islemler);
-                context.SaveChanges();
-            }
-        }
+        //            // ... други полета по желание
+        //        };
+        //        context.Islemlers.Add(islemler);
+        //        context.SaveChanges();
+        //    }
+        //}
 
         private void LoadTicketButtons()
         {
@@ -897,7 +897,9 @@ namespace Nursan.UI
             var ticket = btn.Tag as SyTicketName;
             if (ticket != null)
             {
-                AddTicket(ticket.TiketName, ticket.Description);
+                SendTicketWithScreenshot();
+                CreateTicket(ticket.TiketName, ticket.Description);
+                //AddTicket(ticket.TiketName, ticket.Description);
 
                 // Първо премахваме динамичните бутони
                 foreach (var b in dynamicTicketButtons)
@@ -926,6 +928,71 @@ namespace Nursan.UI
                // this.Size = new Size(formWidth, formHeight);
                 
                 isExpanded = false;
+            }
+        }
+        private void SendTicketWithScreenshot()
+        {
+            try
+            {
+                // 1. Правим скрийншот
+                var bounds = Screen.PrimaryScreen.Bounds;
+                using (var bmp = new Bitmap(bounds.Width, bounds.Height))
+                {
+                    using (var g = Graphics.FromImage(bmp))
+                    {
+                        g.CopyFromScreen(bounds.Location, Point.Empty, bounds.Size);
+                    }
+                    string fileName = $"screenshot_{DateTime.Now:yyyyMMdd_HHmmss}.png";
+                    bmp.Save(fileName, System.Drawing.Imaging.ImageFormat.Png);
+                    lastScreenshotPath = fileName;
+                }
+                // 2. Пращаме тикета (логиката е същата като в ButtonCreateTicket_Click)
+                //CreateTicket();
+                // MessageBox.Show("Тикетът и скрийншотът са изпратени автоматично!", "IT тикет", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                labelStatus.Text = $"Грешка при автоматично изпращане: {ex.Message}";
+            }
+        }
+        private async Task CreateTicket(string tiketName, string bolge)
+        {
+            try
+            {
+
+                // Създаваме нов тикет
+                using var client = new HttpClient();
+                using var form = new MultipartFormDataContent();
+                form.Add(new StringContent(tiketName), "Ariza");
+                form.Add(new StringContent(bolge), "Bolge");
+                form.Add(new StringContent(Environment.MachineName), "PcName");
+                form.Add(new StringContent("5"), "Role");
+                form.Add(new StringContent("0"), "Sicil");
+                //form.Add(new StreamContent(File.OpenRead(lastScreenshotPath)), "photos", "снимка1.jpg");
+
+
+                if (File.Exists(lastScreenshotPath))
+                {
+                    var photoBytes = File.ReadAllBytes(lastScreenshotPath);
+                    var photoContent = new ByteArrayContent(photoBytes);
+                    photoContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/jpeg");
+                    form.Add(photoContent, "photos", "photo1.jpg");
+                }
+
+                var response = await client.PostAsync("http://200.2.10.252/Bakim/api/tickets/create", form);
+                string result = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    labelStatus.Text = $"Тикетът е създаден успешно! Номер: {result}";
+                    labelStatus.ForeColor = Color.Green;
+                    this.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                labelStatus.Text = $"Грешка при създаване на тикета: {ex.Message}";
+                labelStatus.ForeColor = Color.Red;
             }
         }
     }
