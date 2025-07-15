@@ -50,6 +50,7 @@ namespace Nursan.UI
         string _vardiya;
         private bool isExpanded = false; // Добавяме променлива за проследяване на състоянието
         private string lastScreenshotPath = null;
+        private readonly SystemTicket _systemTicket;
         public KlipV1(UnitOfWork repo)
         {
             InitializeComponent();
@@ -62,7 +63,7 @@ namespace Nursan.UI
             this.ShowInTaskbar = true;
             this.BackColor = Color.WhiteSmoke;
             this.TransparencyKey = Color.WhiteSmoke;
-
+            _systemTicket = new SystemTicket();
             // Разпъни формата по цялата ширина на екрана и височина 300px
             this.Left = 0;
             this.Top = 0;
@@ -898,10 +899,15 @@ namespace Nursan.UI
             var ticket = btn.Tag as SyTicketName;
             if (ticket != null)
             {
-                SendTicketWithScreenshot();
-                CreateTicket(ticket.TiketName, ticket.Description);
-                //AddTicket(ticket.TiketName, ticket.Description);
-
+                if (XMLSeverIp.WebApiTrue())
+                {
+                    SendTicketWithScreenshot();
+                    var result = _systemTicket.CreateTicket(ticket.TiketName, ticket.Description, lastScreenshotPath);
+                }
+                else
+                {
+                    AddTicket(ticket.TiketName, ticket.Description);
+                }
                 // Първо премахваме динамичните бутони
                 foreach (var b in dynamicTicketButtons)
                 {
@@ -956,45 +962,6 @@ namespace Nursan.UI
                 labelStatus.Text = $"Грешка при автоматично изпращане: {ex.Message}";
             }
         }
-        private async Task CreateTicket(string tiketName,string bolge)
-        {
-            try
-            {
-
-                // Създаваме нов тикет
-                using var client = new HttpClient();
-                using var form = new MultipartFormDataContent();
-                form.Add(new StringContent(tiketName), "Ariza");
-                form.Add(new StringContent(bolge), "Bolge");
-                form.Add(new StringContent(Environment.MachineName), "PcName");
-                form.Add(new StringContent("5"), "Role");
-                form.Add(new StringContent("0"), "Sicil");
-                //form.Add(new StreamContent(File.OpenRead(lastScreenshotPath)), "photos", "снимка1.jpg");
-
-
-                if (File.Exists(lastScreenshotPath))
-                {
-                    var photoBytes = File.ReadAllBytes(lastScreenshotPath);
-                    var photoContent = new ByteArrayContent(photoBytes);
-                    photoContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/jpeg");
-                    form.Add(photoContent, "photos", "photo1.jpg");
-                }
-
-                var response = await client.PostAsync("http://200.2.10.252/Bakim/api/tickets/create", form);
-                string result = await response.Content.ReadAsStringAsync();
-
-                if (response.IsSuccessStatusCode)
-                {
-                    labelStatus.Text = $"Тикетът е създаден успешно! Номер: {result}";
-                    labelStatus.ForeColor = Color.Green;
-                    this.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                labelStatus.Text = $"Грешка при създаване на тикета: {ex.Message}";
-                labelStatus.ForeColor = Color.Red;
-            }
-        }
+      
     }
 }

@@ -50,6 +50,7 @@ namespace Nursan.UI
         string _vardiya;
         private bool isExpanded = false; // Добавяме променлива за проследяване на състоянието
         private string lastScreenshotPath = null;
+        private readonly SystemTicket _systemTicket;
         public ElTest(UnitOfWork repo)
         {
             InitializeComponent();
@@ -68,7 +69,7 @@ namespace Nursan.UI
             this.Top = 0;
             this.Width = Screen.PrimaryScreen.WorkingArea.Width;
             this.Height = 300;
-
+            _systemTicket = new SystemTicket();
             // Настройваме бутона Ариза
             btnAriza.FlatStyle = FlatStyle.Flat;
             btnAriza.FlatAppearance.BorderSize = 0;
@@ -109,10 +110,10 @@ namespace Nursan.UI
 
         private void GetEltestountActivDeactiv()
         {
-           if(XMLSeverIp.ElTestCount())
+            if (XMLSeverIp.ElTestCount())
             {
-           
-                lblCountProductions.Enabled= true;
+
+                lblCountProductions.Enabled = true;
                 lblCountProductions.Visible = true;
             }
             else
@@ -121,7 +122,7 @@ namespace Nursan.UI
                 lblCountProductions.Visible = false;
             }
         }
-    
+
         private void btnAriza_Click(object sender, EventArgs e)
         {
             if (!isExpanded)
@@ -167,7 +168,7 @@ namespace Nursan.UI
                 // Върни формата в малък и прозрачен режим
                 this.TransparencyKey = Color.WhiteSmoke;
                 this.BackColor = Color.WhiteSmoke;
-                
+
                 // Размерът на формата - както беше в началото
                 int formWidth = lblCountProductions.Right + 5;
                 int formHeight = Math.Max(btnAriza.Height, lblCountProductions.Height) + 10;
@@ -417,7 +418,7 @@ namespace Nursan.UI
                 TorkService = new TorkService(_repo, new UrVardiya() { Name = gelenDegerler.Name });
                 var idBak = TorkService.GitSytemeSayiElTestBack(new SyBarcodeInput() { BarcodeIcerik = $"{gelenDegerler.prefix}-{gelenDegerler.family}-{gelenDegerler.suffix}{gelenDegerler.IdDonanim}" });
                 scren = new ScreenSaverForm(0, strArrays[2].ToString());
-               // scren.Owner = this;
+                // scren.Owner = this;
                 sicil = new SicilOkuma(strArrays[2].ToString());
                 scren.TetikSicil += Scre_TetikSicil;
                 try
@@ -792,26 +793,26 @@ namespace Nursan.UI
                 LoadTicketButtons();
             }
         }
-        //public void AddTicket(string tiketName, string description)
-        //{
-        //    decimal? pcId = _elTest.GetPcId();
-        //    using (var context = new AmbarContext())
-        //    {
-        //        var islemler = new Islemler
-        //        {
-        //            Ariza = tiketName,
-        //            // Islem = description,
-        //            Tarih = DateTime.Now,
-        //            Role = 5,
-        //            PcId = pcId,
-        //            Active = true
+        public void AddTicket(string tiketName, string description)
+        {
+            decimal? pcId = _elTest.GetPcId();
+            using (var context = new AmbarContext())
+            {
+                var islemler = new Islemler
+                {
+                    Ariza = tiketName,
+                    // Islem = description,
+                    Tarih = DateTime.Now,
+                    Role = 5,
+                    PcId = pcId,
+                    Active = true
 
-        //            // ... други полета по желание
-        //        };
-        //        context.Islemlers.Add(islemler);
-        //        context.SaveChanges();
-        //    }
-        //}
+                    // ... други полета по желание
+                };
+                context.Islemlers.Add(islemler);
+                context.SaveChanges();
+            }
+        }
 
         private void LoadTicketButtons()
         {
@@ -855,7 +856,7 @@ namespace Nursan.UI
                     btn.Height = btnHeight;
                     btn.Left = 30 + col * (btnWidth + marginX);
                     btn.Top = startY + row * (btnHeight + marginY);
-                    
+
                     // Модерен дизайн на бутона
                     btn.FlatStyle = FlatStyle.Flat;
                     btn.FlatAppearance.BorderSize = 1;
@@ -863,14 +864,16 @@ namespace Nursan.UI
                     btn.ForeColor = Color.Red;
                     btn.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
                     btn.Cursor = Cursors.Hand;
-                    
+
                     // Добавяме hover ефект
-                    btn.MouseEnter += (s, e) => {
+                    btn.MouseEnter += (s, e) =>
+                    {
                         Button b = s as Button;
                         b.BackColor = Color.FromArgb(0, 122, 204);
                         b.ForeColor = Color.White;
                     };
-                    btn.MouseLeave += (s, e) => {
+                    btn.MouseLeave += (s, e) =>
+                    {
                         Button b = s as Button;
                         b.BackColor = Color.FromArgb(45, 45, 48);
                         b.ForeColor = Color.Red;
@@ -897,10 +900,15 @@ namespace Nursan.UI
             var ticket = btn.Tag as SyTicketName;
             if (ticket != null)
             {
-                SendTicketWithScreenshot();
-                CreateTicket(ticket.TiketName, ticket.Description);
-                //AddTicket(ticket.TiketName, ticket.Description);
-
+                if (XMLSeverIp.WebApiTrue())
+                {
+                    SendTicketWithScreenshot();
+                    var result = _systemTicket.CreateTicket(ticket.TiketName, ticket.Description, lastScreenshotPath);
+                }
+                else
+                {
+                    AddTicket(ticket.TiketName, ticket.Description);
+                }
                 // Първо премахваме динамичните бутони
                 foreach (var b in dynamicTicketButtons)
                 {
@@ -921,12 +929,12 @@ namespace Nursan.UI
                 // Върни формата в малък и прозрачен режим
                 this.TransparencyKey = Color.WhiteSmoke;
                 this.BackColor = Color.WhiteSmoke;
-                
+
                 // Размерът на формата - както беше в началото
                 int formWidth = lblCountProductions.Right + 5;
                 int formHeight = Math.Max(btnAriza.Height, lblCountProductions.Height) + 10;
-               // this.Size = new Size(formWidth, formHeight);
-                
+                // this.Size = new Size(formWidth, formHeight);
+
                 isExpanded = false;
             }
         }
@@ -955,45 +963,6 @@ namespace Nursan.UI
                 labelStatus.Text = $"Грешка при автоматично изпращане: {ex.Message}";
             }
         }
-        private async Task CreateTicket(string tiketName, string bolge)
-        {
-            try
-            {
 
-                // Създаваме нов тикет
-                using var client = new HttpClient();
-                using var form = new MultipartFormDataContent();
-                form.Add(new StringContent(tiketName), "Ariza");
-                form.Add(new StringContent(bolge), "Bolge");
-                form.Add(new StringContent(Environment.MachineName), "PcName");
-                form.Add(new StringContent("5"), "Role");
-                form.Add(new StringContent("0"), "Sicil");
-                //form.Add(new StreamContent(File.OpenRead(lastScreenshotPath)), "photos", "снимка1.jpg");
-
-
-                if (File.Exists(lastScreenshotPath))
-                {
-                    var photoBytes = File.ReadAllBytes(lastScreenshotPath);
-                    var photoContent = new ByteArrayContent(photoBytes);
-                    photoContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/jpeg");
-                    form.Add(photoContent, "photos", "photo1.jpg");
-                }
-
-                var response = await client.PostAsync("http://200.2.10.252/Bakim/api/tickets/create", form);
-                string result = await response.Content.ReadAsStringAsync();
-
-                if (response.IsSuccessStatusCode)
-                {
-                    labelStatus.Text = $"Тикетът е създаден успешно! Номер: {result}";
-                    labelStatus.ForeColor = Color.Green;
-                    this.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                labelStatus.Text = $"Грешка при създаване на тикета: {ex.Message}";
-                labelStatus.ForeColor = Color.Red;
-            }
-        }
     }
 }
