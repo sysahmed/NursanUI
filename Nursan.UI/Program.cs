@@ -54,7 +54,7 @@ namespace Nursan.UI
                         }
                     }
                 }
-               
+              
                 RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
                 key.SetValue("Nursan.UI", "\"" + Application.ExecutablePath + "\"");
                 Application.SetHighDpiMode(HighDpiMode.SystemAware);
@@ -65,6 +65,7 @@ namespace Nursan.UI
                 builder.Build();
                 UretimOtomasyonContext _context = new();
                 UnitOfWork unitOfWork = new(_context);
+                //Application.Run(new Sigorta("397",unitOfWork));
                 // Application.Run(new Nursan.UI.Kasalama.Kasalama());
 
                 if (new LisanGet().LisanBak(processName))

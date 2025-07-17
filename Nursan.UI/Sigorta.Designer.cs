@@ -37,25 +37,26 @@ namespace Nursan.UI
             label1 = new Label();
             pictureBox1 = new PictureBox();
             btnSeting = new Button();
-            btnPrintConfig = new Button();
-            btnHome = new Button();
-            button1 = new Button();
             listView1 = new ListView();
             lstBiten = new ListView();
             dataGridView1 = new DataGridView();
             label2 = new Label();
             tableLayoutPanel1 = new TableLayoutPanel();
             tableLayoutPanel2 = new TableLayoutPanel();
+            button1 = new Button();
             tableLayoutPanel3 = new TableLayoutPanel();
             cbFamily = new ComboBox();
             textBox1 = new TextBox();
             numericUpDown1 = new NumericUpDown();
+            lblCount = new Label();
+            numericUpDownPrintCount = new NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownPrintCount).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -64,9 +65,9 @@ namespace Nursan.UI
             label1.Dock = DockStyle.Fill;
             label1.Font = new Font("Segoe UI", 26.25F, FontStyle.Bold);
             label1.ForeColor = Color.Yellow;
-            label1.Location = new Point(3, 28);
+            label1.Location = new Point(3, 37);
             label1.Name = "label1";
-            label1.Size = new Size(983, 28);
+            label1.Size = new Size(1124, 38);
             label1.TabIndex = 1;
             label1.Text = "REFERANS";
             label1.TextAlign = ContentAlignment.MiddleCenter;
@@ -77,9 +78,10 @@ namespace Nursan.UI
             pictureBox1.Dock = DockStyle.Fill;
             pictureBox1.ErrorImage = null;
             pictureBox1.Image = Properties.Resources.nursan_logo;
-            pictureBox1.Location = new Point(3, 3);
+            pictureBox1.Location = new Point(3, 4);
+            pictureBox1.Margin = new Padding(3, 4, 3, 4);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(983, 22);
+            pictureBox1.Size = new Size(1124, 29);
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.TabIndex = 6;
             pictureBox1.TabStop = false;
@@ -91,70 +93,15 @@ namespace Nursan.UI
             btnSeting.FlatStyle = FlatStyle.Flat;
             btnSeting.Font = new Font("Nirmala UI", 9.75F, FontStyle.Bold);
             btnSeting.ForeColor = Color.FromArgb(0, 126, 249);
-            btnSeting.Location = new Point(1221, 31);
+            btnSeting.Location = new Point(1395, 41);
+            btnSeting.Margin = new Padding(3, 4, 3, 4);
             btnSeting.Name = "btnSeting";
-            btnSeting.Size = new Size(117, 22);
+            btnSeting.Size = new Size(135, 30);
             btnSeting.TabIndex = 5;
             btnSeting.Text = "Seting";
             btnSeting.TextAlign = ContentAlignment.MiddleLeft;
             btnSeting.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnSeting.UseVisualStyleBackColor = false;
-            // 
-            // btnPrintConfig
-            // 
-            btnPrintConfig.BackColor = Color.Transparent;
-            btnPrintConfig.Dock = DockStyle.Fill;
-            btnPrintConfig.FlatStyle = FlatStyle.Flat;
-            btnPrintConfig.Font = new Font("Nirmala UI", 9.75F, FontStyle.Bold);
-            btnPrintConfig.ForeColor = Color.FromArgb(0, 126, 249);
-            btnPrintConfig.Location = new Point(1096, 3);
-            btnPrintConfig.Name = "btnPrintConfig";
-            btnPrintConfig.Size = new Size(119, 22);
-            btnPrintConfig.TabIndex = 5;
-            btnPrintConfig.Text = "Print Config";
-            btnPrintConfig.TextAlign = ContentAlignment.MiddleRight;
-            btnPrintConfig.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btnPrintConfig.UseVisualStyleBackColor = false;
-            // 
-            // btnHome
-            // 
-            btnHome.BackColor = Color.Transparent;
-            btnHome.Dock = DockStyle.Fill;
-            btnHome.FlatStyle = FlatStyle.Flat;
-            btnHome.Font = new Font("Nirmala UI", 9.75F, FontStyle.Bold);
-            btnHome.ForeColor = Color.FromArgb(0, 126, 249);
-            btnHome.Location = new Point(1221, 3);
-            btnHome.Name = "btnHome";
-            btnHome.Size = new Size(117, 22);
-            btnHome.TabIndex = 5;
-            btnHome.Text = "Home";
-            btnHome.TextAlign = ContentAlignment.MiddleLeft;
-            btnHome.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btnHome.UseVisualStyleBackColor = false;
-            btnHome.Click += btnHome_Click;
-            // 
-            // button1
-            // 
-            button1.BackColor = Color.FromArgb(128, 128, 255);
-            button1.Dock = DockStyle.Fill;
-            button1.FlatAppearance.BorderColor = Color.Yellow;
-            button1.FlatAppearance.BorderSize = 3;
-            button1.FlatAppearance.MouseDownBackColor = Color.Lime;
-            button1.FlatAppearance.MouseOverBackColor = Color.Red;
-            button1.FlatStyle = FlatStyle.Flat;
-            button1.Font = new Font("Microsoft Sans Serif", 48F, FontStyle.Bold);
-            button1.ForeColor = Color.Gray;
-            button1.Image = Properties.Resources.icons8_barcode_ios_16_96;
-            button1.ImageAlign = ContentAlignment.BottomCenter;
-            button1.Location = new Point(1031, 3);
-            button1.Name = "button1";
-            button1.Padding = new Padding(3);
-            button1.Size = new Size(307, 144);
-            button1.TabIndex = 2;
-            button1.Text = "ETIKET BAS";
-            button1.TextAlign = ContentAlignment.TopCenter;
-            button1.UseVisualStyleBackColor = false;
-            button1.Click += button1_Click_1;
             // 
             // listView1
             // 
@@ -164,10 +111,11 @@ namespace Nursan.UI
             listView1.FullRowSelect = true;
             listView1.GridLines = true;
             listView1.LabelWrap = false;
-            listView1.Location = new Point(3, 3);
+            listView1.Location = new Point(3, 4);
+            listView1.Margin = new Padding(3, 4, 3, 4);
             listView1.MultiSelect = false;
             listView1.Name = "listView1";
-            listView1.Size = new Size(1022, 144);
+            listView1.Size = new Size(1169, 193);
             listView1.Sorting = SortOrder.Ascending;
             listView1.TabIndex = 3;
             listView1.UseCompatibleStateImageBehavior = false;
@@ -183,10 +131,11 @@ namespace Nursan.UI
             lstBiten.FullRowSelect = true;
             lstBiten.GridLines = true;
             lstBiten.LabelWrap = false;
-            lstBiten.Location = new Point(3, 153);
+            lstBiten.Location = new Point(3, 205);
+            lstBiten.Margin = new Padding(3, 4, 3, 4);
             lstBiten.MultiSelect = false;
             lstBiten.Name = "lstBiten";
-            lstBiten.Size = new Size(1022, 154);
+            lstBiten.Size = new Size(1169, 205);
             lstBiten.Sorting = SortOrder.Ascending;
             lstBiten.TabIndex = 4;
             lstBiten.UseCompatibleStateImageBehavior = false;
@@ -222,13 +171,14 @@ namespace Nursan.UI
             dataGridView1.DefaultCellStyle = dataGridViewCellStyle3;
             dataGridView1.Dock = DockStyle.Fill;
             dataGridView1.GridColor = SystemColors.ActiveCaption;
-            dataGridView1.Location = new Point(3, 381);
+            dataGridView1.Location = new Point(3, 509);
+            dataGridView1.Margin = new Padding(3, 4, 3, 4);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
             dataGridView1.RowHeadersWidth = 51;
             dataGridView1.ScrollBars = ScrollBars.None;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.Size = new Size(1341, 246);
+            dataGridView1.Size = new Size(1533, 327);
             dataGridView1.TabIndex = 7;
             // 
             // label2
@@ -236,7 +186,7 @@ namespace Nursan.UI
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
             label2.ForeColor = Color.FromArgb(128, 255, 128);
-            label2.Location = new Point(69, 253);
+            label2.Location = new Point(79, 337);
             label2.Name = "label2";
             label2.Size = new Size(64, 25);
             label2.TabIndex = 8;
@@ -251,12 +201,13 @@ namespace Nursan.UI
             tableLayoutPanel1.Controls.Add(tableLayoutPanel3, 0, 0);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
+            tableLayoutPanel1.Margin = new Padding(3, 4, 3, 4);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 3;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50.3268F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 39.73856F));
-            tableLayoutPanel1.Size = new Size(1347, 630);
+            tableLayoutPanel1.Size = new Size(1539, 840);
             tableLayoutPanel1.TabIndex = 9;
             // 
             // tableLayoutPanel2
@@ -268,13 +219,38 @@ namespace Nursan.UI
             tableLayoutPanel2.Controls.Add(button1, 1, 0);
             tableLayoutPanel2.Controls.Add(listView1, 0, 0);
             tableLayoutPanel2.Dock = DockStyle.Fill;
-            tableLayoutPanel2.Location = new Point(3, 65);
+            tableLayoutPanel2.Location = new Point(3, 87);
+            tableLayoutPanel2.Margin = new Padding(3, 4, 3, 4);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 2;
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 48.57143F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 51.42857F));
-            tableLayoutPanel2.Size = new Size(1341, 310);
+            tableLayoutPanel2.Size = new Size(1533, 414);
             tableLayoutPanel2.TabIndex = 8;
+            // 
+            // button1
+            // 
+            button1.BackColor = Color.Yellow;
+            button1.Dock = DockStyle.Fill;
+            button1.FlatAppearance.BorderColor = Color.Yellow;
+            button1.FlatAppearance.BorderSize = 3;
+            button1.FlatAppearance.MouseDownBackColor = Color.Lime;
+            button1.FlatAppearance.MouseOverBackColor = Color.Red;
+            button1.FlatStyle = FlatStyle.Flat;
+            button1.Font = new Font("Microsoft Sans Serif", 48F, FontStyle.Bold);
+            button1.ForeColor = Color.Gray;
+            button1.Image = Properties.Resources.icons8_barcode_ios_16_96;
+            button1.ImageAlign = ContentAlignment.BottomCenter;
+            button1.Location = new Point(1178, 4);
+            button1.Margin = new Padding(3, 4, 3, 4);
+            button1.Name = "button1";
+            button1.Padding = new Padding(3, 4, 3, 4);
+            button1.Size = new Size(352, 193);
+            button1.TabIndex = 2;
+            button1.Text = "ETIKET BAS";
+            button1.TextAlign = ContentAlignment.TopCenter;
+            button1.UseVisualStyleBackColor = false;
+            button1.Click += button1_Click_1;
             // 
             // tableLayoutPanel3
             // 
@@ -285,19 +261,21 @@ namespace Nursan.UI
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 9.08486F));
             tableLayoutPanel3.Controls.Add(label1, 0, 1);
             tableLayoutPanel3.Controls.Add(pictureBox1, 0, 0);
-            tableLayoutPanel3.Controls.Add(btnHome, 3, 0);
             tableLayoutPanel3.Controls.Add(btnSeting, 3, 1);
-            tableLayoutPanel3.Controls.Add(btnPrintConfig, 2, 0);
             tableLayoutPanel3.Controls.Add(cbFamily, 2, 1);
             tableLayoutPanel3.Controls.Add(textBox1, 1, 1);
             tableLayoutPanel3.Controls.Add(numericUpDown1, 1, 0);
+            tableLayoutPanel3.Controls.Add(lblCount, 2, 0);
+            tableLayoutPanel3.Controls.Add(numericUpDownPrintCount, 3, 0);
             tableLayoutPanel3.Dock = DockStyle.Fill;
-            tableLayoutPanel3.Location = new Point(3, 3);
+            tableLayoutPanel3.Location = new Point(3, 4);
+            tableLayoutPanel3.Margin = new Padding(3, 4, 3, 4);
             tableLayoutPanel3.Name = "tableLayoutPanel3";
             tableLayoutPanel3.RowCount = 2;
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel3.Size = new Size(1341, 56);
+            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel3.Size = new Size(1533, 75);
             tableLayoutPanel3.TabIndex = 9;
             // 
             // cbFamily
@@ -308,9 +286,10 @@ namespace Nursan.UI
             cbFamily.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
             cbFamily.ForeColor = Color.Lime;
             cbFamily.FormattingEnabled = true;
-            cbFamily.Location = new Point(1096, 31);
+            cbFamily.Location = new Point(1252, 41);
+            cbFamily.Margin = new Padding(3, 4, 3, 4);
             cbFamily.Name = "cbFamily";
-            cbFamily.Size = new Size(119, 29);
+            cbFamily.Size = new Size(137, 29);
             cbFamily.TabIndex = 7;
             cbFamily.SelectedIndexChanged += cbKonveyor_SelectedIndexChanged;
             cbFamily.KeyUp += cbFamily_KeyUp;
@@ -320,9 +299,10 @@ namespace Nursan.UI
             textBox1.BackColor = Color.FromArgb(128, 128, 255);
             textBox1.Dock = DockStyle.Fill;
             textBox1.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
-            textBox1.Location = new Point(992, 31);
+            textBox1.Location = new Point(1133, 41);
+            textBox1.Margin = new Padding(3, 4, 3, 4);
             textBox1.Name = "textBox1";
-            textBox1.Size = new Size(98, 29);
+            textBox1.Size = new Size(113, 29);
             textBox1.TabIndex = 8;
             textBox1.TextChanged += textBox1_TextChanged;
             textBox1.KeyUp += textBox1_KeyUp;
@@ -332,22 +312,48 @@ namespace Nursan.UI
             numericUpDown1.BackColor = Color.FromArgb(128, 128, 255);
             numericUpDown1.Dock = DockStyle.Fill;
             numericUpDown1.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
-            numericUpDown1.Location = new Point(992, 3);
+            numericUpDown1.Location = new Point(1133, 4);
+            numericUpDown1.Margin = new Padding(3, 4, 3, 4);
             numericUpDown1.Maximum = new decimal(new int[] { 10000000, 0, 0, 0 });
             numericUpDown1.Name = "numericUpDown1";
-            numericUpDown1.Size = new Size(98, 29);
+            numericUpDown1.Size = new Size(113, 29);
             numericUpDown1.TabIndex = 9;
+            // 
+            // lblCount
+            // 
+            lblCount.Dock = DockStyle.Fill;
+            lblCount.Font = new Font("Segoe UI Semibold", 16F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            lblCount.ForeColor = SystemColors.ButtonHighlight;
+            lblCount.Location = new Point(1252, 0);
+            lblCount.Name = "lblCount";
+            lblCount.Size = new Size(137, 37);
+            lblCount.TabIndex = 10;
+            lblCount.Text = "Count";
+            lblCount.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // numericUpDownPrintCount
+            // 
+            numericUpDownPrintCount.BackColor = Color.FromArgb(128, 128, 255);
+            numericUpDownPrintCount.Dock = DockStyle.Fill;
+            numericUpDownPrintCount.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            numericUpDownPrintCount.Location = new Point(1395, 4);
+            numericUpDownPrintCount.Margin = new Padding(3, 4, 3, 4);
+            numericUpDownPrintCount.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
+            numericUpDownPrintCount.Name = "numericUpDownPrintCount";
+            numericUpDownPrintCount.Size = new Size(135, 29);
+            numericUpDownPrintCount.TabIndex = 1;
             // 
             // Sigorta
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(24, 30, 54);
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(1347, 630);
+            ClientSize = new Size(1539, 840);
             Controls.Add(tableLayoutPanel1);
             Controls.Add(label2);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(3, 4, 3, 4);
             Name = "Sigorta";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "NbgSystem";
@@ -361,6 +367,7 @@ namespace Nursan.UI
             tableLayoutPanel3.ResumeLayout(false);
             tableLayoutPanel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownPrintCount).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -368,12 +375,9 @@ namespace Nursan.UI
         #endregion
         private Label label1;
         private Button btnSeting;
-        private Button btnPrintConfig;
-        private Button btnHome;
         private PictureBox pictureBox1;
         private ListView listView1;
         private ListView lstBiten;
-        public Button button1;
         private DataGridView dataGridView1;
         private Label label2;
         private TableLayoutPanel tableLayoutPanel1;
@@ -383,6 +387,9 @@ namespace Nursan.UI
         private ComboBox cbFamily;
         private TextBox textBox1;
         private NumericUpDown numericUpDown1;
+        public Button button1;
+        private NumericUpDown numericUpDownPrintCount;
+        private Label lblCount;
     }
 }
 

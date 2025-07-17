@@ -1,4 +1,5 @@
-﻿using Nursan.Business.Services;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Nursan.Business.Services;
 using Nursan.Core.Printing;
 using Nursan.Domain.Entity;
 using Nursan.Domain.ModelsDisposible;
@@ -48,7 +49,7 @@ namespace Nursan.UI
         {
             InitializeComponent();
             _repo = repo;
-            toplamV769Services = new ToplamV769Services(_repo);
+            toplamV769Services = new ToplamV769Services(_repo); harnesModelListSecond = new List<OrHarnessModel>();
         }
         public Sigorta(UnitOfWork repo, OpMashin makine, UrVardiya vardiya, List<UrIstasyon> istasyonList, List<UrModulerYapi> modulerYapiList, List<SyBarcodeInput> syBarcodeInputList, List<SyBarcodeOut> syBarcodeOutList, List<SyPrinter> syPrinterList, List<OrFamily> family)
         {
@@ -66,10 +67,10 @@ namespace Nursan.UI
             //seril = new SerialPort();
             harnesDonanimHedefsList = new List<HarnesDonanimHedef>();
             _syPrtinterList = syPrinterList;
-             _syBarcodeOUTList = syBarcodeOutList;
-             _makine = makine;
+            _syBarcodeOUTList = syBarcodeOutList;
+            _makine = makine;
             _vardiya = vardiya;
-          _urIstasyon = istasyonList.FirstOrDefault(x => x.MashinId == _makine.Id & x.VardiyaId == vardiya.Id);
+            _urIstasyon = istasyonList.FirstOrDefault(x => x.MashinId == _makine.Id & x.VardiyaId == vardiya.Id);
             _repo = repo;
             donanimHedefs = new List<IzDonanimHedef>();
             int lstw = listView1.Size.Width;
@@ -97,50 +98,107 @@ namespace Nursan.UI
             int sifir = 0;
             cbFamily.Items.Clear();
             listView1.Items.Clear();
-            if (label1.Text != "REFERANS")
+            if (numericUpDownPrintCount.Value > 0)
             {
-                string[] split1 = label1.Text.Split(" ");
-                string[] split2 = split1[1].Split("/");
-                var gl = harnesDonanimHedefsList.FirstOrDefault(x => x.harnessModel == $"{split1[0]}");
-
-                gl.Adet = gl.Adet + 1;
-                numericUpDown1.Value = numericUpDown1.Value + 1;
-                if (int.Parse(split2[1].ToString()) <= gl.Adet)
+                for (int i = 0; i < numericUpDownPrintCount.Value; i++)
                 {
-                    var harnesResult = harnesModelList.FirstOrDefault(x => x.HarnessModelName == gl.harnessModel);
-                    var donanimHedece = donanimHedefs.FirstOrDefault(x => x.HarnesModelId == harnesResult.Id);
-                    try
+                    int sayi = XMLIslemi.XmlBarkodSaniye();
+                    Thread.Sleep(sayi);
+                    if (label1.Text != "REFERANS")
                     {
-                        donanimHedece.Adet = gl.Adet = Convert.ToInt32(numericUpDown1.Value);
-                        numericUpDown1.Value = Convert.ToDecimal(donanimHedece.Adet);
-                        donanimHedece.Hedef = gl.Hedef;
-                        _repo.GetRepository<IzDonanimHedef>().Update(donanimHedece);
-                        label1.Text = $"{split1[0]} {split2[0]}/{donanimHedece.Adet}";
-                        if (BarodeBas(split1, gl))
+                        string[] split1 = label1.Text.Split(" ");
+                        string[] split2 = split1[1].Split("/");
+                        var gl = harnesDonanimHedefsList.FirstOrDefault(x => x.harnessModel == $"{split1[0]}");
+
+                        gl.Adet = gl.Adet + 1;
+                        numericUpDown1.Value = numericUpDown1.Value + 1;
+                        if (int.Parse(split2[1].ToString()) <= gl.Adet)
                         {
-                            VeriGetir();
+                            var harnesResult = harnesModelList.FirstOrDefault(x => x.HarnessModelName == gl.harnessModel);
+                            var donanimHedece = donanimHedefs.FirstOrDefault(x => x.HarnesModelId == harnesResult.Id);
+                            try
+                            {
+                                donanimHedece.Adet = gl.Adet = Convert.ToInt32(numericUpDown1.Value);
+                                numericUpDown1.Value = Convert.ToDecimal(donanimHedece.Adet);
+                                donanimHedece.Hedef = gl.Hedef;
+                                _repo.GetRepository<IzDonanimHedef>().Update(donanimHedece);
+                                label1.Text = $"{split1[0]} {split2[0]}/{donanimHedece.Adet}";
+                                if (BarodeBas(split1, gl))
+                                {
+                                    VeriGetir();
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Bir Hata Olustu! ", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
+
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("Bir Hata Olustu! " + ex.Message, "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
                         }
                         else
                         {
-                            MessageBox.Show("Bir Hata Olustu! ", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show("Lutfen Refeferans Secin!", "Referans Yok!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
-
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        MessageBox.Show("Bir Hata Olustu! " + ex.Message, "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        VeriGetir();
+                        MessageBox.Show("Lutfen Refeferans Secin!", "Referans Yok!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+
+            }
+            else
+            {
+                if (label1.Text != "REFERANS")
+                {
+                    string[] split1 = label1.Text.Split(" ");
+                    string[] split2 = split1[1].Split("/");
+                    var gl = harnesDonanimHedefsList.FirstOrDefault(x => x.harnessModel == $"{split1[0]}");
+
+                    gl.Adet = gl.Adet + 1;
+                    numericUpDown1.Value = numericUpDown1.Value + 1;
+                    if (int.Parse(split2[1].ToString()) <= gl.Adet)
+                    {
+                        var harnesResult = harnesModelList.FirstOrDefault(x => x.HarnessModelName == gl.harnessModel);
+                        var donanimHedece = donanimHedefs.FirstOrDefault(x => x.HarnesModelId == harnesResult.Id);
+                        try
+                        {
+                            donanimHedece.Adet = gl.Adet = Convert.ToInt32(numericUpDown1.Value);
+                            numericUpDown1.Value = Convert.ToDecimal(donanimHedece.Adet);
+                            donanimHedece.Hedef = gl.Hedef;
+                            _repo.GetRepository<IzDonanimHedef>().Update(donanimHedece);
+                            label1.Text = $"{split1[0]} {split2[0]}/{donanimHedece.Adet}";
+                            if (BarodeBas(split1, gl))
+                            {
+                                VeriGetir();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Bir Hata Olustu! ", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Bir Hata Olustu! " + ex.Message, "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Lutfen Refeferans Secin!", "Referans Yok!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
                 else
                 {
+                    VeriGetir();
                     MessageBox.Show("Lutfen Refeferans Secin!", "Referans Yok!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
-            else
-            {
-                VeriGetir();
-                MessageBox.Show("Lutfen Refeferans Secin!", "Referans Yok!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
+
 
         }
 
@@ -151,7 +209,7 @@ namespace Nursan.UI
                 var harness = harnesModelList.FirstOrDefault(x => x.HarnessModelName == gl.harnessModel);
                 string[] fuix = StringSpanConverter.SplitWithoutAllocationReturnArray(harness.HarnessModelName.AsSpan(), '-');
                 var istasyonNew = torkServices.GetByIstasyonSigorta(harness.FamilyId).Where(x => x.ModulerYapi.Id == 1);
-                var istasyonNewEx = istasyonNew.Count() > 0 ? istasyonNew.FirstOrDefault(x=>x.FabrikaId == _urIstasyon.FabrikaId) : _urIstasyon;
+                var istasyonNewEx = istasyonNew.Count() > 0 ? istasyonNew.FirstOrDefault(x => x.FabrikaId == _urIstasyon.FabrikaId) : _urIstasyon;
                 var result = _repo.GetRepository<IzGenerateId>().Add(new IzGenerateId
                 {
                     HarnesModelId = harness.Id,
@@ -233,76 +291,84 @@ namespace Nursan.UI
         #region Other
         public void VeriGetir()
         {
-
-            int sifir = 0;
-            harnesDonanimHedefsList = null;
-            harnesDonanimHedefsList = new List<HarnesDonanimHedef>();
-            cbFamily.Items.Clear();
-            listView1.Items.Clear();
-            lstBiten.Items.Clear();
-            donanimHedefs = _repo.GetRepository<IzDonanimHedef>().GetAll(x => x.Hedef > 0).Data;
-            harnesModelList = _repo.GetRepository<OrHarnessModel>().GetAll(null).Data;
-            familyList = _repo.GetRepository<OrFamily>().GetAll(null).Data;
-            foreach (var item in donanimHedefs)
+            try
             {
-                var veri = harnesModelList.FirstOrDefault(x => x.Id == item.HarnesModelId);
-                harnesModelListSecond.Add(veri);
-            }
-            //var groupVeri = donanimHedefs.GroupBy(x => x.FamilyId);
-            foreach (var item in familyList)
-            {
-                cbFamily.Items.Add(item.FamilyName);
-            }
-            if (konveyor == "")
 
-            {
-                konveyor = familyList.FirstOrDefault(x => x.Id == _urIstasyon.FamilyId).FamilyName;
-            }
-
-            var familyId = familyList.SingleOrDefault(x => x.FamilyName == konveyor);
-            using (UretimOtomasyonContext db = new())
-            {
-                var data = (from p in db.IzDonanimHedefs
-                            join sr in db.OrHarnessModels
-                  on p.HarnesModelId equals sr.Id into lJ
-                            from res in lJ.DefaultIfEmpty()
-                            where res.FamilyId == familyId.Id
-                            select new
-                            {
-                                res.Id,
-                                res.HarnessModelName,
-                                p.Adet,
-                                p.Hedef,
-                                p.IstasyonId,
-                            }).OrderBy(x => x.HarnessModelName).ToList();
-                foreach (var i in data)
-                {
-
-                    harnesDonanimHedefsList.Add(new HarnesDonanimHedef
-                    {
-                        harnessModel = i.HarnessModelName,
-                        Id = i.Id,
-                        IstasyonId = i.IstasyonId,
-                        Hedef = i.Hedef,
-                        Adet = i.Adet
-                    });
-                    //harnesDonanimHedef = null;
-                }
-                dataGridView1.DataSource = harnesDonanimHedefsList;
+                int sifir = 0;
+                harnesDonanimHedefsList = null;
+                harnesDonanimHedefsList = new List<HarnesDonanimHedef>();
+                cbFamily.Items.Clear();
                 listView1.Items.Clear();
                 lstBiten.Items.Clear();
-                foreach (var i in harnesDonanimHedefsList)
+                donanimHedefs = _repo.GetRepository<IzDonanimHedef>().GetAll(x => x.Hedef > 0).Data;
+                harnesModelList = _repo.GetRepository<OrHarnessModel>().GetAll(null).Data;
+                familyList = _repo.GetRepository<OrFamily>().GetAll(null).Data;
+                foreach (var item in donanimHedefs)
                 {
-                    if (i.Adet >= i.Hedef)
-                    {
-                        lstBiten.Items.Add($"{i.harnessModel} {i.Hedef}/{i.Adet}");
-                    }
+                    var veri = harnesModelList.FirstOrDefault(x => x.Id == item.HarnesModelId);
+                    harnesModelListSecond.Add(veri);
+                }
+                //var groupVeri = donanimHedefs.GroupBy(x => x.FamilyId);
+                foreach (var item in familyList)
+                {
+                    cbFamily.Items.Add(item.FamilyName);
+                }
+                if (konveyor == "")
 
-                    else
+                {
+                    konveyor = familyList.FirstOrDefault(x => x.Id == _urIstasyon.FamilyId).FamilyName;
+                }
+
+                var familyId = familyList.SingleOrDefault(x => x.FamilyName == konveyor);
+                using (UretimOtomasyonContext db = new())
+                {
+                    var data = (from p in db.IzDonanimHedefs
+                                join sr in db.OrHarnessModels
+                      on p.HarnesModelId equals sr.Id into lJ
+                                from res in lJ.DefaultIfEmpty()
+                                where res.FamilyId == familyId.Id
+                                select new
+                                {
+                                    res.Id,
+                                    res.HarnessModelName,
+                                    p.Adet,
+                                    p.Hedef,
+                                    p.IstasyonId,
+                                }).OrderBy(x => x.HarnessModelName).ToList();
+                    foreach (var i in data)
                     {
-                        listView1.Items.Add($"{i.harnessModel} {i.Hedef}/{i.Adet}");
+
+                        harnesDonanimHedefsList.Add(new HarnesDonanimHedef
+                        {
+                            harnessModel = i.HarnessModelName,
+                            Id = i.Id,
+                            IstasyonId = i.IstasyonId,
+                            Hedef = i.Hedef,
+                            Adet = i.Adet
+                        });
+                        //harnesDonanimHedef = null;
+                    }
+                    dataGridView1.DataSource = harnesDonanimHedefsList;
+                    listView1.Items.Clear();
+                    lstBiten.Items.Clear();
+                    foreach (var i in harnesDonanimHedefsList)
+                    {
+                        if (i.Adet >= i.Hedef)
+                        {
+                            lstBiten.Items.Add($"{i.harnessModel} {i.Hedef}/{i.Adet}");
+                        }
+
+                        else
+                        {
+                            listView1.Items.Add($"{i.harnessModel} {i.Hedef}/{i.Adet}");
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
             }
         }
         private void GitButonuAtivEt(object source, EventArgs e)
