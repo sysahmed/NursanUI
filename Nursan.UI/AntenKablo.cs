@@ -42,7 +42,7 @@ namespace Nursan.UI
         List<IzCoaxCableCount> izCoaxCableCounts;
         SyBarcodeOut _sysBarcodOut;
         DirectPrinting directPrintin;
-       // TorkService torkServices;
+        // TorkService torkServices;
         private int sayiCount;
         public AntenKablo(string sicil, UnitOfWork repo)
         {
@@ -71,7 +71,7 @@ namespace Nursan.UI
             int lsth = listReferansSec.Size.Height;
             contex = new();
             generateIdDonanimManager = new GenrateIdDonanimManager(_repo);
-           // torkServices = new TorkService(repo, vardiya);
+            // torkServices = new TorkService(repo, vardiya);
 
         }
         private void StaticDegisken()
@@ -104,16 +104,16 @@ namespace Nursan.UI
             lstBiten.Items.Clear();
 
 
-            coaxCableCross = _repo.GetRepository<IzCoaxCableCross>().GetAll(null).Data;
-            coaxCableConfig = _repo.GetRepository<IzCoaxCableConfig>().GetAll(null).Data;
+            coaxCableCross = _repo.GetRepository<IzCoaxCableCross>().GetAll(x => x.Activ == true).Data;
+            coaxCableConfig = _repo.GetRepository<IzCoaxCableConfig>().GetAll(x => x.Activ == true).Data;
             TarihHIM tr = TarihHesapla.TarihHesab();
-            harnesDonanimList = _repo.GetRepository<OrHarnessModel>().GetAll(x => x.FamilyId == _urIstasyon.FamilyId).Data;
+            harnesDonanimList = _repo.GetRepository<OrHarnessModel>().GetAll(x => x.FamilyId == _urIstasyon.FamilyId && x.Activ == true).Data;
             foreach (var item in coaxCableCross.GroupBy(x => x.HarnessModelId))
             {
                 try
                 {
                     var harnes = harnesDonanimList.FirstOrDefault(x => x.Id == item.Key.Value);
-                    var coaxResult = _repo.GetRepository<IzCoaxCableCount>().GetAll(x => x.HarnessModelId == harnes.Id && x.CreateDate >= tr.tarih1 && x.CreateDate <= tr.tarih2).Data;
+                    var coaxResult = _repo.GetRepository<IzCoaxCableCount>().GetAll(x => x.HarnessModelId == harnes.Id && x.CreateDate >= tr.tarih1 && x.CreateDate <= tr.tarih2 && x.Activ == true).Data;
                     listReferansSec.Items.Add(harnes.HarnessModelName + "    "); ;
                     foreach (var cros in coaxCableCross.Where(x => x.HarnessModelId == harnes.Id))
                     {
@@ -123,7 +123,7 @@ namespace Nursan.UI
                                 HarnesId = harnes.Id,
                                 harnessModel = harnes.HarnessModelName,
                                 CoaxId = cros.Id,
-                                BarcodeCoax = _repo.GetRepository<IzCoaxCableConfig>().Get(x => x.Id == cros.CoaxCableBarcodeId).Data.CoaxCabloReferans
+                                BarcodeCoax = _repo.GetRepository<IzCoaxCableConfig>().Get(x => x.Id == cros.CoaxCableBarcodeId && x.Activ == true).Data.CoaxCabloReferans
                             }
                             );
                     }
@@ -188,6 +188,7 @@ namespace Nursan.UI
 
                 idDonanimBarcode = item.CoaxTutulanId.ToString();
                 item.CoaxTutulanId = idName;
+                item.Activ = true;
                 _repo.GetRepository<IzCoaxCableCount>().Add(item);
                 _repo.SaveChanges();
             }
