@@ -793,7 +793,7 @@ namespace Nursan.UI
                 LoadTicketButtons();
             }
         }
-        public void AddTicket(string tiketName, string description)
+        public void AddTicket(string tiketName, string description, int role)
         {
             decimal? pcId = _elTest.GetPcId();
             using (var context = new AmbarContext())
@@ -803,7 +803,7 @@ namespace Nursan.UI
                     Ariza = tiketName,
                     // Islem = description,
                     Tarih = DateTime.Now,
-                    Role =  5,
+                    Role = role,
                     PcId = pcId,
                     Active = true
 
@@ -902,11 +902,15 @@ namespace Nursan.UI
                 if (XMLSeverIp.WebApiTrue())
                 {
                     SendTicketWithScreenshot();
-                    var result = _systemTicket.CreateTicket(ticket.TiketName, ticket.Description, lastScreenshotPath);
+                    // Използваме Role параметъра от тикета
+                    int roleValue = ticket.Role ?? 5; // Ако Role е null, използваме 5 като default
+                    var result = _systemTicket.CreateTicket(ticket.TiketName, ticket.Description, lastScreenshotPath, roleValue);
                 }
                 else
                 {
-                    AddTicket(ticket.TiketName, ticket.Description);
+                    // Добавяме проверка за nullable Role
+                    int roleValue = ticket.Role ?? 5; // Ако Role е null, използваме 5 като default
+                    AddTicket(ticket.TiketName, ticket.Description, roleValue);
                 }
                 // Първо премахваме динамичните бутони
                 foreach (var b in dynamicTicketButtons)
