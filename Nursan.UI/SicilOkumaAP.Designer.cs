@@ -59,38 +59,41 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.BackColor = SystemColors.ActiveCaptionText;
+            label1.BackColor = Color.FromArgb(33, 37, 41);
             label1.Dock = DockStyle.Fill;
-            label1.Font = new Font("Arial Narrow", 27.75F, FontStyle.Bold);
-            label1.ForeColor = Color.Lime;
+            label1.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
+            label1.ForeColor = Color.FromArgb(40, 167, 69);
             label1.Location = new Point(3, 0);
             label1.Name = "label1";
             label1.Size = new Size(1341, 184);
             label1.TabIndex = 0;
-            label1.Text = "Sicil Okutun!";
+            label1.Text = "Сканирай сицил номер...";
             label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // textBox1
             // 
-            textBox1.BackColor = Color.Yellow;
+            textBox1.BackColor = Color.FromArgb(255, 248, 220);
+            textBox1.BorderStyle = BorderStyle.FixedSingle;
             textBox1.Dock = DockStyle.Fill;
-            textBox1.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            textBox1.ForeColor = Color.Red;
+            textBox1.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
+            textBox1.ForeColor = Color.FromArgb(220, 53, 69);
             textBox1.Location = new Point(3, 187);
             textBox1.Name = "textBox1";
-            textBox1.Size = new Size(1341, 39);
+            textBox1.PlaceholderText = "Въведи сицил номер...";
+            textBox1.Size = new Size(1341, 36);
             textBox1.TabIndex = 1;
             textBox1.TextAlign = HorizontalAlignment.Center;
             textBox1.KeyUp += textBox1_KeyUp;
             // 
             // listBox1
             // 
-            listBox1.BackColor = SystemColors.InfoText;
+            listBox1.BackColor = Color.FromArgb(248, 249, 250);
+            listBox1.BorderStyle = BorderStyle.FixedSingle;
             listBox1.Dock = DockStyle.Fill;
-            listBox1.Font = new Font("Segoe UI", 27.75F, FontStyle.Bold);
-            listBox1.ForeColor = Color.Lime;
+            listBox1.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            listBox1.ForeColor = Color.FromArgb(33, 37, 41);
             listBox1.FormattingEnabled = true;
-            listBox1.ItemHeight = 50;
+            listBox1.ItemHeight = 25;
             listBox1.Location = new Point(3, 227);
             listBox1.Name = "listBox1";
             listBox1.Size = new Size(1341, 281);
@@ -98,16 +101,16 @@
             // 
             // button1
             // 
-            button1.BackColor = SystemColors.ActiveCaptionText;
+            button1.BackColor = Color.FromArgb(220, 53, 69);
             button1.Dock = DockStyle.Fill;
             button1.FlatStyle = FlatStyle.Flat;
-            button1.Font = new Font("Segoe UI", 26.25F, FontStyle.Bold);
-            button1.ForeColor = Color.Lime;
+            button1.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            button1.ForeColor = Color.White;
             button1.Location = new Point(3, 514);
             button1.Name = "button1";
             button1.Size = new Size(1341, 113);
             button1.TabIndex = 3;
-            button1.Text = "TAMAM";
+            button1.Text = "ЗАТВОРИ";
             button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
             // 
@@ -115,11 +118,12 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(248, 249, 250);
             ClientSize = new Size(1347, 630);
             Controls.Add(tableLayoutPanel1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "SicilOkumaAP";
-            Text = "SicilOkumaAP";
+            Text = "Nursan - Сицил система (AP)";
             WindowState = FormWindowState.Maximized;
             Load += SicilOkuma_Load;
             tableLayoutPanel1.ResumeLayout(false);

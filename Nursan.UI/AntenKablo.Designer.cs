@@ -49,8 +49,8 @@ namespace Nursan.UI
             listAntenCableIn = new ListBox();
             tableLayoutPanel3 = new TableLayoutPanel();
             btnHome = new Button();
-            cbFamily = new ComboBox();
             numSayi = new NumericUpDown();
+            textBox2 = new TextBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             tableLayoutPanel1.SuspendLayout();
@@ -64,14 +64,14 @@ namespace Nursan.UI
             // 
             label1.AutoSize = true;
             label1.Dock = DockStyle.Fill;
-            label1.Font = new Font("Segoe UI", 26.25F, FontStyle.Bold);
-            label1.ForeColor = Color.Yellow;
+            label1.Font = new Font("Segoe UI", 28F, FontStyle.Bold);
+            label1.ForeColor = Color.DimGray;
             label1.Location = new Point(3, 33);
             label1.Name = "label1";
             label1.Size = new Size(1113, 34);
             label1.TabIndex = 1;
-            label1.Text = "REFERANS";
-            label1.TextAlign = ContentAlignment.TopCenter;
+            label1.Text = "ИЗБЕРИ ХАРНЕС МОДЕЛ";
+            label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // pictureBox1
             // 
@@ -88,25 +88,25 @@ namespace Nursan.UI
             // 
             // btnPrintConfig
             // 
-            btnPrintConfig.BackColor = Color.Transparent;
+            btnPrintConfig.BackColor = Color.FromArgb(0, 100, 200);
             btnPrintConfig.Dock = DockStyle.Fill;
             btnPrintConfig.FlatStyle = FlatStyle.Flat;
-            btnPrintConfig.Font = new Font("Nirmala UI", 9.75F, FontStyle.Bold);
-            btnPrintConfig.ForeColor = Color.FromArgb(0, 126, 249);
+            btnPrintConfig.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnPrintConfig.ForeColor = Color.White;
             btnPrintConfig.Location = new Point(1122, 3);
             btnPrintConfig.Name = "btnPrintConfig";
             btnPrintConfig.Size = new Size(133, 27);
             btnPrintConfig.TabIndex = 5;
-            btnPrintConfig.Text = "Print Config";
-            btnPrintConfig.TextAlign = ContentAlignment.MiddleRight;
+            btnPrintConfig.Text = "ОБНОВИ";
             btnPrintConfig.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnPrintConfig.UseVisualStyleBackColor = false;
+            btnPrintConfig.Click += btnPrintConfig_Click;
             // 
             // listReferansSec
             // 
-            listReferansSec.BackColor = Color.FromArgb(128, 255, 128);
+            listReferansSec.BackColor = Color.FromArgb(240, 248, 255);
             listReferansSec.Dock = DockStyle.Fill;
-            listReferansSec.Font = new Font("Century", 26.25F, FontStyle.Bold);
+            listReferansSec.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
             listReferansSec.FullRowSelect = true;
             listReferansSec.GridLines = true;
             listReferansSec.LabelWrap = false;
@@ -122,10 +122,10 @@ namespace Nursan.UI
             // 
             // lstBiten
             // 
-            lstBiten.BackColor = Color.FromArgb(24, 22, 34);
+            lstBiten.BackColor = Color.FromArgb(245, 245, 245);
             lstBiten.Dock = DockStyle.Fill;
-            lstBiten.Font = new Font("Century", 26.25F, FontStyle.Bold | FontStyle.Strikeout);
-            lstBiten.ForeColor = SystemColors.InactiveCaption;
+            lstBiten.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            lstBiten.ForeColor = Color.FromArgb(100, 100, 100);
             lstBiten.FullRowSelect = true;
             lstBiten.GridLines = true;
             lstBiten.LabelWrap = false;
@@ -142,32 +142,32 @@ namespace Nursan.UI
             // 
             dataGridView1.AccessibleRole = AccessibleRole.TitleBar;
             dataGridView1.AllowUserToOrderColumns = true;
-            dataGridViewCellStyle1.BackColor = Color.LightGray;
-            dataGridViewCellStyle1.ForeColor = Color.Red;
-            dataGridViewCellStyle1.SelectionForeColor = Color.Red;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(248, 249, 250);
+            dataGridViewCellStyle1.ForeColor = Color.FromArgb(73, 80, 87);
+            dataGridViewCellStyle1.SelectionForeColor = Color.White;
             dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridView1.BackgroundColor = SystemColors.AppWorkspace;
+            dataGridView1.BackgroundColor = Color.FromArgb(255, 255, 255);
             dataGridView1.BorderStyle = BorderStyle.None;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Control;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI Semibold", 15.75F, FontStyle.Bold);
-            dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.BackColor = Color.FromArgb(52, 58, 64);
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(0, 123, 255);
+            dataGridViewCellStyle2.SelectionForeColor = Color.White;
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
             dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.Window;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI Semibold", 15.75F, FontStyle.Bold);
-            dataGridViewCellStyle3.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.BackColor = Color.White;
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 12F);
+            dataGridViewCellStyle3.ForeColor = Color.FromArgb(33, 37, 41);
+            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(0, 123, 255);
+            dataGridViewCellStyle3.SelectionForeColor = Color.White;
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
             dataGridView1.DefaultCellStyle = dataGridViewCellStyle3;
             dataGridView1.Dock = DockStyle.Fill;
-            dataGridView1.GridColor = SystemColors.ActiveCaption;
+            dataGridView1.GridColor = Color.FromArgb(222, 226, 230);
             dataGridView1.Location = new Point(330, 261);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
@@ -227,11 +227,11 @@ namespace Nursan.UI
             // 
             // listAntenCabloOut
             // 
-            listAntenCabloOut.BackColor = Color.Yellow;
+            listAntenCabloOut.BackColor = Color.FromArgb(255, 255, 224);
             listAntenCabloOut.Dock = DockStyle.Fill;
-            listAntenCabloOut.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            listAntenCabloOut.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             listAntenCabloOut.FormattingEnabled = true;
-            listAntenCabloOut.ItemHeight = 32;
+            listAntenCabloOut.ItemHeight = 25;
             listAntenCabloOut.Location = new Point(3, 259);
             listAntenCabloOut.Margin = new Padding(3, 1, 3, 1);
             listAntenCabloOut.Name = "listAntenCabloOut";
@@ -258,24 +258,24 @@ namespace Nursan.UI
             // 
             // textBox1
             // 
-            textBox1.BorderStyle = BorderStyle.None;
+            textBox1.BorderStyle = BorderStyle.FixedSingle;
             textBox1.Dock = DockStyle.Fill;
-            textBox1.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            textBox1.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
             textBox1.Location = new Point(0, 11);
             textBox1.Margin = new Padding(0, 11, 0, 11);
-            textBox1.Multiline = true;
             textBox1.Name = "textBox1";
-            textBox1.Size = new Size(321, 28);
+            textBox1.PlaceholderText = "Сканирай баркод...";
+            textBox1.Size = new Size(321, 36);
             textBox1.TabIndex = 0;
             textBox1.KeyUp += textBox1_KeyUp;
             // 
             // listAntenCableIn
             // 
-            listAntenCableIn.BackColor = Color.FromArgb(255, 128, 255);
+            listAntenCableIn.BackColor = Color.FromArgb(255, 240, 245);
             listAntenCableIn.Dock = DockStyle.Fill;
-            listAntenCableIn.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            listAntenCableIn.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             listAntenCableIn.FormattingEnabled = true;
-            listAntenCableIn.ItemHeight = 32;
+            listAntenCableIn.ItemHeight = 25;
             listAntenCableIn.Location = new Point(0, 50);
             listAntenCableIn.Margin = new Padding(0);
             listAntenCableIn.Name = "listAntenCableIn";
@@ -292,8 +292,8 @@ namespace Nursan.UI
             tableLayoutPanel3.Controls.Add(label1, 0, 1);
             tableLayoutPanel3.Controls.Add(btnPrintConfig, 1, 0);
             tableLayoutPanel3.Controls.Add(pictureBox1, 0, 0);
-            tableLayoutPanel3.Controls.Add(cbFamily, 1, 1);
             tableLayoutPanel3.Controls.Add(numSayi, 2, 1);
+            tableLayoutPanel3.Controls.Add(textBox2, 1, 1);
             tableLayoutPanel3.Dock = DockStyle.Fill;
             tableLayoutPanel3.Location = new Point(3, 3);
             tableLayoutPanel3.Name = "tableLayoutPanel3";
@@ -305,52 +305,48 @@ namespace Nursan.UI
             // 
             // btnHome
             // 
-            btnHome.BackColor = Color.Transparent;
+            btnHome.BackColor = Color.FromArgb(40, 167, 69);
             btnHome.Dock = DockStyle.Fill;
             btnHome.FlatStyle = FlatStyle.Flat;
-            btnHome.Font = new Font("Nirmala UI", 9.75F, FontStyle.Bold);
-            btnHome.ForeColor = Color.FromArgb(0, 126, 249);
+            btnHome.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnHome.ForeColor = Color.White;
             btnHome.Location = new Point(1261, 3);
             btnHome.Name = "btnHome";
             btnHome.Size = new Size(135, 27);
             btnHome.TabIndex = 5;
-            btnHome.Text = "Home";
-            btnHome.TextAlign = ContentAlignment.MiddleLeft;
+            btnHome.Text = "НАЧАЛО";
             btnHome.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnHome.UseVisualStyleBackColor = false;
             btnHome.Click += btnHome_Click;
             // 
-            // cbFamily
-            // 
-            cbFamily.BackColor = Color.FromArgb(128, 128, 255);
-            cbFamily.Dock = DockStyle.Fill;
-            cbFamily.FlatStyle = FlatStyle.Flat;
-            cbFamily.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
-            cbFamily.ForeColor = Color.OrangeRed;
-            cbFamily.FormattingEnabled = true;
-            cbFamily.Location = new Point(1122, 36);
-            cbFamily.Name = "cbFamily";
-            cbFamily.Size = new Size(133, 29);
-            cbFamily.TabIndex = 7;
-            cbFamily.SelectedIndexChanged += cbKonveyor_SelectedIndexChanged;
-            cbFamily.KeyUp += cbFamily_KeyUp;
-            // 
             // numSayi
             // 
-            numSayi.BackColor = Color.FromArgb(128, 128, 255);
+            numSayi.BackColor = Color.FromArgb(248, 249, 250);
             numSayi.Dock = DockStyle.Fill;
-            numSayi.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            numSayi.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             numSayi.Location = new Point(1261, 36);
             numSayi.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
             numSayi.Name = "numSayi";
-            numSayi.Size = new Size(135, 29);
+            numSayi.Size = new Size(135, 32);
             numSayi.TabIndex = 8;
+            // 
+            // textBox2
+            // 
+            textBox2.BorderStyle = BorderStyle.FixedSingle;
+            textBox2.Dock = DockStyle.Fill;
+            textBox2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            textBox2.Location = new Point(1122, 36);
+            textBox2.Name = "textBox2";
+            textBox2.PlaceholderText = "Търси...";
+            textBox2.Size = new Size(133, 29);
+            textBox2.TabIndex = 9;
+            textBox2.KeyUp += textBox2_KeyUp;
             // 
             // AntenKablo
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(24, 30, 54);
+            BackColor = Color.FromArgb(248, 249, 250);
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1405, 732);
             Controls.Add(tableLayoutPanel1);
@@ -358,7 +354,7 @@ namespace Nursan.UI
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "AntenKablo";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "NbgSystem";
+            Text = "Nursan - Антен Кабел Система";
             WindowState = FormWindowState.Maximized;
             FormClosing += AntenKablo_FormClosing;
             FormClosed += AnaSayfa_FormClosed;
@@ -388,13 +384,13 @@ namespace Nursan.UI
         private TableLayoutPanel tableLayoutPanel2;
         private TableLayoutPanel tableLayoutPanel3;
         private ComboBox cbKonveyor;
-        private ComboBox cbFamily;
         private TableLayoutPanel tableLayoutPanel4;
         private ListBox listAntenCabloOut;
         private ListBox listAntenCableIn;
         public TextBox textBox1;
         private Button btnHome;
         private NumericUpDown numSayi;
+        private TextBox textBox2;
     }
 }
 

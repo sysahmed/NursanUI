@@ -13,12 +13,15 @@ namespace Nursan.UI
 {
     /// <summary>
     /// Клас за конвертиране на Bitmap към Pix (Leptonica image format)
+    /// Използва се за подготовка на изображения за OCR обработка
     /// </summary>
     public static class PixConverter
     {
         /// <summary>
         /// Конвертира Bitmap към Pix формат чрез записване във временен файл
         /// </summary>
+        /// <param name="bitmap">Изображението за конвертиране</param>
+        /// <returns>Pix обект за OCR обработка</returns>
         public static Pix ToPix(Bitmap bitmap)
         {
             try
@@ -52,6 +55,10 @@ namespace Nursan.UI
         }
     }
 
+    /// <summary>
+    /// Клас за наблюдение на екрана и разпознаване на текст чрез OCR
+    /// Използва Tesseract за разпознаване на текст в скрийншоти
+    /// </summary>
     public class ScreenMonitor : IDisposable
     {
         private readonly System.Windows.Forms.Timer _captureTimer;
@@ -59,12 +66,24 @@ namespace Nursan.UI
         private readonly List<string> _textToWatch = new List<string>();
         private readonly Dictionary<string, Action> _actionsOnDetection = new Dictionary<string, Action>();
         
-        // Събитие, което се задейства, когато се намери наблюдаван текст
+        /// <summary>
+        /// Събитие, което се задейства, когато се намери наблюдаван текст
+        /// </summary>
         public event EventHandler<TextDetectedEventArgs> TextDetected;
         
+        /// <summary>
+        /// Дали наблюдението е активно
+        /// </summary>
         public bool IsMonitoring { get; private set; }
+        
+        /// <summary>
+        /// Интервал между скрийншотите в милисекунди
+        /// </summary>
         public int CaptureIntervalMs { get; set; } = 1000; // По подразбиране 1 секунда
         
+        /// <summary>
+        /// Конструктор - инициализира OCR engine и таймера
+        /// </summary>
         public ScreenMonitor()
         {
             // Инициализираме Tesseract OCR Engine
@@ -90,7 +109,11 @@ namespace Nursan.UI
             _captureTimer.Tick += CaptureTimer_Tick;
         }
         
-        // Добавя текст, който трябва да се наблюдава на екрана
+        /// <summary>
+        /// Добавя текст, който трябва да се наблюдава на екрана
+        /// </summary>
+        /// <param name="text">Текстът за наблюдение</param>
+        /// <param name="actionOnDetection">Действие, което да се изпълни при намиране на текста</param>
         public void AddTextToWatch(string text, Action actionOnDetection = null)
         {
             if (string.IsNullOrEmpty(text))
@@ -107,7 +130,10 @@ namespace Nursan.UI
             }
         }
         
-        // Премахва текст от наблюдаваните
+        /// <summary>
+        /// Премахва текст от наблюдаваните
+        /// </summary>
+        /// <param name="text">Текстът за премахване</param>
         public void RemoveTextToWatch(string text)
         {
             if (_textToWatch.Contains(text))
@@ -121,7 +147,9 @@ namespace Nursan.UI
             }
         }
         
-        // Стартира наблюдението
+        /// <summary>
+        /// Стартира наблюдението на екрана
+        /// </summary>
         public void StartMonitoring()
         {
             if (IsMonitoring)
@@ -132,7 +160,9 @@ namespace Nursan.UI
             IsMonitoring = true;
         }
         
-        // Спира наблюдението
+        /// <summary>
+        /// Спира наблюдението на екрана
+        /// </summary>
         public void StopMonitoring()
         {
             if (!IsMonitoring)
@@ -142,7 +172,10 @@ namespace Nursan.UI
             IsMonitoring = false;
         }
         
-        // Прави скрийншот на целия екран
+        /// <summary>
+        /// Прави скрийншот на целия екран
+        /// </summary>
+        /// <returns>Bitmap с изображението на екрана</returns>
         private Bitmap CaptureScreen()
         {
             Rectangle bounds = Screen.PrimaryScreen.Bounds;
@@ -156,7 +189,11 @@ namespace Nursan.UI
             return screenshot;
         }
         
-        // Разпознава текст в изображение
+        /// <summary>
+        /// Разпознава текст в изображение чрез OCR
+        /// </summary>
+        /// <param name="image">Изображението за обработка</param>
+        /// <returns>Разпознатият текст</returns>
         private string RecognizeText(Bitmap image)
         {
             try
@@ -177,7 +214,9 @@ namespace Nursan.UI
             }
         }
         
-        // Събития на таймера - прави скрийншот и разпознава текст
+        /// <summary>
+        /// Събития на таймера - прави скрийншот и разпознава текст
+        /// </summary>
         private async void CaptureTimer_Tick(object sender, EventArgs e)
         {
             // Спираме таймера временно, докато обработваме текущия скрийншот
@@ -224,7 +263,9 @@ namespace Nursan.UI
             }
         }
         
-        // Dispose метод за освобождаване на ресурси
+        /// <summary>
+        /// Dispose метод за освобождаване на ресурси
+        /// </summary>
         public void Dispose()
         {
             StopMonitoring();
@@ -233,12 +274,27 @@ namespace Nursan.UI
         }
     }
     
-    // Клас за параметрите на събитието TextDetected
+    /// <summary>
+    /// Клас за параметрите на събитието TextDetected
+    /// Съдържа информация за разпознатия текст
+    /// </summary>
     public class TextDetectedEventArgs : EventArgs
     {
+        /// <summary>
+        /// Разпознатият текст, който се наблюдава
+        /// </summary>
         public string DetectedText { get; }
+        
+        /// <summary>
+        /// Целият разпознат текст от изображението
+        /// </summary>
         public string FullRecognizedText { get; }
         
+        /// <summary>
+        /// Конструктор за създаване на ново събитие
+        /// </summary>
+        /// <param name="detectedText">Разпознатият наблюдаван текст</param>
+        /// <param name="fullRecognizedText">Целият разпознат текст</param>
         public TextDetectedEventArgs(string detectedText, string fullRecognizedText)
         {
             DetectedText = detectedText;

@@ -166,7 +166,7 @@
             // 
             label12.AutoSize = true;
             label12.Dock = DockStyle.Fill;
-            label12.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            label12.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold);
             label12.Location = new Point(3, 176);
             label12.Name = "label12";
             label12.Size = new Size(134, 23);
@@ -177,7 +177,7 @@
             // txtHedef
             // 
             txtHedef.Dock = DockStyle.Fill;
-            txtHedef.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            txtHedef.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold);
             txtHedef.Location = new Point(143, 136);
             txtHedef.Margin = new Padding(3, 2, 3, 2);
             txtHedef.Name = "txtHedef";
@@ -188,7 +188,7 @@
             // 
             label8.AutoSize = true;
             label8.Dock = DockStyle.Fill;
-            label8.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            label8.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold);
             label8.Location = new Point(3, 134);
             label8.Name = "label8";
             label8.Size = new Size(134, 21);
@@ -200,7 +200,7 @@
             // 
             label9.AutoSize = true;
             label9.Dock = DockStyle.Fill;
-            label9.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            label9.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold);
             label9.Location = new Point(3, 46);
             label9.Name = "label9";
             label9.Size = new Size(134, 23);
@@ -213,7 +213,7 @@
             btnMYKaydet.BackColor = Color.FromArgb(128, 255, 128);
             btnMYKaydet.Dock = DockStyle.Fill;
             btnMYKaydet.FlatStyle = FlatStyle.Flat;
-            btnMYKaydet.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point);
+            btnMYKaydet.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             btnMYKaydet.ForeColor = SystemColors.ActiveCaptionText;
             btnMYKaydet.Location = new Point(0, 245);
             btnMYKaydet.Margin = new Padding(0);
@@ -229,7 +229,7 @@
             btnMYGuncelle.BackColor = Color.FromArgb(128, 255, 128);
             btnMYGuncelle.Dock = DockStyle.Fill;
             btnMYGuncelle.FlatStyle = FlatStyle.Flat;
-            btnMYGuncelle.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point);
+            btnMYGuncelle.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             btnMYGuncelle.ForeColor = SystemColors.ActiveCaptionText;
             btnMYGuncelle.Location = new Point(0, 268);
             btnMYGuncelle.Margin = new Padding(0);
@@ -245,7 +245,7 @@
             btnMYSilme.BackColor = Color.FromArgb(255, 192, 128);
             btnMYSilme.Dock = DockStyle.Fill;
             btnMYSilme.FlatStyle = FlatStyle.Flat;
-            btnMYSilme.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point);
+            btnMYSilme.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             btnMYSilme.ForeColor = Color.Black;
             btnMYSilme.Location = new Point(140, 245);
             btnMYSilme.Margin = new Padding(0);
@@ -260,7 +260,7 @@
             // 
             label6.AutoSize = true;
             label6.Dock = DockStyle.Fill;
-            label6.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            label6.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold);
             label6.Location = new Point(3, 155);
             label6.Name = "label6";
             label6.Size = new Size(134, 21);
@@ -272,7 +272,7 @@
             // 
             label11.AutoSize = true;
             label11.Dock = DockStyle.Fill;
-            label11.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            label11.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold);
             label11.Location = new Point(3, 69);
             label11.Name = "label11";
             label11.Size = new Size(134, 23);
@@ -283,7 +283,7 @@
             // txtCalismaSati
             // 
             txtCalismaSati.Dock = DockStyle.Fill;
-            txtCalismaSati.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            txtCalismaSati.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold);
             txtCalismaSati.Location = new Point(143, 115);
             txtCalismaSati.Margin = new Padding(3, 2, 3, 2);
             txtCalismaSati.Name = "txtCalismaSati";
@@ -294,7 +294,7 @@
             // 
             label4.AutoSize = true;
             label4.Dock = DockStyle.Fill;
-            label4.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            label4.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold);
             label4.Location = new Point(3, 113);
             label4.Name = "label4";
             label4.Size = new Size(134, 21);
@@ -305,7 +305,7 @@
             // txtSayiCarp
             // 
             txtSayiCarp.Dock = DockStyle.Fill;
-            txtSayiCarp.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            txtSayiCarp.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold);
             txtSayiCarp.Location = new Point(143, 158);
             txtSayiCarp.Name = "txtSayiCarp";
             txtSayiCarp.Size = new Size(106, 23);
@@ -316,7 +316,7 @@
             btnMYRefres.BackColor = Color.WhiteSmoke;
             btnMYRefres.Dock = DockStyle.Fill;
             btnMYRefres.FlatStyle = FlatStyle.Flat;
-            btnMYRefres.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point);
+            btnMYRefres.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             btnMYRefres.ForeColor = SystemColors.ActiveCaptionText;
             btnMYRefres.Location = new Point(140, 268);
             btnMYRefres.Margin = new Padding(0);
@@ -330,7 +330,7 @@
             // txtNameConfig
             // 
             txtNameConfig.Dock = DockStyle.Fill;
-            txtNameConfig.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            txtNameConfig.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold);
             txtNameConfig.Location = new Point(143, 3);
             txtNameConfig.Name = "txtNameConfig";
             txtNameConfig.Size = new Size(106, 23);
@@ -339,7 +339,7 @@
             // cbFamily
             // 
             cbFamily.Dock = DockStyle.Fill;
-            cbFamily.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            cbFamily.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold);
             cbFamily.FormattingEnabled = true;
             cbFamily.Location = new Point(143, 25);
             cbFamily.Margin = new Padding(3, 2, 3, 2);
@@ -351,7 +351,7 @@
             // 
             label13.AutoSize = true;
             label13.Dock = DockStyle.Fill;
-            label13.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            label13.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold);
             label13.Location = new Point(3, 0);
             label13.Name = "label13";
             label13.Size = new Size(134, 23);
@@ -364,7 +364,7 @@
             label7.AutoSize = true;
             label7.BackColor = SystemColors.ActiveCaption;
             label7.Dock = DockStyle.Fill;
-            label7.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            label7.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold);
             label7.Location = new Point(3, 23);
             label7.Name = "label7";
             label7.Size = new Size(134, 23);
@@ -375,7 +375,7 @@
             // cbModuleryapi
             // 
             cbModuleryapi.Dock = DockStyle.Fill;
-            cbModuleryapi.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            cbModuleryapi.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
             cbModuleryapi.FormattingEnabled = true;
             cbModuleryapi.Location = new Point(143, 49);
             cbModuleryapi.Name = "cbModuleryapi";
@@ -385,7 +385,7 @@
             // cbVardiya
             // 
             cbVardiya.Dock = DockStyle.Fill;
-            cbVardiya.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            cbVardiya.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold);
             cbVardiya.FormattingEnabled = true;
             cbVardiya.Location = new Point(143, 94);
             cbVardiya.Margin = new Padding(3, 2, 3, 2);
@@ -397,7 +397,7 @@
             // 
             label10.AutoSize = true;
             label10.Dock = DockStyle.Fill;
-            label10.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            label10.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold);
             label10.Location = new Point(3, 92);
             label10.Name = "label10";
             label10.Size = new Size(134, 21);
@@ -409,7 +409,7 @@
             // 
             label3.AutoSize = true;
             label3.Dock = DockStyle.Fill;
-            label3.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            label3.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold);
             label3.Location = new Point(3, 199);
             label3.Name = "label3";
             label3.Size = new Size(134, 23);
@@ -420,7 +420,7 @@
             // cbOkuma
             // 
             cbOkuma.Dock = DockStyle.Fill;
-            cbOkuma.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            cbOkuma.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold);
             cbOkuma.FormattingEnabled = true;
             cbOkuma.Location = new Point(143, 179);
             cbOkuma.Name = "cbOkuma";
@@ -431,7 +431,7 @@
             // cbBasma
             // 
             cbBasma.Dock = DockStyle.Fill;
-            cbBasma.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            cbBasma.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold);
             cbBasma.FormattingEnabled = true;
             cbBasma.Location = new Point(143, 202);
             cbBasma.Name = "cbBasma";
@@ -442,7 +442,7 @@
             // cbMashin
             // 
             cbMashin.Dock = DockStyle.Fill;
-            cbMashin.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point);
+            cbMashin.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             cbMashin.FormattingEnabled = true;
             cbMashin.Location = new Point(143, 72);
             cbMashin.Name = "cbMashin";
@@ -469,7 +469,7 @@
             gridOpsion.BackgroundColor = Color.FromArgb(255, 255, 192);
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            dataGridViewCellStyle1.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
             dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
@@ -478,7 +478,7 @@
             gridOpsion.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            dataGridViewCellStyle2.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
             dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
             dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
@@ -489,7 +489,7 @@
             gridOpsion.Name = "gridOpsion";
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = SystemColors.Control;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            dataGridViewCellStyle3.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
             dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
             dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
@@ -508,7 +508,7 @@
             // 
             txtMakine.BackColor = Color.White;
             txtMakine.Dock = DockStyle.Fill;
-            txtMakine.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            txtMakine.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold);
             txtMakine.Location = new Point(132, 3);
             txtMakine.Name = "txtMakine";
             txtMakine.Size = new Size(123, 23);
@@ -518,7 +518,7 @@
             // 
             txtIpAddress.BackColor = Color.White;
             txtIpAddress.Dock = DockStyle.Fill;
-            txtIpAddress.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            txtIpAddress.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold);
             txtIpAddress.Location = new Point(132, 33);
             txtIpAddress.Name = "txtIpAddress";
             txtIpAddress.Size = new Size(123, 23);
@@ -529,7 +529,7 @@
             label1.AutoSize = true;
             label1.BackColor = Color.FromArgb(255, 255, 192);
             label1.Dock = DockStyle.Fill;
-            label1.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            label1.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold);
             label1.ForeColor = SystemColors.ControlText;
             label1.Location = new Point(3, 0);
             label1.Name = "label1";
@@ -543,7 +543,7 @@
             label2.AutoSize = true;
             label2.BackColor = Color.FromArgb(255, 255, 192);
             label2.Dock = DockStyle.Fill;
-            label2.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            label2.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold);
             label2.ForeColor = SystemColors.ControlText;
             label2.Location = new Point(3, 30);
             label2.Name = "label2";
@@ -557,7 +557,7 @@
             btnKaydet.BackColor = Color.FromArgb(128, 255, 128);
             btnKaydet.Dock = DockStyle.Fill;
             btnKaydet.FlatStyle = FlatStyle.Flat;
-            btnKaydet.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            btnKaydet.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
             btnKaydet.Location = new Point(3, 243);
             btnKaydet.Name = "btnKaydet";
             btnKaydet.Size = new Size(123, 24);
@@ -571,7 +571,7 @@
             btnGuncelle.BackColor = Color.FromArgb(128, 255, 128);
             btnGuncelle.Dock = DockStyle.Fill;
             btnGuncelle.FlatStyle = FlatStyle.Flat;
-            btnGuncelle.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            btnGuncelle.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
             btnGuncelle.Location = new Point(132, 243);
             btnGuncelle.Name = "btnGuncelle";
             btnGuncelle.Size = new Size(123, 24);
@@ -584,7 +584,7 @@
             // 
             cbArkaPlanEtap.BackColor = Color.White;
             cbArkaPlanEtap.Dock = DockStyle.Fill;
-            cbArkaPlanEtap.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            cbArkaPlanEtap.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold);
             cbArkaPlanEtap.FormattingEnabled = true;
             cbArkaPlanEtap.Location = new Point(132, 63);
             cbArkaPlanEtap.Name = "cbArkaPlanEtap";
@@ -597,7 +597,7 @@
             btnSil.BackColor = Color.FromArgb(255, 192, 128);
             btnSil.Dock = DockStyle.Fill;
             btnSil.FlatStyle = FlatStyle.Flat;
-            btnSil.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            btnSil.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
             btnSil.Location = new Point(3, 273);
             btnSil.Name = "btnSil";
             btnSil.Size = new Size(123, 33);
@@ -611,7 +611,7 @@
             label5.AutoSize = true;
             label5.BackColor = Color.FromArgb(255, 255, 192);
             label5.Dock = DockStyle.Fill;
-            label5.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            label5.Font = new Font("Microsoft Sans Serif", 10.2F, FontStyle.Bold);
             label5.ForeColor = SystemColors.ControlText;
             label5.Location = new Point(3, 60);
             label5.Name = "label5";
@@ -626,7 +626,7 @@
             btnRefres.BackColor = Color.WhiteSmoke;
             btnRefres.Dock = DockStyle.Fill;
             btnRefres.FlatStyle = FlatStyle.Flat;
-            btnRefres.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            btnRefres.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
             btnRefres.Location = new Point(132, 273);
             btnRefres.Name = "btnRefres";
             btnRefres.Size = new Size(123, 33);
@@ -711,7 +711,7 @@
             // listBarcodeIn
             // 
             listBarcodeIn.Dock = DockStyle.Fill;
-            listBarcodeIn.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            listBarcodeIn.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             listBarcodeIn.FormattingEnabled = true;
             listBarcodeIn.ItemHeight = 21;
             listBarcodeIn.Location = new Point(3, 77);
@@ -723,7 +723,7 @@
             // listBarcodeOut
             // 
             listBarcodeOut.Dock = DockStyle.Fill;
-            listBarcodeOut.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            listBarcodeOut.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             listBarcodeOut.FormattingEnabled = true;
             listBarcodeOut.ItemHeight = 21;
             listBarcodeOut.Location = new Point(193, 77);
@@ -735,7 +735,7 @@
             // listBox3
             // 
             listBox3.Dock = DockStyle.Fill;
-            listBox3.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            listBox3.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             listBox3.FormattingEnabled = true;
             listBox3.ItemHeight = 21;
             listBox3.Location = new Point(3, 152);
@@ -747,7 +747,7 @@
             // listBox4
             // 
             listBox4.Dock = DockStyle.Fill;
-            listBox4.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            listBox4.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             listBox4.FormattingEnabled = true;
             listBox4.ItemHeight = 21;
             listBox4.Location = new Point(193, 152);
@@ -759,7 +759,7 @@
             // listBox5
             // 
             listBox5.Dock = DockStyle.Fill;
-            listBox5.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            listBox5.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             listBox5.FormattingEnabled = true;
             listBox5.ItemHeight = 21;
             listBox5.Location = new Point(3, 227);
@@ -771,7 +771,7 @@
             // listBox6
             // 
             listBox6.Dock = DockStyle.Fill;
-            listBox6.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            listBox6.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             listBox6.FormattingEnabled = true;
             listBox6.ItemHeight = 21;
             listBox6.Location = new Point(193, 227);
@@ -800,7 +800,7 @@
             // 
             label14.AutoSize = true;
             label14.Dock = DockStyle.Bottom;
-            label14.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label14.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             label14.Location = new Point(3, 46);
             label14.Name = "label14";
             label14.Size = new Size(178, 25);
@@ -860,7 +860,7 @@
             // button1
             // 
             button1.Dock = DockStyle.Fill;
-            button1.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            button1.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
             button1.Location = new Point(3, 213);
             button1.Name = "button1";
             button1.Size = new Size(123, 24);
@@ -872,7 +872,7 @@
             // button2
             // 
             button2.Dock = DockStyle.Fill;
-            button2.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            button2.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
             button2.Location = new Point(132, 213);
             button2.Name = "button2";
             button2.Size = new Size(123, 24);
@@ -909,7 +909,7 @@
             tableLayoutPanel5.Controls.Add(panel2, 0, 0);
             tableLayoutPanel5.Controls.Add(panel1, 2, 0);
             tableLayoutPanel5.Dock = DockStyle.Bottom;
-            tableLayoutPanel5.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            tableLayoutPanel5.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             tableLayoutPanel5.Location = new Point(3, 3);
             tableLayoutPanel5.Name = "tableLayoutPanel5";
             tableLayoutPanel5.RowCount = 1;

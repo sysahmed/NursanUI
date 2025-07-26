@@ -85,14 +85,15 @@ namespace Nursan.UI
             // lblMessage
             // 
             lblMessage.AutoSize = true;
+            lblMessage.BackColor = Color.FromArgb(33, 37, 41);
             lblMessage.Dock = DockStyle.Fill;
-            lblMessage.Font = new Font("Microsoft Sans Serif", 48F, FontStyle.Bold, GraphicsUnit.Point);
-            lblMessage.ForeColor = Color.Lime;
+            lblMessage.Font = new Font("Segoe UI", 32F, FontStyle.Bold);
+            lblMessage.ForeColor = Color.FromArgb(40, 167, 69);
             lblMessage.Location = new Point(3, 0);
             lblMessage.Name = "lblMessage";
             lblMessage.Size = new Size(1270, 120);
             lblMessage.TabIndex = 0;
-            lblMessage.Text = "Text";
+            lblMessage.Text = "NURSAN ПРОИЗВОДСТВЕНА СИСТЕМА";
             lblMessage.TextAlign = ContentAlignment.MiddleCenter;
             lblMessage.UseWaitCursor = true;
             // 
@@ -162,46 +163,48 @@ namespace Nursan.UI
             tableLayoutPanel3.Size = new Size(607, 198);
             tableLayoutPanel3.TabIndex = 0;
             tableLayoutPanel3.UseWaitCursor = true;
-
             // 
             // button1
             // 
+            button1.BackColor = Color.FromArgb(40, 167, 69);
             button1.Dock = DockStyle.Fill;
             button1.FlatStyle = FlatStyle.Flat;
-            button1.Font = new Font("Arial Black", 21.75F, FontStyle.Bold, GraphicsUnit.Point);
-            button1.ForeColor = Color.Lime;
+            button1.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            button1.ForeColor = Color.White;
             button1.Location = new Point(3, 3);
             button1.Name = "button1";
             button1.Size = new Size(290, 192);
             button1.TabIndex = 0;
-            button1.Text = "Sicil Okut";
-            button1.UseVisualStyleBackColor = true;
+            button1.Text = "СКАНИРАЙ СПИСЪЧЕН НОМЕР";
+            button1.UseVisualStyleBackColor = false;
             button1.UseWaitCursor = true;
             button1.Click += button1_Click;
             // 
             // button2
             // 
+            button2.BackColor = Color.FromArgb(220, 53, 69);
             button2.Dock = DockStyle.Fill;
             button2.FlatStyle = FlatStyle.Flat;
-            button2.Font = new Font("Arial Black", 21.75F, FontStyle.Bold, GraphicsUnit.Point);
-            button2.ForeColor = Color.Red;
+            button2.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            button2.ForeColor = Color.White;
             button2.Location = new Point(299, 3);
             button2.Name = "button2";
             button2.Size = new Size(305, 192);
             button2.TabIndex = 1;
-            button2.Text = "EXIT";
-            button2.UseVisualStyleBackColor = true;
+            button2.Text = "ИЗХОД";
+            button2.UseVisualStyleBackColor = false;
             button2.UseWaitCursor = true;
             button2.Click += button2_Click;
             // 
             // listBox1
             // 
-            listBox1.BackColor = SystemColors.MenuText;
+            listBox1.BackColor = Color.FromArgb(248, 249, 250);
+            listBox1.BorderStyle = BorderStyle.FixedSingle;
             listBox1.Dock = DockStyle.Fill;
-            listBox1.Font = new Font("Arial", 21.75F, FontStyle.Bold, GraphicsUnit.Point);
-            listBox1.ForeColor = Color.Lime;
+            listBox1.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            listBox1.ForeColor = Color.FromArgb(33, 37, 41);
             listBox1.FormattingEnabled = true;
-            listBox1.ItemHeight = 34;
+            listBox1.ItemHeight = 25;
             listBox1.Location = new Point(616, 3);
             listBox1.Name = "listBox1";
             listBox1.Size = new Size(651, 198);
@@ -211,13 +214,13 @@ namespace Nursan.UI
             // ScreenSaverForm
             // 
             AutoScaleBaseSize = new Size(6, 16);
-            BackColor = Color.Black;
+            BackColor = Color.FromArgb(248, 249, 250);
             ClientSize = new Size(1276, 701);
             Controls.Add(tableLayoutPanel1);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "ScreenSaverForm";
-            Text = "ReportNBG-Screen";
+            Text = "Nursan - Екран заставка";
             WindowState = FormWindowState.Maximized;
             Load += ScreenSaverForm_Load;
             ((ISupportInitialize)pictureBox1).EndInit();

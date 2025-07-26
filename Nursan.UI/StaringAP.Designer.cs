@@ -46,13 +46,14 @@
             // 
             // txtBarcode
             // 
-            txtBarcode.BorderStyle = BorderStyle.None;
+            txtBarcode.BorderStyle = BorderStyle.FixedSingle;
             txtBarcode.Dock = DockStyle.Top;
-            txtBarcode.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            txtBarcode.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
             txtBarcode.Location = new Point(1065, 550);
             txtBarcode.Margin = new Padding(4, 3, 4, 3);
             txtBarcode.Name = "txtBarcode";
-            txtBarcode.Size = new Size(329, 32);
+            txtBarcode.PlaceholderText = "Сканирай баркод за вход...";
+            txtBarcode.Size = new Size(329, 40);
             txtBarcode.TabIndex = 0;
             txtBarcode.KeyUp += txtBarcode_KeyUp;
             // 
@@ -134,33 +135,35 @@
             // 
             lblMessages.AutoSize = true;
             lblMessages.Dock = DockStyle.Fill;
-            lblMessages.Font = new Font("Segoe UI", 22.2F, FontStyle.Bold, GraphicsUnit.Point);
-            lblMessages.ForeColor = Color.Red;
+            lblMessages.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
+            lblMessages.ForeColor = Color.FromArgb(220, 53, 69);
             lblMessages.Location = new Point(1065, 0);
             lblMessages.Margin = new Padding(4, 0, 4, 0);
             lblMessages.Name = "lblMessages";
             lblMessages.Size = new Size(329, 323);
             lblMessages.TabIndex = 3;
-            lblMessages.Text = " ";
+            lblMessages.Text = "Очаквам баркод...";
             lblMessages.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.Dock = DockStyle.Fill;
-            label1.Font = new Font("Arial Narrow", 48F, FontStyle.Bold, GraphicsUnit.Point);
-            label1.ForeColor = Color.Red;
+            label1.Font = new Font("Segoe UI", 42F, FontStyle.Bold);
+            label1.ForeColor = Color.FromArgb(220, 53, 69);
             label1.Location = new Point(4, 547);
             label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
             label1.Size = new Size(1053, 533);
             label1.TabIndex = 5;
+            label1.Text = "NURSAN\nПРОИЗВОДСТВЕНА СИСТЕМА";
             label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // StaringAP
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(248, 249, 250);
             BackgroundImage = Properties.Resources.FROM1;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1879, 1080);
@@ -168,7 +171,7 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(4, 3, 4, 3);
             Name = "StaringAP";
-            Text = "StaringAP";
+            Text = "Nursan - Вход в системата (AP)";
             WindowState = FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)fileSystemWatcher1).EndInit();
             tableLayoutPanel1.ResumeLayout(false);
