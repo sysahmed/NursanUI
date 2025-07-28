@@ -798,9 +798,12 @@ namespace Nursan.UI
             decimal? pcId = _elTest.GetPcId();
             using (var context = new AmbarContext())
             {
+                // Ограничаваме дължината на tiketName до 50 символа за да избегнем SQL truncation error
+                string truncatedTiketName = tiketName?.Length > 50 ? tiketName.Substring(0, 50) : tiketName;
+                
                 var islemler = new Islemler
                 {
-                    Ariza = tiketName,
+                    Ariza = truncatedTiketName,
                     // Islem = description,
                     Tarih = DateTime.Now,
                     Role = role,

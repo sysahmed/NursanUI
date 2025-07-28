@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net8.0-windows8.0</TargetFramework>
+		<TargetFramework>net8.0-windows</TargetFramework>
 		<UseWindowsForms>true</UseWindowsForms>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UserSecretsId>9fabd8c2-4d0b-40d3-99e2-bb25d4ca41f8</UserSecretsId>
@@ -18,9 +18,6 @@
 		<Company>$(Ahmed AHMED NBG)</Company>
 		<BaseOutputPath></BaseOutputPath>
 		<!--tuk se dobavq Native AOT-->
-		<OutputType>WinExe</OutputType>
-		<TargetFramework>net8.0-windows</TargetFramework>
-		<UseWindowsForms>true</UseWindowsForms>
 		<PublishSingleFile>true</PublishSingleFile>
 		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 		<SelfContained>false</SelfContained>

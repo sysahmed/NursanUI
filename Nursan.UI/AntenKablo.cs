@@ -1,13 +1,16 @@
-﻿using Nursan.Business.Services;
+﻿using Microsoft.EntityFrameworkCore;
+using Nursan.Business.Services;
 using Nursan.Core.Printing;
 using Nursan.Domain.Entity;
 using Nursan.Domain.ModelsDisposible;
 using Nursan.Persistanse.UnitOfWork;
 using Nursan.Validations.ValidationCode;
 using Nursan.XMLTools;
+using System.Data.Common;
 
 namespace Nursan.UI
 {
+
     public partial class AntenKablo : Form
     {
         public event System.IO.Ports.SerialDataReceivedEventHandler DataReceived;
@@ -130,21 +133,21 @@ namespace Nursan.UI
         {
             // Ако е търсене, не се изпълнявай повторно
             if (_isSearching) return;
-            
+
             if (listAntenCabloOut.Items.Count == 0)
             {
                 listAntenCableIn.Items.Clear();
                 listAntenCabloOut.Items.Clear();
                 t = TarihHesapla.GetSystemDate();
-                
+
                 if (listReferansSec.SelectedIndices.Count <= 0) return;
-                
+
                 int selectedIndex = listReferansSec.SelectedIndices[0];
                 if (selectedIndex >= 0)
                 {
                     string selectedHarnessName = listReferansSec.Items[selectedIndex].Text.TrimEnd();
                     label1.Text = selectedHarnessName;
-                    
+
                     // Намери избрания Harness модел
                     var selectedHarness = harnesDonanimList.FirstOrDefault(x => x.HarnessModelName == selectedHarnessName);
                     if (selectedHarness != null)
@@ -152,10 +155,10 @@ namespace Nursan.UI
                         // ЗАЯВКА КЪМ DB - зареди Coax кабели за този Harness
                         var coaxCablesForSelectedHarness = _repo.GetRepository<IzCoaxCableCross>()
                             .GetAll(x => x.HarnessModelId == selectedHarness.Id && x.Activ == true).Data;
-                        
+
                         // Изчисти списъка преди да го пълниш
                         harnesDonanimCoaxList.Clear();
-                        
+
                         // Добави Coax кабелите в списъка
                         foreach (var coax in coaxCablesForSelectedHarness)
                         {
@@ -164,7 +167,7 @@ namespace Nursan.UI
                             if (coaxConfig != null)
                             {
                                 listAntenCableIn.Items.Add(coaxConfig.CoaxCabloReferans);
-                                
+
                                 // Добави към harnesDonanimCoaxList за по-късно използване
                                 harnesDonanimCoaxList.Add(new HarnesDonanimCoax
                                 {
@@ -196,7 +199,9 @@ namespace Nursan.UI
             }
         }
         string idDonanimBarcode;
-        private bool BarcodeBas(List<IzCoaxCableCount> listCoaxCount, HarnesDonanimCoax gl, int sayikount)
+
+
+        private async Task<bool> BarcodeBas(List<IzCoaxCableCount> listCoaxCount, HarnesDonanimCoax gl, int sayikount)
         {
             t = TarihHesapla.GetSystemDate();
             string formattedDateTime = $"{t.Year:D4}{t.Month:D2}{t.Day:D2}{t.Hour:D2}{t.Minute:D2}{t.Second:D2}";
@@ -208,9 +213,19 @@ namespace Nursan.UI
 
                 idDonanimBarcode = item.CoaxTutulanId.ToString();
                 item.CoaxTutulanId = idName;
-                item.Activ = true;
-                _repo.GetRepository<IzCoaxCableCount>().Add(item);
-                _repo.SaveChanges();
+                try
+                {
+                    using var glContext = new UretimOtomasyonContext();
+                    {
+                        var result = await glContext.IzCoaxCableCounts.AddAsync(item);
+                    }
+                    // _repo.SaveChanges();
+                }
+                catch (DbException ex)
+                {
+
+                    throw;
+                }
             }
             _sysBarcodOut.IdDonanim = _sysBarcodOut.BarcodeIcerik = idName.ToString();
             _sysBarcodOut.Leght = sayikount;
@@ -222,73 +237,72 @@ namespace Nursan.UI
             return true;
         }
 
-        #endregion
         private void textBox1_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                if (listAntenCableIn.Items.Count == 0) return;
-                sayiCount = (int)numSayi.Value;
-                string inputText = textBox1.Text.ToUpper();
-                // Създай HashSet за по-бързо търсене
-                var inItems = new HashSet<string>(listAntenCableIn.Items.Cast<string>(), StringComparer.OrdinalIgnoreCase);
-                string found = inItems.FirstOrDefault(lb => inputText.Contains(lb.ToUpper()));
-                if (found != null)
+                for (int i = 0; i < listAntenCableIn.Items.Count; ++i)
                 {
-                    try
+                    sayiCount = int.Parse(numSayi.Value.ToString());
+                    string lbString = listAntenCableIn.Items[i].ToString();
+                    if (textBox1.Text.ToUpper().Contains(lbString))
                     {
-                        if (izCoaxCableCounts == null)
-                            izCoaxCableCounts = new();
-                        // Създай речник за coaxCableConfig
-                        var coaxConfigDict = coaxCableConfig.ToDictionary(x => x.CoaxCabloReferans, x => x.Id, StringComparer.OrdinalIgnoreCase);
-                        var harnesDict = harnesDonanimCoaxList.FirstOrDefault(x => x.harnessModel == label1.Text);
-                        izCoaxCableConfig = new(); harnesDonanimCoax = new();
-                        int veri = coaxConfigDict[found];
-                        int coaxId = coaxCableCross.FirstOrDefault(x => x.CoaxCableBarcodeId == veri)?.Id ?? 0;
-                        izCoaxCableCounts.Add(new IzCoaxCableCount
+                        try
                         {
-                            HarnessModelId = harnesDict.HarnesId,
-                            CoaxCableName = inputText,
-                            CoaxCableId = coaxId,
-                            UrIstasyonId = _urIstasyon.Id,
-                            OrPcNameId = _urIstasyon.MashinId,
-                            VardiyaId = _urIstasyon.VardiyaId,
-                            Activ = true,
-                            CreateDate = TarihHesapla.GetSystemDate(),
-                        });
-                        textBox1.Clear();
-                        listAntenCabloOut.BeginUpdate();
-                        listAntenCabloOut.Items.Add(found);
-                        listAntenCabloOut.EndUpdate();
-                        listAntenCableIn.BeginUpdate();
-                        listAntenCableIn.Items.Remove(found);
-                        listAntenCableIn.EndUpdate();
-                        if (listAntenCableIn.Items.Count == 0)
+                            if (izCoaxCableCounts == null)
+                                izCoaxCableCounts = new();
+                            if (harnesDonanimCoax == null)
+                                harnesDonanimCoax = new();
+                            if (izCoaxCableConfig == null)
+                                izCoaxCableConfig = new();
+                            var veri = coaxCableConfig.FirstOrDefault(x => x.CoaxCabloReferans == lbString).Id;
+                            var result = harnesDonanimCoaxList.FirstOrDefault(x => x.harnessModel == label1.Text);
+                            //izCoaxCableConfig = new(); harnesDonanimCoax = new();
+                            var coaxId = coaxCableCross.FirstOrDefault(x => x.CoaxCableBarcodeId == veri).Id;
+                            izCoaxCableCounts.Add(new IzCoaxCableCount
+                            {
+                                HarnessModelId = result.HarnesId,
+                                CoaxCableName = textBox1.Text.ToUpper(),
+                                CoaxCableId = coaxId,
+                                UrIstasyonId = _urIstasyon.Id,
+                                OrPcNameId = _urIstasyon.MashinId,
+                                VardiyaId = _urIstasyon.VardiyaId,
+                                Activ = true,
+                                CreateDate = TarihHesapla.GetSystemDate(),
+                            });
+                            textBox1.Clear();
+                            listAntenCabloOut.Items.Add(lbString);
+                            listAntenCableIn.Items.Remove(lbString);
+                            if (listAntenCableIn.Items.Count == 0)
+                            {
+                                for (int r = 0; r < listAntenCabloOut.Items.Count; r++)
+                                {
+                                    string propName = $"Sira{r + 1}";
+                                    string modelValue = listAntenCabloOut.Items[r].ToString();
+                                    harnesDonanimCoax.GetType().GetProperty(propName)?.SetValue(harnesDonanimCoax, modelValue);
+                                }
+                                sayiCount++;
+                                harnesDonanimCoax.harnessModel = label1.Text;
+                                //Naka sira yaziyami barcoda
+                                BarcodeBas(izCoaxCableCounts, harnesDonanimCoax, sayiCount);
+                                foreach (var item in harnesDonanimCoaxList.Where(x => x.harnessModel == label1.Text))
+                                {
+                                    listAntenCableIn.Items.Add(item.BarcodeCoax);
+                                }
+                                listAntenCabloOut.Items.Clear();
+                                izCoaxCableConfig = null; harnesDonanimCoax = null;
+                                izCoaxCableCounts = null;
+                                numSayi.Value = sayiCount;
+                            }
+                        }
+                        catch (Exception ex)
                         {
-                            for (int r = 0; r < listAntenCabloOut.Items.Count; r++)
-                            {
-                                string propName = $"Sira{r + 1}";
-                                string modelValue = listAntenCabloOut.Items[r].ToString();
-                                harnesDonanimCoax.GetType().GetProperty(propName)?.SetValue(harnesDonanimCoax, modelValue);
-                            }
-                            sayiCount++;
-                            harnesDonanimCoax.harnessModel = label1.Text;
-                            BarcodeBas(izCoaxCableCounts, harnesDonanimCoax, sayiCount);
-                            listAntenCableIn.BeginUpdate();
-                            foreach (var item in harnesDonanimCoaxList.Where(x => x.harnessModel == label1.Text))
-                            {
-                                listAntenCableIn.Items.Add(item.BarcodeCoax);
-                            }
-                            listAntenCableIn.EndUpdate();
-                            listAntenCabloOut.Items.Clear();
-                            izCoaxCableConfig = null; harnesDonanimCoax = null;
-                            izCoaxCableCounts = null;
-                            numSayi.Value = sayiCount;
+                            MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        // Може да се логне грешката при нужда
+                        MessageBox.Show("Barkod yanlış", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
@@ -300,11 +314,11 @@ namespace Nursan.UI
         }
 
         private bool _isSearching = false; // Флаг за предотвратяване на двойно извикване
-        
+
         private void textBox2_KeyUp(object sender, KeyEventArgs e)
         {
             string searchText = textBox2.Text.Trim();
-            
+
             if (string.IsNullOrEmpty(searchText))
             {
                 // Ако полето е празно, премахни селекцията
@@ -322,12 +336,12 @@ namespace Nursan.UI
                     listReferansSec.SelectedIndices.Clear();
                     listReferansSec.SelectedIndices.Add(i);
                     listReferansSec.EnsureVisible(i);
-                    
+
                     // Ако е натиснат Enter, избери този елемент
                     if (e.KeyCode == Keys.Enter)
                     {
                         _isSearching = true; // Маркирай, че е търсене
-                        // Симулирай клик върху избрания елемент
+                                             // Симулирай клик върху избрания елемент
                         listReferansSec.Focus();
                         // Тригервай събитието за избор
                         listView1_SelectedIndexChanged_1(listReferansSec, e);
@@ -336,7 +350,7 @@ namespace Nursan.UI
                     return;
                 }
             }
-            
+
             // Ако не е намерен нито един елемент, премахни селекцията
             if (e.KeyCode != Keys.Enter)
             {
@@ -348,7 +362,7 @@ namespace Nursan.UI
         {
             VeriGetir();
         }
+        #endregion
+
     }
 }
-
-
