@@ -5,12 +5,12 @@ namespace Nursan.UI
     partial class AntenKablo
     {
         /// <summary>
-        ///  Required designer variable.
+        /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
         /// <summary>
-        ///  Clean up any resources being used.
+        /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
@@ -25,372 +25,441 @@ namespace Nursan.UI
         #region Windows Form Designer generated code
 
         /// <summary>
-        ///  Required method for Designer support - do not modify
-        ///  the contents of this method with the code editor.
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AntenKablo));
-            label1 = new Label();
-            pictureBox1 = new PictureBox();
-            btnPrintConfig = new Button();
-            listReferansSec = new ListView();
-            lstBiten = new ListView();
-            dataGridView1 = new DataGridView();
+            panel1 = new Panel();
             label2 = new Label();
-            tableLayoutPanel1 = new TableLayoutPanel();
-            tableLayoutPanel2 = new TableLayoutPanel();
-            listAntenCabloOut = new ListBox();
-            tableLayoutPanel4 = new TableLayoutPanel();
-            textBox1 = new TextBox();
-            listAntenCableIn = new ListBox();
-            tableLayoutPanel3 = new TableLayoutPanel();
             btnHome = new Button();
-            numSayi = new NumericUpDown();
+            panel2 = new Panel();
+            label1 = new Label();
+            panel3 = new Panel();
+            listReferansSec = new ListView();
+            panel4 = new Panel();
             textBox2 = new TextBox();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
-            tableLayoutPanel1.SuspendLayout();
-            tableLayoutPanel2.SuspendLayout();
-            tableLayoutPanel4.SuspendLayout();
-            tableLayoutPanel3.SuspendLayout();
+            label3 = new Label();
+            panel5 = new Panel();
+            textBox1 = new TextBox();
+            label4 = new Label();
+            panel6 = new Panel();
+            listAntenCableIn = new ListBox();
+            label5 = new Label();
+            panel7 = new Panel();
+            listAntenCabloOut = new ListBox();
+            label6 = new Label();
+            panel8 = new Panel();
+            lstBiten = new ListBox();
+            label7 = new Label();
+            panel9 = new Panel();
+            numSayi = new NumericUpDown();
+            label8 = new Label();
+            panel10 = new Panel();
+            btnPrintConfig = new Button();
+            panel1.SuspendLayout();
+            panel2.SuspendLayout();
+            panel3.SuspendLayout();
+            panel4.SuspendLayout();
+            panel5.SuspendLayout();
+            panel6.SuspendLayout();
+            panel7.SuspendLayout();
+            panel8.SuspendLayout();
+            panel9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numSayi).BeginInit();
+            panel10.SuspendLayout();
             SuspendLayout();
             // 
-            // label1
+            // panel1
             // 
-            label1.AutoSize = true;
-            label1.Dock = DockStyle.Fill;
-            label1.Font = new Font("Segoe UI", 28F, FontStyle.Bold);
-            label1.ForeColor = Color.DimGray;
-            label1.Location = new Point(3, 33);
-            label1.Name = "label1";
-            label1.Size = new Size(1113, 34);
-            label1.TabIndex = 1;
-            label1.Text = "ИЗБЕРИ ХАРНЕС МОДЕЛ";
-            label1.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // pictureBox1
-            // 
-            pictureBox1.BackColor = Color.Transparent;
-            pictureBox1.Dock = DockStyle.Fill;
-            pictureBox1.ErrorImage = null;
-            pictureBox1.Image = Properties.Resources.nursan_logo;
-            pictureBox1.Location = new Point(3, 3);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(1113, 27);
-            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox1.TabIndex = 6;
-            pictureBox1.TabStop = false;
-            // 
-            // btnPrintConfig
-            // 
-            btnPrintConfig.BackColor = Color.FromArgb(0, 100, 200);
-            btnPrintConfig.Dock = DockStyle.Fill;
-            btnPrintConfig.FlatStyle = FlatStyle.Flat;
-            btnPrintConfig.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            btnPrintConfig.ForeColor = Color.White;
-            btnPrintConfig.Location = new Point(1122, 3);
-            btnPrintConfig.Name = "btnPrintConfig";
-            btnPrintConfig.Size = new Size(133, 27);
-            btnPrintConfig.TabIndex = 5;
-            btnPrintConfig.Text = "ОБНОВИ";
-            btnPrintConfig.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btnPrintConfig.UseVisualStyleBackColor = false;
-            btnPrintConfig.Click += btnPrintConfig_Click;
-            // 
-            // listReferansSec
-            // 
-            listReferansSec.BackColor = Color.FromArgb(240, 248, 255);
-            listReferansSec.Dock = DockStyle.Fill;
-            listReferansSec.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
-            listReferansSec.FullRowSelect = true;
-            listReferansSec.GridLines = true;
-            listReferansSec.LabelWrap = false;
-            listReferansSec.Location = new Point(330, 3);
-            listReferansSec.MultiSelect = false;
-            listReferansSec.Name = "listReferansSec";
-            listReferansSec.Size = new Size(1066, 252);
-            listReferansSec.Sorting = SortOrder.Ascending;
-            listReferansSec.TabIndex = 3;
-            listReferansSec.UseCompatibleStateImageBehavior = false;
-            listReferansSec.View = View.List;
-            listReferansSec.SelectedIndexChanged += listView1_SelectedIndexChanged_1;
-            // 
-            // lstBiten
-            // 
-            lstBiten.BackColor = Color.FromArgb(245, 245, 245);
-            lstBiten.Dock = DockStyle.Fill;
-            lstBiten.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            lstBiten.ForeColor = Color.FromArgb(100, 100, 100);
-            lstBiten.FullRowSelect = true;
-            lstBiten.GridLines = true;
-            lstBiten.LabelWrap = false;
-            lstBiten.Location = new Point(3, 615);
-            lstBiten.MultiSelect = false;
-            lstBiten.Name = "lstBiten";
-            lstBiten.Size = new Size(1399, 114);
-            lstBiten.Sorting = SortOrder.Ascending;
-            lstBiten.TabIndex = 4;
-            lstBiten.UseCompatibleStateImageBehavior = false;
-            lstBiten.View = View.List;
-            // 
-            // dataGridView1
-            // 
-            dataGridView1.AccessibleRole = AccessibleRole.TitleBar;
-            dataGridView1.AllowUserToOrderColumns = true;
-            dataGridViewCellStyle4.BackColor = Color.FromArgb(248, 249, 250);
-            dataGridViewCellStyle4.ForeColor = Color.FromArgb(73, 80, 87);
-            dataGridViewCellStyle4.SelectionForeColor = Color.White;
-            dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridView1.BackgroundColor = Color.FromArgb(255, 255, 255);
-            dataGridView1.BorderStyle = BorderStyle.None;
-            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = Color.FromArgb(52, 58, 64);
-            dataGridViewCellStyle5.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            dataGridViewCellStyle5.ForeColor = Color.White;
-            dataGridViewCellStyle5.SelectionBackColor = Color.FromArgb(0, 123, 255);
-            dataGridViewCellStyle5.SelectionForeColor = Color.White;
-            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
-            dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = Color.White;
-            dataGridViewCellStyle6.Font = new Font("Segoe UI", 12F);
-            dataGridViewCellStyle6.ForeColor = Color.FromArgb(33, 37, 41);
-            dataGridViewCellStyle6.SelectionBackColor = Color.FromArgb(0, 123, 255);
-            dataGridViewCellStyle6.SelectionForeColor = Color.White;
-            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.False;
-            dataGridView1.DefaultCellStyle = dataGridViewCellStyle6;
-            dataGridView1.Dock = DockStyle.Fill;
-            dataGridView1.GridColor = Color.FromArgb(222, 226, 230);
-            dataGridView1.Location = new Point(330, 261);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
-            dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.ScrollBars = ScrollBars.None;
-            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.Size = new Size(1066, 269);
-            dataGridView1.TabIndex = 7;
+            panel1.BackColor = Color.FromArgb(45, 45, 48);
+            panel1.Controls.Add(label2);
+            panel1.Controls.Add(btnHome);
+            panel1.Dock = DockStyle.Top;
+            panel1.Location = new Point(0, 0);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(1200, 60);
+            panel1.TabIndex = 0;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            label2.ForeColor = Color.FromArgb(128, 255, 128);
-            label2.Location = new Point(48, 151);
+            label2.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
+            label2.ForeColor = Color.White;
+            label2.Location = new Point(20, 15);
             label2.Name = "label2";
-            label2.Size = new Size(64, 25);
-            label2.TabIndex = 8;
-            label2.Text = "label2";
-            // 
-            // tableLayoutPanel1
-            // 
-            tableLayoutPanel1.ColumnCount = 1;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 0, 1);
-            tableLayoutPanel1.Controls.Add(tableLayoutPanel3, 0, 0);
-            tableLayoutPanel1.Controls.Add(lstBiten, 0, 2);
-            tableLayoutPanel1.Dock = DockStyle.Fill;
-            tableLayoutPanel1.Location = new Point(0, 0);
-            tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 3;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 73.72549F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 16.3398685F));
-            tableLayoutPanel1.Size = new Size(1405, 732);
-            tableLayoutPanel1.TabIndex = 9;
-            // 
-            // tableLayoutPanel2
-            // 
-            tableLayoutPanel2.ColumnCount = 2;
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 23.3972244F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 76.6027756F));
-            tableLayoutPanel2.Controls.Add(listAntenCabloOut, 0, 1);
-            tableLayoutPanel2.Controls.Add(listReferansSec, 10, 0);
-            tableLayoutPanel2.Controls.Add(tableLayoutPanel4, 0, 0);
-            tableLayoutPanel2.Controls.Add(dataGridView1, 1, 1);
-            tableLayoutPanel2.Dock = DockStyle.Fill;
-            tableLayoutPanel2.Location = new Point(3, 76);
-            tableLayoutPanel2.Name = "tableLayoutPanel2";
-            tableLayoutPanel2.RowCount = 2;
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 48.57143F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 51.42857F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 19F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 19F));
-            tableLayoutPanel2.Size = new Size(1399, 533);
-            tableLayoutPanel2.TabIndex = 8;
-            // 
-            // listAntenCabloOut
-            // 
-            listAntenCabloOut.BackColor = Color.FromArgb(255, 255, 224);
-            listAntenCabloOut.Dock = DockStyle.Fill;
-            listAntenCabloOut.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            listAntenCabloOut.FormattingEnabled = true;
-            listAntenCabloOut.ItemHeight = 25;
-            listAntenCabloOut.Location = new Point(3, 259);
-            listAntenCabloOut.Margin = new Padding(3, 1, 3, 1);
-            listAntenCabloOut.Name = "listAntenCabloOut";
-            listAntenCabloOut.Size = new Size(321, 273);
-            listAntenCabloOut.TabIndex = 8;
-            // 
-            // tableLayoutPanel4
-            // 
-            tableLayoutPanel4.ColumnCount = 1;
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tableLayoutPanel4.Controls.Add(textBox1, 0, 0);
-            tableLayoutPanel4.Controls.Add(listAntenCableIn, 0, 1);
-            tableLayoutPanel4.Dock = DockStyle.Fill;
-            tableLayoutPanel4.Location = new Point(3, 3);
-            tableLayoutPanel4.Name = "tableLayoutPanel4";
-            tableLayoutPanel4.RowCount = 2;
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 80F));
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Absolute, 15F));
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Absolute, 15F));
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Absolute, 15F));
-            tableLayoutPanel4.Size = new Size(321, 252);
-            tableLayoutPanel4.TabIndex = 5;
-            // 
-            // textBox1
-            // 
-            textBox1.BorderStyle = BorderStyle.FixedSingle;
-            textBox1.Dock = DockStyle.Fill;
-            textBox1.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
-            textBox1.Location = new Point(0, 11);
-            textBox1.Margin = new Padding(0, 11, 0, 11);
-            textBox1.Name = "textBox1";
-            textBox1.PlaceholderText = "Сканирай баркод...";
-            textBox1.Size = new Size(321, 36);
-            textBox1.TabIndex = 0;
-            textBox1.KeyUp += textBox1_KeyUp;
-            // 
-            // listAntenCableIn
-            // 
-            listAntenCableIn.BackColor = Color.FromArgb(255, 240, 245);
-            listAntenCableIn.Dock = DockStyle.Fill;
-            listAntenCableIn.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            listAntenCableIn.FormattingEnabled = true;
-            listAntenCableIn.ItemHeight = 25;
-            listAntenCableIn.Location = new Point(0, 50);
-            listAntenCableIn.Margin = new Padding(0);
-            listAntenCableIn.Name = "listAntenCableIn";
-            listAntenCableIn.Size = new Size(321, 202);
-            listAntenCableIn.TabIndex = 1;
-            // 
-            // tableLayoutPanel3
-            // 
-            tableLayoutPanel3.ColumnCount = 3;
-            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 80F));
-            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
-            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
-            tableLayoutPanel3.Controls.Add(btnHome, 2, 0);
-            tableLayoutPanel3.Controls.Add(label1, 0, 1);
-            tableLayoutPanel3.Controls.Add(btnPrintConfig, 1, 0);
-            tableLayoutPanel3.Controls.Add(pictureBox1, 0, 0);
-            tableLayoutPanel3.Controls.Add(numSayi, 2, 1);
-            tableLayoutPanel3.Controls.Add(textBox2, 1, 1);
-            tableLayoutPanel3.Dock = DockStyle.Fill;
-            tableLayoutPanel3.Location = new Point(3, 3);
-            tableLayoutPanel3.Name = "tableLayoutPanel3";
-            tableLayoutPanel3.RowCount = 2;
-            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel3.Size = new Size(1399, 67);
-            tableLayoutPanel3.TabIndex = 9;
+            label2.Size = new Size(200, 30);
+            label2.TabIndex = 1;
+            label2.Text = "Anten Kablo Sistemi";
             // 
             // btnHome
             // 
-            btnHome.BackColor = Color.FromArgb(40, 167, 69);
-            btnHome.Dock = DockStyle.Fill;
+            btnHome.BackColor = Color.FromArgb(0, 122, 204);
+            btnHome.FlatAppearance.BorderSize = 0;
             btnHome.FlatStyle = FlatStyle.Flat;
             btnHome.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnHome.ForeColor = Color.White;
-            btnHome.Location = new Point(1261, 3);
+            btnHome.Location = new Point(1100, 15);
             btnHome.Name = "btnHome";
-            btnHome.Size = new Size(135, 27);
-            btnHome.TabIndex = 5;
-            btnHome.Text = "НАЧАЛО";
-            btnHome.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnHome.Size = new Size(80, 30);
+            btnHome.TabIndex = 0;
+            btnHome.Text = "Ana Sayfa";
             btnHome.UseVisualStyleBackColor = false;
             btnHome.Click += btnHome_Click;
             // 
-            // numSayi
+            // panel2
             // 
-            numSayi.BackColor = Color.FromArgb(248, 249, 250);
-            numSayi.Dock = DockStyle.Fill;
-            numSayi.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            numSayi.Location = new Point(1261, 36);
-            numSayi.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
-            numSayi.Name = "numSayi";
-            numSayi.Size = new Size(135, 32);
-            numSayi.TabIndex = 8;
+            panel2.BackColor = Color.FromArgb(60, 60, 65);
+            panel2.Controls.Add(label1);
+            panel2.Dock = DockStyle.Top;
+            panel2.Location = new Point(0, 60);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(1200, 40);
+            panel2.TabIndex = 1;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            label1.ForeColor = Color.FromArgb(0, 122, 204);
+            label1.Location = new Point(20, 10);
+            label1.Name = "label1";
+            label1.Size = new Size(120, 21);
+            label1.TabIndex = 0;
+            label1.Text = "Seçilen Model:";
+            // 
+            // panel3
+            // 
+            panel3.BackColor = Color.FromArgb(37, 37, 38);
+            panel3.Controls.Add(listReferansSec);
+            panel3.Location = new Point(20, 120);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(300, 400);
+            panel3.TabIndex = 2;
+            // 
+            // listReferansSec
+            // 
+            listReferansSec.BackColor = Color.FromArgb(45, 45, 48);
+            listReferansSec.BorderStyle = BorderStyle.None;
+            listReferansSec.Dock = DockStyle.Fill;
+            listReferansSec.Font = new Font("Segoe UI", 10F);
+            listReferansSec.ForeColor = Color.White;
+            listReferansSec.FullRowSelect = true;
+            listReferansSec.HideSelection = false;
+            listReferansSec.Location = new Point(0, 0);
+            listReferansSec.Name = "listReferansSec";
+            listReferansSec.Size = new Size(300, 400);
+            listReferansSec.TabIndex = 0;
+            listReferansSec.UseCompatibleStateImageBehavior = false;
+            listReferansSec.View = View.Details;
+            listReferansSec.SelectedIndexChanged += listView1_SelectedIndexChanged_1;
+            // 
+            // panel4
+            // 
+            panel4.BackColor = Color.FromArgb(37, 37, 38);
+            panel4.Controls.Add(textBox2);
+            panel4.Controls.Add(label3);
+            panel4.Location = new Point(340, 120);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(300, 80);
+            panel4.TabIndex = 3;
             // 
             // textBox2
             // 
+            textBox2.BackColor = Color.FromArgb(45, 45, 48);
             textBox2.BorderStyle = BorderStyle.FixedSingle;
-            textBox2.Dock = DockStyle.Fill;
-            textBox2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            textBox2.Location = new Point(1122, 36);
+            textBox2.Font = new Font("Segoe UI", 12F);
+            textBox2.ForeColor = Color.White;
+            textBox2.Location = new Point(10, 40);
             textBox2.Name = "textBox2";
-            textBox2.PlaceholderText = "Търси...";
-            textBox2.Size = new Size(133, 29);
-            textBox2.TabIndex = 9;
+            textBox2.Size = new Size(280, 29);
+            textBox2.TabIndex = 1;
+            textBox2.Text = "Arama...";
             textBox2.KeyUp += textBox2_KeyUp;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label3.ForeColor = Color.FromArgb(0, 122, 204);
+            label3.Location = new Point(10, 10);
+            label3.Name = "label3";
+            label3.Size = new Size(50, 19);
+            label3.TabIndex = 0;
+            label3.Text = "Arama:";
+            // 
+            // panel5
+            // 
+            panel5.BackColor = Color.FromArgb(37, 37, 38);
+            panel5.Controls.Add(textBox1);
+            panel5.Controls.Add(label4);
+            panel5.Location = new Point(340, 220);
+            panel5.Name = "panel5";
+            panel5.Size = new Size(300, 80);
+            panel5.TabIndex = 4;
+            // 
+            // textBox1
+            // 
+            textBox1.BackColor = Color.FromArgb(45, 45, 48);
+            textBox1.BorderStyle = BorderStyle.FixedSingle;
+            textBox1.Font = new Font("Segoe UI", 12F);
+            textBox1.ForeColor = Color.White;
+            textBox1.Location = new Point(10, 40);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(280, 29);
+            textBox1.TabIndex = 1;
+            textBox1.Text = "Barkod oku...";
+            textBox1.KeyUp += textBox1_KeyUp;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label4.ForeColor = Color.FromArgb(0, 122, 204);
+            label4.Location = new Point(10, 10);
+            label4.Name = "label4";
+            label4.Size = new Size(100, 19);
+            label4.TabIndex = 0;
+            label4.Text = "Barkod Oku:";
+            // 
+            // panel6
+            // 
+            panel6.BackColor = Color.FromArgb(37, 37, 38);
+            panel6.Controls.Add(listAntenCableIn);
+            panel6.Controls.Add(label5);
+            panel6.Location = new Point(660, 120);
+            panel6.Name = "panel6";
+            panel6.Size = new Size(250, 300);
+            panel6.TabIndex = 5;
+            // 
+            // listAntenCableIn
+            // 
+            listAntenCableIn.BackColor = Color.FromArgb(45, 45, 48);
+            listAntenCableIn.BorderStyle = BorderStyle.None;
+            listAntenCableIn.Dock = DockStyle.Bottom;
+            listAntenCableIn.Font = new Font("Segoe UI", 10F);
+            listAntenCableIn.ForeColor = Color.White;
+            listAntenCableIn.FormattingEnabled = true;
+            listAntenCableIn.ItemHeight = 19;
+            listAntenCableIn.Location = new Point(0, 30);
+            listAntenCableIn.Name = "listAntenCableIn";
+            listAntenCableIn.Size = new Size(250, 270);
+            listAntenCableIn.TabIndex = 1;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label5.ForeColor = Color.FromArgb(0, 122, 204);
+            label5.Location = new Point(10, 10);
+            label5.Name = "label5";
+            label5.Size = new Size(120, 19);
+            label5.TabIndex = 0;
+            label5.Text = "Bekleyen Kablo:";
+            // 
+            // panel7
+            // 
+            panel7.BackColor = Color.FromArgb(37, 37, 38);
+            panel7.Controls.Add(listAntenCabloOut);
+            panel7.Controls.Add(label6);
+            panel7.Location = new Point(930, 120);
+            panel7.Name = "panel7";
+            panel7.Size = new Size(250, 300);
+            panel7.TabIndex = 6;
+            // 
+            // listAntenCabloOut
+            // 
+            listAntenCabloOut.BackColor = Color.FromArgb(45, 45, 48);
+            listAntenCabloOut.BorderStyle = BorderStyle.None;
+            listAntenCabloOut.Dock = DockStyle.Bottom;
+            listAntenCabloOut.Font = new Font("Segoe UI", 10F);
+            listAntenCabloOut.ForeColor = Color.White;
+            listAntenCabloOut.FormattingEnabled = true;
+            listAntenCabloOut.ItemHeight = 19;
+            listAntenCabloOut.Location = new Point(0, 30);
+            listAntenCabloOut.Name = "listAntenCabloOut";
+            listAntenCabloOut.Size = new Size(250, 270);
+            listAntenCabloOut.TabIndex = 1;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label6.ForeColor = Color.FromArgb(0, 122, 204);
+            label6.Location = new Point(10, 10);
+            label6.Name = "label6";
+            label6.Size = new Size(100, 19);
+            label6.TabIndex = 0;
+            label6.Text = "İşlenen Kablo:";
+            // 
+            // panel8
+            // 
+            panel8.BackColor = Color.FromArgb(37, 37, 38);
+            panel8.Controls.Add(lstBiten);
+            panel8.Controls.Add(label7);
+            panel8.Location = new Point(660, 440);
+            panel8.Name = "panel8";
+            panel8.Size = new Size(520, 200);
+            panel8.TabIndex = 7;
+            // 
+            // lstBiten
+            // 
+            lstBiten.BackColor = Color.FromArgb(45, 45, 48);
+            lstBiten.BorderStyle = BorderStyle.None;
+            lstBiten.Dock = DockStyle.Bottom;
+            lstBiten.Font = new Font("Segoe UI", 10F);
+            lstBiten.ForeColor = Color.White;
+            lstBiten.FormattingEnabled = true;
+            lstBiten.ItemHeight = 19;
+            lstBiten.Location = new Point(0, 30);
+            lstBiten.Name = "lstBiten";
+            lstBiten.Size = new Size(520, 170);
+            lstBiten.TabIndex = 1;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label7.ForeColor = Color.FromArgb(0, 122, 204);
+            label7.Location = new Point(10, 10);
+            label7.Name = "label7";
+            label7.Size = new Size(80, 19);
+            label7.TabIndex = 0;
+            label7.Text = "Tamamlanan:";
+            // 
+            // panel9
+            // 
+            panel9.BackColor = Color.FromArgb(37, 37, 38);
+            panel9.Controls.Add(numSayi);
+            panel9.Controls.Add(label8);
+            panel9.Location = new Point(340, 320);
+            panel9.Name = "panel9";
+            panel9.Size = new Size(300, 80);
+            panel9.TabIndex = 8;
+            // 
+            // numSayi
+            // 
+            numSayi.BackColor = Color.FromArgb(45, 45, 48);
+            numSayi.BorderStyle = BorderStyle.FixedSingle;
+            numSayi.Font = new Font("Segoe UI", 12F);
+            numSayi.ForeColor = Color.White;
+            numSayi.Location = new Point(10, 40);
+            numSayi.Maximum = new decimal(new int[] { 999999, 0, 0, 0 });
+            numSayi.Name = "numSayi";
+            numSayi.Size = new Size(280, 29);
+            numSayi.TabIndex = 1;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label8.ForeColor = Color.FromArgb(0, 122, 204);
+            label8.Location = new Point(10, 10);
+            label8.Name = "label8";
+            label8.Size = new Size(40, 19);
+            label8.TabIndex = 0;
+            label8.Text = "Sayı:";
+            // 
+            // panel10
+            // 
+            panel10.BackColor = Color.FromArgb(37, 37, 38);
+            panel10.Controls.Add(btnPrintConfig);
+            panel10.Location = new Point(340, 420);
+            panel10.Name = "panel10";
+            panel10.Size = new Size(300, 60);
+            panel10.TabIndex = 9;
+            // 
+            // btnPrintConfig
+            // 
+            btnPrintConfig.BackColor = Color.FromArgb(0, 122, 204);
+            btnPrintConfig.Dock = DockStyle.Fill;
+            btnPrintConfig.FlatAppearance.BorderSize = 0;
+            btnPrintConfig.FlatStyle = FlatStyle.Flat;
+            btnPrintConfig.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnPrintConfig.ForeColor = Color.White;
+            btnPrintConfig.Location = new Point(0, 0);
+            btnPrintConfig.Name = "btnPrintConfig";
+            btnPrintConfig.Size = new Size(300, 60);
+            btnPrintConfig.TabIndex = 0;
+            btnPrintConfig.Text = "Yazdırma Ayarları";
+            btnPrintConfig.UseVisualStyleBackColor = false;
+            btnPrintConfig.Click += btnPrintConfig_Click;
             // 
             // AntenKablo
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(248, 249, 250);
-            BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(1405, 732);
-            Controls.Add(tableLayoutPanel1);
-            Controls.Add(label2);
-            Icon = (Icon)resources.GetObject("$this.Icon");
+            BackColor = Color.FromArgb(30, 30, 30);
+            ClientSize = new Size(1200, 680);
+            Controls.Add(panel10);
+            Controls.Add(panel9);
+            Controls.Add(panel8);
+            Controls.Add(panel7);
+            Controls.Add(panel6);
+            Controls.Add(panel5);
+            Controls.Add(panel4);
+            Controls.Add(panel3);
+            Controls.Add(panel2);
+            Controls.Add(panel1);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             Name = "AntenKablo";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Nursan - Антен Кабел Система";
-            WindowState = FormWindowState.Maximized;
+            Text = "Anten Kablo Sistemi";
             FormClosing += AntenKablo_FormClosing;
-            FormClosed += AnaSayfa_FormClosed;
             Load += Form1_Load;
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
-            tableLayoutPanel1.ResumeLayout(false);
-            tableLayoutPanel2.ResumeLayout(false);
-            tableLayoutPanel4.ResumeLayout(false);
-            tableLayoutPanel4.PerformLayout();
-            tableLayoutPanel3.ResumeLayout(false);
-            tableLayoutPanel3.PerformLayout();
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
+            panel3.ResumeLayout(false);
+            panel4.ResumeLayout(false);
+            panel4.PerformLayout();
+            panel5.ResumeLayout(false);
+            panel5.PerformLayout();
+            panel6.ResumeLayout(false);
+            panel6.PerformLayout();
+            panel7.ResumeLayout(false);
+            panel7.PerformLayout();
+            panel8.ResumeLayout(false);
+            panel8.PerformLayout();
+            panel9.ResumeLayout(false);
+            panel9.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numSayi).EndInit();
+            panel10.ResumeLayout(false);
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
-        private Label label1;
-        private Button btnPrintConfig;
-        private PictureBox pictureBox1;
-        private ListView listReferansSec;
-        private ListView lstBiten;
-        private DataGridView dataGridView1;
+
+        private Panel panel1;
         private Label label2;
-        private TableLayoutPanel tableLayoutPanel1;
-        private TableLayoutPanel tableLayoutPanel2;
-        private TableLayoutPanel tableLayoutPanel3;
-        private ComboBox cbKonveyor;
-        private TableLayoutPanel tableLayoutPanel4;
-        private ListBox listAntenCabloOut;
-        private ListBox listAntenCableIn;
-        public TextBox textBox1;
         private Button btnHome;
-        private NumericUpDown numSayi;
+        private Panel panel2;
+        private Label label1;
+        private Panel panel3;
+        private ListView listReferansSec;
+        private Panel panel4;
         private TextBox textBox2;
+        private Label label3;
+        private Panel panel5;
+        private TextBox textBox1;
+        private Label label4;
+        private Panel panel6;
+        private ListBox listAntenCableIn;
+        private Label label5;
+        private Panel panel7;
+        private ListBox listAntenCabloOut;
+        private Label label6;
+        private Panel panel8;
+        private ListBox lstBiten;
+        private Label label7;
+        private Panel panel9;
+        private NumericUpDown numSayi;
+        private Label label8;
+        private Panel panel10;
+        private Button btnPrintConfig;
     }
 }
 

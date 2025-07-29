@@ -42,6 +42,7 @@ namespace Nursan.UI
         public static int h1; public static int w1;
         ITorkManager _torkmanager;
         IHarnesConfigServices _harnessConfig;
+        private SpcCalculator _spcCalculator; // CPK функционалност
         public Tork(UnitOfWork repo, OpMashin makine, UrVardiya vardiya, List<UrIstasyon> istasyonList, List<UrModulerYapi> modulerYapiList, List<SyBarcodeInput> syBarcodeInputList, List<SyBarcodeOut> syBarcodeOutList, List<SyPrinter> syPrinterList, List<OrFamily> familyList)
         {
             _repo = repo;
@@ -242,7 +243,7 @@ namespace Nursan.UI
                 }
                 if (_syBarcodeInputList[pi].Name == "First")
                 {
-                  
+
                     _id = _torkmanager.GetTorkConfigId(BarcodeInput).Data;
                     _config = _harnessConfig.Get(x => x.OrHarnessModelId == _id.HarnesModelId).Data;
                     if (_config != null)
@@ -388,7 +389,72 @@ namespace Nursan.UI
 
         private async void lblToplam_Click(object sender, EventArgs e)
         {
-           await GitAktar();
+            await GitAktar();
+        }
+        
+        /// <summary>
+        /// CPK изчисляване бутон
+        /// </summary>
+        private void btnCPK_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Проверка за null референции
+                if (_spcCalculator == null)
+                {
+                    // Инициализирай SpcCalculator ако не е инициализиран
+                    string connectionString = "Server=localhost;Database=NursanDatabase;Trusted_Connection=true;TrustServerCertificate=true;";
+                    _spcCalculator = new SpcCalculator(connectionString, "TorkData", listViewCPK);
+                }
+
+                if (listViewCPK == null)
+                {
+                    throw new InvalidOperationException("ListView не е намерен");
+                }
+
+                // Скрий другите елементи и покажи CPK ListView
+                if (lbl2Massage != null) lbl2Massage.Visible = false;
+                listViewCPK.Visible = true;
+                
+                // Изчисти ListView преди изчисляване
+                listViewCPK.Items.Clear();
+                
+                // Добави заглавие
+                var headerItem = new ListViewItem("=== CPK HESAPLAMA ===");
+                listViewCPK.Items.Add(headerItem);
+                
+                var emptyItem = new ListViewItem("");
+                listViewCPK.Items.Add(emptyItem);
+                
+                // Изчисли CPK стойностите
+                _spcCalculator.CalculateCpK();
+                
+                // Покажи съобщение за успех
+                if (lblMessage != null)
+                {
+                    lblMessage.Text = "CPK hesaplama tamamlandi!";
+                    lblMessage.ForeColor = Color.Lime;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Покажи грешка
+                if (lblMessage != null)
+                {
+                    lblMessage.Text = $"CPK hesaplama hatasi: {ex.Message}";
+                    lblMessage.ForeColor = Color.Red;
+                }
+                
+                // Добави грешката в ListView
+                if (listViewCPK != null)
+                {
+                    var errorItem = new ListViewItem($"HATA: {ex.Message}");
+                    listViewCPK.Items.Add(errorItem);
+                }
+                
+                // Логвай грешката
+                Console.WriteLine($"CPK Error: {ex}");
+            }
         }
     }
 }

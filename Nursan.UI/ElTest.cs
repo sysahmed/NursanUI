@@ -936,12 +936,12 @@ namespace Nursan.UI
                 // Върни формата в малък и прозрачен режим
                 this.TransparencyKey = Color.WhiteSmoke;
                 this.BackColor = Color.WhiteSmoke;
-                
+
                 // Размерът на формата - както беше в началото
                 int formWidth = lblCountProductions.Right + 5;
                 int formHeight = Math.Max(btnAriza.Height, lblCountProductions.Height) + 10;
-               // this.Size = new Size(formWidth, formHeight);
-                
+                // this.Size = new Size(formWidth, formHeight);
+
                 isExpanded = false;
             }
         }

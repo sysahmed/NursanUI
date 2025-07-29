@@ -64,7 +64,7 @@ namespace Nursan.UI
             label1.AutoSize = true;
             label1.Dock = DockStyle.Fill;
             label1.Font = new Font("Segoe UI", 26.25F, FontStyle.Bold);
-            label1.ForeColor = Color.Yellow;
+            label1.ForeColor = Color.White;
             label1.Location = new Point(3, 37);
             label1.Name = "label1";
             label1.Size = new Size(1124, 38);
@@ -88,11 +88,12 @@ namespace Nursan.UI
             // 
             // btnSeting
             // 
-            btnSeting.BackColor = Color.Transparent;
+            btnSeting.BackColor = Color.FromArgb(0, 122, 204);
             btnSeting.Dock = DockStyle.Fill;
+            btnSeting.FlatAppearance.BorderSize = 0;
             btnSeting.FlatStyle = FlatStyle.Flat;
-            btnSeting.Font = new Font("Nirmala UI", 9.75F, FontStyle.Bold);
-            btnSeting.ForeColor = Color.FromArgb(0, 126, 249);
+            btnSeting.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
+            btnSeting.ForeColor = Color.White;
             btnSeting.Location = new Point(1395, 41);
             btnSeting.Margin = new Padding(3, 4, 3, 4);
             btnSeting.Name = "btnSeting";
@@ -105,9 +106,11 @@ namespace Nursan.UI
             // 
             // listView1
             // 
-            listView1.BackColor = Color.FromArgb(128, 255, 128);
+            listView1.BackColor = Color.FromArgb(45, 45, 48);
+            listView1.BorderStyle = BorderStyle.None;
             listView1.Dock = DockStyle.Fill;
-            listView1.Font = new Font("Century", 26.25F, FontStyle.Bold);
+            listView1.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            listView1.ForeColor = Color.Lime;
             listView1.FullRowSelect = true;
             listView1.GridLines = true;
             listView1.LabelWrap = false;
@@ -124,10 +127,11 @@ namespace Nursan.UI
             // 
             // lstBiten
             // 
-            lstBiten.BackColor = Color.FromArgb(24, 22, 34);
+            lstBiten.BackColor = Color.FromArgb(30, 30, 30);
+            lstBiten.BorderStyle = BorderStyle.None;
             lstBiten.Dock = DockStyle.Fill;
-            lstBiten.Font = new Font("Century", 26.25F, FontStyle.Bold | FontStyle.Strikeout);
-            lstBiten.ForeColor = SystemColors.InactiveCaption;
+            lstBiten.Font = new Font("Segoe UI", 14F, FontStyle.Bold | FontStyle.Strikeout);
+            lstBiten.ForeColor = Color.Gray;
             lstBiten.FullRowSelect = true;
             lstBiten.GridLines = true;
             lstBiten.LabelWrap = false;
@@ -145,32 +149,32 @@ namespace Nursan.UI
             // 
             dataGridView1.AccessibleRole = AccessibleRole.TitleBar;
             dataGridView1.AllowUserToOrderColumns = true;
-            dataGridViewCellStyle1.BackColor = Color.LightGray;
-            dataGridViewCellStyle1.ForeColor = Color.Red;
-            dataGridViewCellStyle1.SelectionForeColor = Color.Red;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(60, 60, 60);
+            dataGridViewCellStyle1.ForeColor = Color.White;
+            dataGridViewCellStyle1.SelectionForeColor = Color.White;
             dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridView1.BackgroundColor = SystemColors.AppWorkspace;
+            dataGridView1.BackgroundColor = Color.FromArgb(45, 45, 48);
             dataGridView1.BorderStyle = BorderStyle.None;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Control;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI Semibold", 15.75F, FontStyle.Bold);
-            dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.BackColor = Color.FromArgb(30, 30, 30);
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(0, 122, 204);
+            dataGridViewCellStyle2.SelectionForeColor = Color.White;
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
             dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.Window;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI Semibold", 15.75F, FontStyle.Bold);
-            dataGridViewCellStyle3.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.BackColor = Color.FromArgb(45, 45, 48);
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            dataGridViewCellStyle3.ForeColor = Color.White;
+            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(0, 122, 204);
+            dataGridViewCellStyle3.SelectionForeColor = Color.White;
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
             dataGridView1.DefaultCellStyle = dataGridViewCellStyle3;
             dataGridView1.Dock = DockStyle.Fill;
-            dataGridView1.GridColor = SystemColors.ActiveCaption;
+            dataGridView1.GridColor = Color.FromArgb(60, 60, 60);
             dataGridView1.Location = new Point(3, 509);
             dataGridView1.Margin = new Padding(3, 4, 3, 4);
             dataGridView1.Name = "dataGridView1";
@@ -184,8 +188,8 @@ namespace Nursan.UI
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            label2.ForeColor = Color.FromArgb(128, 255, 128);
+            label2.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
+            label2.ForeColor = Color.Lime;
             label2.Location = new Point(79, 337);
             label2.Name = "label2";
             label2.Size = new Size(64, 25);
@@ -194,6 +198,7 @@ namespace Nursan.UI
             // 
             // tableLayoutPanel1
             // 
+            tableLayoutPanel1.BackColor = Color.FromArgb(30, 30, 30);
             tableLayoutPanel1.ColumnCount = 1;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.Controls.Add(dataGridView1, 0, 2);
@@ -212,6 +217,7 @@ namespace Nursan.UI
             // 
             // tableLayoutPanel2
             // 
+            tableLayoutPanel2.BackColor = Color.FromArgb(45, 45, 48);
             tableLayoutPanel2.ColumnCount = 2;
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 76.7033F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 23.2967F));
@@ -230,15 +236,15 @@ namespace Nursan.UI
             // 
             // button1
             // 
-            button1.BackColor = Color.Yellow;
+            button1.BackColor = Color.FromArgb(0, 122, 204);
             button1.Dock = DockStyle.Fill;
-            button1.FlatAppearance.BorderColor = Color.Yellow;
-            button1.FlatAppearance.BorderSize = 3;
-            button1.FlatAppearance.MouseDownBackColor = Color.Lime;
-            button1.FlatAppearance.MouseOverBackColor = Color.Red;
+            button1.FlatAppearance.BorderColor = Color.FromArgb(0, 122, 204);
+            button1.FlatAppearance.BorderSize = 0;
+            button1.FlatAppearance.MouseDownBackColor = Color.FromArgb(0, 100, 180);
+            button1.FlatAppearance.MouseOverBackColor = Color.FromArgb(0, 140, 220);
             button1.FlatStyle = FlatStyle.Flat;
-            button1.Font = new Font("Microsoft Sans Serif", 48F, FontStyle.Bold);
-            button1.ForeColor = Color.Gray;
+            button1.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
+            button1.ForeColor = Color.White;
             button1.Image = Properties.Resources.icons8_barcode_ios_16_96;
             button1.ImageAlign = ContentAlignment.BottomCenter;
             button1.Location = new Point(1178, 4);
@@ -254,6 +260,7 @@ namespace Nursan.UI
             // 
             // tableLayoutPanel3
             // 
+            tableLayoutPanel3.BackColor = Color.FromArgb(30, 30, 30);
             tableLayoutPanel3.ColumnCount = 4;
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 73.69963F));
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 7.765568F));
@@ -280,11 +287,11 @@ namespace Nursan.UI
             // 
             // cbFamily
             // 
-            cbFamily.BackColor = Color.Black;
+            cbFamily.BackColor = Color.FromArgb(60, 60, 60);
             cbFamily.Dock = DockStyle.Fill;
             cbFamily.FlatStyle = FlatStyle.Flat;
-            cbFamily.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
-            cbFamily.ForeColor = Color.Lime;
+            cbFamily.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            cbFamily.ForeColor = Color.White;
             cbFamily.FormattingEnabled = true;
             cbFamily.Location = new Point(1252, 41);
             cbFamily.Margin = new Padding(3, 4, 3, 4);
@@ -296,9 +303,11 @@ namespace Nursan.UI
             // 
             // textBox1
             // 
-            textBox1.BackColor = Color.FromArgb(128, 128, 255);
+            textBox1.BackColor = Color.FromArgb(60, 60, 60);
+            textBox1.BorderStyle = BorderStyle.None;
             textBox1.Dock = DockStyle.Fill;
-            textBox1.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            textBox1.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            textBox1.ForeColor = Color.White;
             textBox1.Location = new Point(1133, 41);
             textBox1.Margin = new Padding(3, 4, 3, 4);
             textBox1.Name = "textBox1";
@@ -309,9 +318,11 @@ namespace Nursan.UI
             // 
             // numericUpDown1
             // 
-            numericUpDown1.BackColor = Color.FromArgb(128, 128, 255);
+            numericUpDown1.BackColor = Color.FromArgb(60, 60, 60);
+            numericUpDown1.BorderStyle = BorderStyle.None;
             numericUpDown1.Dock = DockStyle.Fill;
-            numericUpDown1.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            numericUpDown1.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            numericUpDown1.ForeColor = Color.White;
             numericUpDown1.Location = new Point(1133, 4);
             numericUpDown1.Margin = new Padding(3, 4, 3, 4);
             numericUpDown1.Maximum = new decimal(new int[] { 10000000, 0, 0, 0 });
@@ -321,9 +332,10 @@ namespace Nursan.UI
             // 
             // lblCount
             // 
+            lblCount.BackColor = Color.FromArgb(45, 45, 48);
             lblCount.Dock = DockStyle.Fill;
-            lblCount.Font = new Font("Segoe UI Semibold", 16F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            lblCount.ForeColor = SystemColors.ButtonHighlight;
+            lblCount.Font = new Font("Segoe UI", 16F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            lblCount.ForeColor = Color.White;
             lblCount.Location = new Point(1252, 0);
             lblCount.Name = "lblCount";
             lblCount.Size = new Size(137, 37);
@@ -333,9 +345,11 @@ namespace Nursan.UI
             // 
             // numericUpDownPrintCount
             // 
-            numericUpDownPrintCount.BackColor = Color.FromArgb(128, 128, 255);
+            numericUpDownPrintCount.BackColor = Color.FromArgb(60, 60, 60);
+            numericUpDownPrintCount.BorderStyle = BorderStyle.None;
             numericUpDownPrintCount.Dock = DockStyle.Fill;
-            numericUpDownPrintCount.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            numericUpDownPrintCount.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            numericUpDownPrintCount.ForeColor = Color.White;
             numericUpDownPrintCount.Location = new Point(1395, 4);
             numericUpDownPrintCount.Margin = new Padding(3, 4, 3, 4);
             numericUpDownPrintCount.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
@@ -347,7 +361,7 @@ namespace Nursan.UI
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(24, 30, 54);
+            BackColor = Color.FromArgb(30, 30, 30);
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1539, 840);
             Controls.Add(tableLayoutPanel1);
@@ -356,7 +370,7 @@ namespace Nursan.UI
             Margin = new Padding(3, 4, 3, 4);
             Name = "Sigorta";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "NbgSystem";
+            Text = "Sigorta Sistemi";
             WindowState = FormWindowState.Maximized;
             FormClosed += AnaSayfa_FormClosed;
             Load += Form1_Load;
