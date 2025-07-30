@@ -70,6 +70,7 @@
             // 
             // tableLayoutPanel1
             // 
+            tableLayoutPanel1.BackColor = Color.FromArgb(30, 30, 30);
             tableLayoutPanel1.ColumnCount = 2;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 14.2973194F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 85.70268F));
@@ -86,6 +87,7 @@
             // 
             // tableLayoutPanel2
             // 
+            tableLayoutPanel2.BackColor = Color.FromArgb(30, 30, 30);
             tableLayoutPanel2.ColumnCount = 1;
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel2.Controls.Add(panel2, 0, 1);
@@ -102,7 +104,7 @@
             // 
             // panel2
             // 
-            panel2.BackColor = SystemColors.ButtonShadow;
+            panel2.BackColor = Color.FromArgb(45, 45, 45);
             panel2.Dock = DockStyle.Fill;
             panel2.Location = new Point(3, 63);
             panel2.Margin = new Padding(3, 2, 3, 2);
@@ -113,10 +115,10 @@
             // lblMessage
             // 
             lblMessage.AutoSize = true;
-            lblMessage.BackColor = Color.Black;
+            lblMessage.BackColor = Color.FromArgb(20, 20, 20);
             lblMessage.Dock = DockStyle.Fill;
-            lblMessage.Font = new Font("Microsoft Sans Serif", 48F, FontStyle.Bold);
-            lblMessage.ForeColor = Color.FromArgb(128, 255, 128);
+            lblMessage.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
+            lblMessage.ForeColor = Color.FromArgb(0, 255, 128);
             lblMessage.Location = new Point(4, 0);
             lblMessage.Margin = new Padding(4, 0, 4, 0);
             lblMessage.Name = "lblMessage";
@@ -127,6 +129,7 @@
             // 
             // tableLayoutPanel3
             // 
+            tableLayoutPanel3.BackColor = Color.FromArgb(30, 30, 30);
             tableLayoutPanel3.ColumnCount = 1;
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 18F));
@@ -144,6 +147,7 @@
             // 
             // tableLayoutPanel5
             // 
+            tableLayoutPanel5.BackColor = Color.FromArgb(40, 40, 40);
             tableLayoutPanel5.ColumnCount = 1;
             tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
@@ -177,8 +181,10 @@
             // label9
             // 
             label9.AutoSize = true;
+            label9.BackColor = Color.FromArgb(50, 50, 50);
             label9.Dock = DockStyle.Fill;
-            label9.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            label9.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            label9.ForeColor = Color.FromArgb(0, 255, 128);
             label9.Location = new Point(3, 344);
             label9.Name = "label9";
             label9.Size = new Size(158, 23);
@@ -190,8 +196,10 @@
             // label8
             // 
             label8.AutoSize = true;
+            label8.BackColor = Color.FromArgb(50, 50, 50);
             label8.Dock = DockStyle.Fill;
-            label8.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            label8.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            label8.ForeColor = Color.FromArgb(0, 255, 128);
             label8.Location = new Point(3, 301);
             label8.Name = "label8";
             label8.Size = new Size(158, 43);
@@ -203,8 +211,10 @@
             // label7
             // 
             label7.AutoSize = true;
+            label7.BackColor = Color.FromArgb(50, 50, 50);
             label7.Dock = DockStyle.Fill;
-            label7.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            label7.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            label7.ForeColor = Color.FromArgb(0, 255, 128);
             label7.Location = new Point(3, 258);
             label7.Name = "label7";
             label7.Size = new Size(158, 43);
@@ -216,8 +226,10 @@
             // lblOrtalama
             // 
             lblOrtalama.AutoSize = true;
+            lblOrtalama.BackColor = Color.FromArgb(50, 50, 50);
             lblOrtalama.Dock = DockStyle.Fill;
-            lblOrtalama.Font = new Font("Segoe UI Semibold", 20F, FontStyle.Bold);
+            lblOrtalama.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
+            lblOrtalama.ForeColor = Color.FromArgb(0, 255, 128);
             lblOrtalama.Location = new Point(3, 215);
             lblOrtalama.Name = "lblOrtalama";
             lblOrtalama.Size = new Size(158, 43);
@@ -229,8 +241,10 @@
             // label5
             // 
             label5.AutoSize = true;
+            label5.BackColor = Color.FromArgb(50, 50, 50);
             label5.Dock = DockStyle.Fill;
-            label5.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            label5.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            label5.ForeColor = Color.FromArgb(255, 255, 255);
             label5.Location = new Point(3, 172);
             label5.Name = "label5";
             label5.Size = new Size(158, 43);
@@ -242,8 +256,10 @@
             // lblToplama
             // 
             lblToplama.AutoSize = true;
+            lblToplama.BackColor = Color.FromArgb(50, 50, 50);
             lblToplama.Dock = DockStyle.Fill;
-            lblToplama.Font = new Font("Segoe UI Semibold", 20F, FontStyle.Bold);
+            lblToplama.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
+            lblToplama.ForeColor = Color.FromArgb(0, 255, 128);
             lblToplama.Location = new Point(3, 129);
             lblToplama.Name = "lblToplama";
             lblToplama.Size = new Size(158, 43);
@@ -255,8 +271,10 @@
             // label3
             // 
             label3.AutoSize = true;
+            label3.BackColor = Color.FromArgb(50, 50, 50);
             label3.Dock = DockStyle.Fill;
-            label3.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            label3.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            label3.ForeColor = Color.FromArgb(255, 255, 255);
             label3.Location = new Point(3, 86);
             label3.Name = "label3";
             label3.Size = new Size(158, 43);
@@ -268,8 +286,10 @@
             // lblVardiya
             // 
             lblVardiya.AutoSize = true;
+            lblVardiya.BackColor = Color.FromArgb(50, 50, 50);
             lblVardiya.Dock = DockStyle.Fill;
-            lblVardiya.Font = new Font("Segoe UI Semibold", 20F, FontStyle.Bold);
+            lblVardiya.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
+            lblVardiya.ForeColor = Color.FromArgb(0, 255, 128);
             lblVardiya.Location = new Point(3, 43);
             lblVardiya.Name = "lblVardiya";
             lblVardiya.Size = new Size(158, 43);
@@ -281,8 +301,10 @@
             // label1
             // 
             label1.AutoSize = true;
+            label1.BackColor = Color.FromArgb(50, 50, 50);
             label1.Dock = DockStyle.Fill;
-            label1.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            label1.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            label1.ForeColor = Color.FromArgb(255, 255, 255);
             label1.Location = new Point(3, 0);
             label1.Name = "label1";
             label1.Size = new Size(158, 43);
@@ -293,7 +315,7 @@
             // 
             // panel11
             // 
-            panel11.BackColor = Color.Wheat;
+            panel11.BackColor = Color.FromArgb(60, 60, 60);
             panel11.Controls.Add(listBox2);
             panel11.Dock = DockStyle.Fill;
             panel11.Location = new Point(3, 370);
@@ -303,10 +325,13 @@
             // 
             // listBox2
             // 
+            listBox2.BackColor = Color.FromArgb(60, 60, 60);
+            listBox2.BorderStyle = BorderStyle.None;
             listBox2.Dock = DockStyle.Fill;
-            listBox2.Font = new Font("Segoe UI Semibold", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            listBox2.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            listBox2.ForeColor = Color.FromArgb(255, 255, 255);
             listBox2.FormattingEnabled = true;
-            listBox2.ItemHeight = 20;
+            listBox2.ItemHeight = 21;
             listBox2.Location = new Point(0, 0);
             listBox2.Name = "listBox2";
             listBox2.Size = new Size(158, 60);
@@ -314,6 +339,7 @@
             // 
             // tableLayoutPanel4
             // 
+            tableLayoutPanel4.BackColor = Color.FromArgb(40, 40, 40);
             tableLayoutPanel4.ColumnCount = 1;
             tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel4.Controls.Add(listBox1, 0, 2);
@@ -333,10 +359,13 @@
             // 
             // listBox1
             // 
+            listBox1.BackColor = Color.FromArgb(60, 60, 60);
+            listBox1.BorderStyle = BorderStyle.None;
             listBox1.Dock = DockStyle.Fill;
-            listBox1.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            listBox1.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            listBox1.ForeColor = Color.FromArgb(255, 255, 255);
             listBox1.FormattingEnabled = true;
-            listBox1.ItemHeight = 21;
+            listBox1.ItemHeight = 25;
             listBox1.Location = new Point(3, 109);
             listBox1.Margin = new Padding(3, 2, 3, 2);
             listBox1.Name = "listBox1";
@@ -346,9 +375,10 @@
             // lblToplam
             // 
             lblToplam.AutoSize = true;
-            lblToplam.BackColor = Color.FromArgb(255, 255, 128);
+            lblToplam.BackColor = Color.FromArgb(70, 70, 70);
             lblToplam.Dock = DockStyle.Fill;
-            lblToplam.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold);
+            lblToplam.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
+            lblToplam.ForeColor = Color.FromArgb(255, 255, 128);
             lblToplam.Location = new Point(3, 0);
             lblToplam.Name = "lblToplam";
             lblToplam.Size = new Size(158, 78);
@@ -358,12 +388,15 @@
             // 
             // txtBarcode
             // 
+            txtBarcode.BackColor = Color.FromArgb(60, 60, 60);
+            txtBarcode.BorderStyle = BorderStyle.FixedSingle;
             txtBarcode.Dock = DockStyle.Fill;
-            txtBarcode.Font = new Font("Microsoft Sans Serif", 13.8F, FontStyle.Bold);
+            txtBarcode.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
+            txtBarcode.ForeColor = Color.FromArgb(255, 255, 255);
             txtBarcode.Location = new Point(3, 80);
             txtBarcode.Margin = new Padding(3, 2, 3, 2);
             txtBarcode.Name = "txtBarcode";
-            txtBarcode.Size = new Size(158, 28);
+            txtBarcode.Size = new Size(158, 36);
             txtBarcode.TabIndex = 1;
             txtBarcode.TextAlign = HorizontalAlignment.Center;
             txtBarcode.KeyUp += txtBarcode_KeyUp;
@@ -373,11 +406,11 @@
             axAcropdf1.Enabled = true;
             axAcropdf1.Location = new Point(0, 0);
             axAcropdf1.Name = "axAcropdf1";
-            axAcropdf1.Size = new Size(75, 23);
             axAcropdf1.TabIndex = 0;
             // 
             // tableLayoutPanel6
             // 
+            tableLayoutPanel6.BackColor = Color.FromArgb(40, 40, 40);
             tableLayoutPanel6.ColumnCount = 1;
             tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 23F));
@@ -400,8 +433,10 @@
             // label2
             // 
             label2.AutoSize = true;
+            label2.BackColor = Color.FromArgb(50, 50, 50);
             label2.Dock = DockStyle.Fill;
-            label2.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            label2.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            label2.ForeColor = Color.FromArgb(0, 255, 128);
             label2.Location = new Point(3, 160);
             label2.Name = "label2";
             label2.Size = new Size(194, 20);
@@ -412,8 +447,10 @@
             // label4
             // 
             label4.AutoSize = true;
+            label4.BackColor = Color.FromArgb(50, 50, 50);
             label4.Dock = DockStyle.Fill;
-            label4.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            label4.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            label4.ForeColor = Color.FromArgb(0, 255, 128);
             label4.Location = new Point(3, 0);
             label4.Name = "label4";
             label4.Size = new Size(194, 28);
@@ -423,6 +460,7 @@
             // 
             // tableLayoutPanel7
             // 
+            tableLayoutPanel7.BackColor = Color.FromArgb(40, 40, 40);
             tableLayoutPanel7.ColumnCount = 1;
             tableLayoutPanel7.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel7.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 23F));
@@ -445,8 +483,10 @@
             // label6
             // 
             label6.AutoSize = true;
+            label6.BackColor = Color.FromArgb(50, 50, 50);
             label6.Dock = DockStyle.Fill;
-            label6.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            label6.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            label6.ForeColor = Color.FromArgb(0, 255, 128);
             label6.Location = new Point(3, 160);
             label6.Name = "label6";
             label6.Size = new Size(194, 20);
@@ -457,8 +497,10 @@
             // label10
             // 
             label10.AutoSize = true;
+            label10.BackColor = Color.FromArgb(50, 50, 50);
             label10.Dock = DockStyle.Fill;
-            label10.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            label10.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            label10.ForeColor = Color.FromArgb(0, 255, 128);
             label10.Location = new Point(3, 0);
             label10.Name = "label10";
             label10.Size = new Size(194, 28);
@@ -470,6 +512,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(30, 30, 30);
             ClientSize = new Size(1231, 630);
             Controls.Add(tableLayoutPanel1);
             Icon = (Icon)resources.GetObject("$this.Icon");

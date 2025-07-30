@@ -482,7 +482,7 @@
             // 
             pictureBox9.Anchor = AnchorStyles.None;
             pictureBox9.Image = Properties.Resources.nursan_logo;
-            pictureBox9.Location = new Point(479, 489);
+            pictureBox9.Location = new Point(413, 38);
             pictureBox9.Name = "pictureBox9";
             pictureBox9.Size = new Size(340, 54);
             pictureBox9.SizeMode = PictureBoxSizeMode.AutoSize;
@@ -491,13 +491,13 @@
             // 
             // Options
             // 
-            AutoScaleDimensions = new SizeF(12F, 25F);
+            AutoScaleDimensions = new SizeF(8F, 16F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
             ClientSize = new Size(1485, 1084);
             Controls.Add(panelChildForm);
             Controls.Add(panelSideMenu);
-            Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            Font = new Font("Microsoft Sans Serif", 10F);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(4);
             MinimumSize = new Size(950, 600);

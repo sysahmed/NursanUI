@@ -41,6 +41,7 @@
             // 
             // tableLayoutPanel1
             // 
+            tableLayoutPanel1.BackColor = Color.FromArgb(30, 30, 30);
             tableLayoutPanel1.ColumnCount = 2;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 72.68878F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 27.31122F));
@@ -63,30 +64,39 @@
             // txtBarcodeReader
             // 
             txtBarcodeReader.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            txtBarcodeReader.BackColor = Color.FromArgb(60, 60, 60);
+            txtBarcodeReader.BorderStyle = BorderStyle.None;
             txtBarcodeReader.Font = new Font("Segoe UI", 26F, FontStyle.Bold);
+            txtBarcodeReader.ForeColor = Color.White;
             txtBarcodeReader.Location = new Point(3, 128);
             txtBarcodeReader.Multiline = true;
             txtBarcodeReader.Name = "txtBarcodeReader";
             txtBarcodeReader.Size = new Size(973, 46);
             txtBarcodeReader.TabIndex = 0;
+            txtBarcodeReader.TextAlign = HorizontalAlignment.Center;
             txtBarcodeReader.KeyUp += txtBarcodeReader_KeyUp;
             // 
             // Quality
             // 
             Quality.AutoSize = true;
+            Quality.BackColor = Color.FromArgb(45, 45, 48);
             Quality.Dock = DockStyle.Fill;
             Quality.Font = new Font("Segoe UI", 26.25F, FontStyle.Bold);
-            Quality.ForeColor = Color.Red;
+            Quality.ForeColor = Color.Lime;
             Quality.Location = new Point(3, 0);
             Quality.Name = "Quality";
             Quality.Size = new Size(973, 125);
             Quality.TabIndex = 1;
+            Quality.Text = "Revork Giris Sistemi";
             Quality.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // listBox1
             // 
+            listBox1.BackColor = Color.FromArgb(60, 60, 60);
+            listBox1.BorderStyle = BorderStyle.None;
             listBox1.Dock = DockStyle.Fill;
-            listBox1.Font = new Font("Segoe UI Black", 18F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            listBox1.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            listBox1.ForeColor = Color.White;
             listBox1.FormattingEnabled = true;
             listBox1.ItemHeight = 32;
             listBox1.Location = new Point(2, 179);
@@ -98,20 +108,27 @@
             // 
             // btnReworkOut
             // 
+            btnReworkOut.BackColor = Color.FromArgb(0, 122, 204);
             btnReworkOut.Dock = DockStyle.Fill;
+            btnReworkOut.FlatAppearance.BorderSize = 0;
+            btnReworkOut.FlatStyle = FlatStyle.Flat;
             btnReworkOut.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnReworkOut.ForeColor = Color.White;
             btnReworkOut.Location = new Point(982, 128);
             btnReworkOut.Name = "btnReworkOut";
             btnReworkOut.Size = new Size(362, 46);
             btnReworkOut.TabIndex = 3;
             btnReworkOut.Text = "Systemden Cikar";
-            btnReworkOut.UseVisualStyleBackColor = true;
+            btnReworkOut.UseVisualStyleBackColor = false;
             btnReworkOut.Visible = false;
             btnReworkOut.Click += btnReworkOut_Click;
             // 
             // cbModulerYapi
             // 
+            cbModulerYapi.BackColor = Color.FromArgb(60, 60, 60);
+            cbModulerYapi.FlatStyle = FlatStyle.Flat;
             cbModulerYapi.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            cbModulerYapi.ForeColor = Color.White;
             cbModulerYapi.FormattingEnabled = true;
             cbModulerYapi.Location = new Point(982, 180);
             cbModulerYapi.Name = "cbModulerYapi";
@@ -123,13 +140,13 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.Gray;
+            BackColor = Color.FromArgb(30, 30, 30);
             ClientSize = new Size(1347, 627);
             Controls.Add(tableLayoutPanel1);
             KeyPreview = true;
             Name = "RevorkGiris";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "RevorkGiris";
+            Text = "Revork Giris Sistemi";
             WindowState = FormWindowState.Maximized;
             Load += RevorkGiris_Load;
             tableLayoutPanel1.ResumeLayout(false);

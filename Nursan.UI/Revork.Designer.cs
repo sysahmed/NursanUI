@@ -78,6 +78,7 @@
             // 
             // tableLayoutPanel1
             // 
+            tableLayoutPanel1.BackColor = Color.FromArgb(30, 30, 30);
             tableLayoutPanel1.ColumnCount = 2;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 17.2194786F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 82.7805252F));
@@ -100,7 +101,7 @@
             // 
             // tableLayoutPanel2
             // 
-            tableLayoutPanel2.BackColor = SystemColors.ActiveCaption;
+            tableLayoutPanel2.BackColor = Color.FromArgb(45, 45, 48);
             tableLayoutPanel2.ColumnCount = 1;
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
@@ -120,6 +121,7 @@
             lblIdDonanim.AutoSize = true;
             lblIdDonanim.Dock = DockStyle.Fill;
             lblIdDonanim.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblIdDonanim.ForeColor = Color.White;
             lblIdDonanim.Location = new Point(3, 58);
             lblIdDonanim.Name = "lblIdDonanim";
             lblIdDonanim.Size = new Size(191, 59);
@@ -129,6 +131,7 @@
             // 
             // tableLayoutPanel8
             // 
+            tableLayoutPanel8.BackColor = Color.FromArgb(60, 60, 60);
             tableLayoutPanel8.ColumnCount = 2;
             tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
@@ -144,20 +147,24 @@
             // 
             // btnGiris
             // 
+            btnGiris.BackColor = Color.FromArgb(0, 122, 204);
             btnGiris.Dock = DockStyle.Fill;
+            btnGiris.FlatAppearance.BorderSize = 0;
             btnGiris.FlatStyle = FlatStyle.Flat;
+            btnGiris.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnGiris.ForeColor = Color.White;
             btnGiris.Location = new Point(0, 0);
             btnGiris.Margin = new Padding(0);
             btnGiris.Name = "btnGiris";
             btnGiris.Size = new Size(95, 26);
             btnGiris.TabIndex = 0;
             btnGiris.Text = "Giris";
-            btnGiris.UseVisualStyleBackColor = true;
+            btnGiris.UseVisualStyleBackColor = false;
             btnGiris.Click += btnGiris_Click;
             // 
             // tableLayoutPanel3
             // 
-            tableLayoutPanel3.BackColor = SystemColors.ActiveBorder;
+            tableLayoutPanel3.BackColor = Color.FromArgb(45, 45, 48);
             tableLayoutPanel3.ColumnCount = 1;
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
@@ -177,6 +184,7 @@
             lblHataCode.AutoSize = true;
             lblHataCode.Dock = DockStyle.Fill;
             lblHataCode.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblHataCode.ForeColor = Color.White;
             lblHataCode.Location = new Point(3, 58);
             lblHataCode.Name = "lblHataCode";
             lblHataCode.Size = new Size(964, 59);
@@ -189,16 +197,17 @@
             lblMessage.AutoSize = true;
             lblMessage.Dock = DockStyle.Fill;
             lblMessage.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            lblMessage.ForeColor = Color.Lime;
             lblMessage.Location = new Point(3, 0);
             lblMessage.Name = "lblMessage";
             lblMessage.Size = new Size(964, 58);
             lblMessage.TabIndex = 1;
-            lblMessage.Text = ":";
+            lblMessage.Text = "Revork Sistemi";
             lblMessage.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel4
             // 
-            tableLayoutPanel4.BackColor = Color.IndianRed;
+            tableLayoutPanel4.BackColor = Color.FromArgb(60, 60, 60);
             tableLayoutPanel4.ColumnCount = 1;
             tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
@@ -218,18 +227,21 @@
             // 
             // txtBarcodeReader
             // 
+            txtBarcodeReader.BackColor = Color.FromArgb(45, 45, 48);
+            txtBarcodeReader.BorderStyle = BorderStyle.None;
             txtBarcodeReader.Dock = DockStyle.Fill;
             txtBarcodeReader.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold);
+            txtBarcodeReader.ForeColor = Color.White;
             txtBarcodeReader.Location = new Point(3, 32);
             txtBarcodeReader.Name = "txtBarcodeReader";
-            txtBarcodeReader.Size = new Size(191, 27);
+            txtBarcodeReader.Size = new Size(191, 20);
             txtBarcodeReader.TabIndex = 0;
             txtBarcodeReader.TextAlign = HorizontalAlignment.Center;
             txtBarcodeReader.KeyUp += txtBarcodeReader_KeyUp;
             // 
             // tableLayoutPanel5
             // 
-            tableLayoutPanel5.BackColor = Color.LightCoral;
+            tableLayoutPanel5.BackColor = Color.FromArgb(45, 45, 48);
             tableLayoutPanel5.ColumnCount = 10;
             tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
             tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
@@ -271,6 +283,7 @@
             lblFaultName.AutoSize = true;
             lblFaultName.Dock = DockStyle.Fill;
             lblFaultName.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblFaultName.ForeColor = Color.White;
             lblFaultName.Location = new Point(3, 0);
             lblFaultName.Name = "lblFaultName";
             lblFaultName.Size = new Size(91, 29);
@@ -283,6 +296,7 @@
             lblFaultHarnessLocation.AutoSize = true;
             lblFaultHarnessLocation.Dock = DockStyle.Fill;
             lblFaultHarnessLocation.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblFaultHarnessLocation.ForeColor = Color.White;
             lblFaultHarnessLocation.Location = new Point(100, 0);
             lblFaultHarnessLocation.Name = "lblFaultHarnessLocation";
             lblFaultHarnessLocation.Size = new Size(91, 29);
@@ -295,6 +309,7 @@
             lblFaultCabel.AutoSize = true;
             lblFaultCabel.Dock = DockStyle.Fill;
             lblFaultCabel.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblFaultCabel.ForeColor = Color.White;
             lblFaultCabel.Location = new Point(197, 0);
             lblFaultCabel.Name = "lblFaultCabel";
             lblFaultCabel.Size = new Size(91, 29);
@@ -307,6 +322,7 @@
             lblOperator.AutoSize = true;
             lblOperator.Dock = DockStyle.Fill;
             lblOperator.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblOperator.ForeColor = Color.White;
             lblOperator.Location = new Point(294, 0);
             lblOperator.Name = "lblOperator";
             lblOperator.Size = new Size(91, 29);
@@ -319,6 +335,7 @@
             lblFaultSetLocation.AutoSize = true;
             lblFaultSetLocation.Dock = DockStyle.Fill;
             lblFaultSetLocation.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblFaultSetLocation.ForeColor = Color.White;
             lblFaultSetLocation.Location = new Point(391, 0);
             lblFaultSetLocation.Name = "lblFaultSetLocation";
             lblFaultSetLocation.Size = new Size(91, 29);
@@ -331,6 +348,7 @@
             lblFaultReson.AutoSize = true;
             lblFaultReson.Dock = DockStyle.Fill;
             lblFaultReson.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblFaultReson.ForeColor = Color.White;
             lblFaultReson.Location = new Point(488, 0);
             lblFaultReson.Name = "lblFaultReson";
             lblFaultReson.Size = new Size(91, 29);
@@ -343,6 +361,7 @@
             lblExplanation.AutoSize = true;
             lblExplanation.Dock = DockStyle.Fill;
             lblExplanation.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblExplanation.ForeColor = Color.White;
             lblExplanation.Location = new Point(585, 0);
             lblExplanation.Name = "lblExplanation";
             lblExplanation.Size = new Size(286, 29);
@@ -352,74 +371,95 @@
             // 
             // txtFaultName
             // 
+            txtFaultName.BackColor = Color.FromArgb(60, 60, 60);
+            txtFaultName.BorderStyle = BorderStyle.None;
             txtFaultName.Dock = DockStyle.Fill;
             txtFaultName.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold);
+            txtFaultName.ForeColor = Color.White;
             txtFaultName.Location = new Point(3, 32);
             txtFaultName.Name = "txtFaultName";
-            txtFaultName.Size = new Size(91, 27);
+            txtFaultName.Size = new Size(91, 20);
             txtFaultName.TabIndex = 1;
             txtFaultName.TextAlign = HorizontalAlignment.Center;
             txtFaultName.KeyUp += txtFaultName_KeyUp;
             // 
             // txtFaultHarnessLocation
             // 
+            txtFaultHarnessLocation.BackColor = Color.FromArgb(60, 60, 60);
+            txtFaultHarnessLocation.BorderStyle = BorderStyle.None;
             txtFaultHarnessLocation.Dock = DockStyle.Fill;
             txtFaultHarnessLocation.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold);
+            txtFaultHarnessLocation.ForeColor = Color.White;
             txtFaultHarnessLocation.Location = new Point(100, 32);
             txtFaultHarnessLocation.Name = "txtFaultHarnessLocation";
-            txtFaultHarnessLocation.Size = new Size(91, 27);
+            txtFaultHarnessLocation.Size = new Size(91, 20);
             txtFaultHarnessLocation.TabIndex = 1;
             txtFaultHarnessLocation.TextAlign = HorizontalAlignment.Center;
             txtFaultHarnessLocation.KeyUp += txtFaultHarnessLocation_KeyUp;
             // 
             // txtFaultCabloE
             // 
+            txtFaultCabloE.BackColor = Color.FromArgb(60, 60, 60);
+            txtFaultCabloE.BorderStyle = BorderStyle.None;
             txtFaultCabloE.Dock = DockStyle.Fill;
             txtFaultCabloE.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold);
+            txtFaultCabloE.ForeColor = Color.White;
             txtFaultCabloE.Location = new Point(197, 32);
             txtFaultCabloE.Name = "txtFaultCabloE";
-            txtFaultCabloE.Size = new Size(91, 27);
+            txtFaultCabloE.Size = new Size(91, 20);
             txtFaultCabloE.TabIndex = 1;
             txtFaultCabloE.TextAlign = HorizontalAlignment.Center;
             txtFaultCabloE.KeyUp += txtFaultCabloE_KeyUp;
             // 
             // txtOperator
             // 
+            txtOperator.BackColor = Color.FromArgb(60, 60, 60);
+            txtOperator.BorderStyle = BorderStyle.None;
             txtOperator.Dock = DockStyle.Fill;
             txtOperator.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold);
+            txtOperator.ForeColor = Color.White;
             txtOperator.Location = new Point(294, 32);
             txtOperator.Name = "txtOperator";
-            txtOperator.Size = new Size(91, 27);
+            txtOperator.Size = new Size(91, 20);
             txtOperator.TabIndex = 1;
             txtOperator.TextAlign = HorizontalAlignment.Center;
             txtOperator.KeyUp += txtOperator_KeyUp;
             // 
             // txtFaultSetLocation
             // 
+            txtFaultSetLocation.BackColor = Color.FromArgb(60, 60, 60);
+            txtFaultSetLocation.BorderStyle = BorderStyle.None;
             txtFaultSetLocation.Dock = DockStyle.Fill;
             txtFaultSetLocation.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold);
+            txtFaultSetLocation.ForeColor = Color.White;
             txtFaultSetLocation.Location = new Point(391, 32);
             txtFaultSetLocation.Name = "txtFaultSetLocation";
-            txtFaultSetLocation.Size = new Size(91, 27);
+            txtFaultSetLocation.Size = new Size(91, 20);
             txtFaultSetLocation.TabIndex = 1;
             txtFaultSetLocation.TextAlign = HorizontalAlignment.Center;
             txtFaultSetLocation.KeyUp += txtFaultSetLocation_KeyUp;
             // 
             // txtExplanation
             // 
+            txtExplanation.BackColor = Color.FromArgb(60, 60, 60);
+            txtExplanation.BorderStyle = BorderStyle.None;
             txtExplanation.Dock = DockStyle.Fill;
             txtExplanation.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold);
+            txtExplanation.ForeColor = Color.White;
             txtExplanation.Location = new Point(585, 32);
             txtExplanation.Name = "txtExplanation";
-            txtExplanation.Size = new Size(286, 27);
+            txtExplanation.Size = new Size(286, 20);
             txtExplanation.TabIndex = 1;
             txtExplanation.TextAlign = HorizontalAlignment.Center;
             txtExplanation.KeyUp += txtExplanation_KeyUp;
             // 
             // cbFaultReason
             // 
+            cbFaultReason.BackColor = Color.FromArgb(60, 60, 60);
             cbFaultReason.Dock = DockStyle.Fill;
+            cbFaultReason.FlatStyle = FlatStyle.Flat;
             cbFaultReason.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold);
+            cbFaultReason.ForeColor = Color.White;
             cbFaultReason.FormattingEnabled = true;
             cbFaultReason.Items.AddRange(new object[] { "MONTAJ", "BAGA", "SRB", "KLIPTEST", "ELTEST", "TASIMA-ASKI", "DIGER" });
             cbFaultReason.Location = new Point(488, 32);
@@ -430,7 +470,7 @@
             // 
             // tableLayoutPanel6
             // 
-            tableLayoutPanel6.BackColor = Color.FromArgb(192, 192, 255);
+            tableLayoutPanel6.BackColor = Color.FromArgb(45, 45, 48);
             tableLayoutPanel6.ColumnCount = 1;
             tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 14F));
@@ -446,8 +486,11 @@
             // 
             // listBox1
             // 
+            listBox1.BackColor = Color.FromArgb(60, 60, 60);
+            listBox1.BorderStyle = BorderStyle.None;
             listBox1.Dock = DockStyle.Fill;
             listBox1.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            listBox1.ForeColor = Color.White;
             listBox1.FormattingEnabled = true;
             listBox1.ItemHeight = 21;
             listBox1.Location = new Point(1, 2);
@@ -458,7 +501,7 @@
             // 
             // tableLayoutPanel7
             // 
-            tableLayoutPanel7.BackColor = Color.DimGray;
+            tableLayoutPanel7.BackColor = Color.FromArgb(30, 30, 30);
             tableLayoutPanel7.ColumnCount = 1;
             tableLayoutPanel7.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel7.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 14F));
@@ -478,23 +521,24 @@
             girenRevork.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             girenRevork.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI Black", 12F, FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(30, 30, 30);
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(0, 122, 204);
+            dataGridViewCellStyle1.SelectionForeColor = Color.White;
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             girenRevork.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             girenRevork.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI Black", 12F, FontStyle.Bold);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.BackColor = Color.FromArgb(45, 45, 48);
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(0, 122, 204);
+            dataGridViewCellStyle2.SelectionForeColor = Color.White;
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
             girenRevork.DefaultCellStyle = dataGridViewCellStyle2;
             girenRevork.Dock = DockStyle.Fill;
+            girenRevork.GridColor = Color.FromArgb(60, 60, 60);
             girenRevork.Location = new Point(3, 3);
             girenRevork.Name = "girenRevork";
             girenRevork.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
@@ -509,32 +553,32 @@
             cikanRevork.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             cikanRevork.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.Control;
+            dataGridViewCellStyle3.BackColor = Color.FromArgb(30, 30, 30);
             dataGridViewCellStyle3.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.ForeColor = Color.White;
+            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(0, 122, 204);
+            dataGridViewCellStyle3.SelectionForeColor = Color.White;
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
             cikanRevork.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             cikanRevork.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = SystemColors.Window;
+            dataGridViewCellStyle4.BackColor = Color.FromArgb(45, 45, 48);
             dataGridViewCellStyle4.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            dataGridViewCellStyle4.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.ForeColor = Color.White;
+            dataGridViewCellStyle4.SelectionBackColor = Color.FromArgb(0, 122, 204);
+            dataGridViewCellStyle4.SelectionForeColor = Color.White;
             dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
             cikanRevork.DefaultCellStyle = dataGridViewCellStyle4;
             cikanRevork.Dock = DockStyle.Fill;
-            cikanRevork.GridColor = Color.YellowGreen;
+            cikanRevork.GridColor = Color.FromArgb(60, 60, 60);
             cikanRevork.Location = new Point(3, 186);
             cikanRevork.Name = "cikanRevork";
             dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = SystemColors.Control;
+            dataGridViewCellStyle5.BackColor = Color.FromArgb(30, 30, 30);
             dataGridViewCellStyle5.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            dataGridViewCellStyle5.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle5.ForeColor = Color.White;
+            dataGridViewCellStyle5.SelectionBackColor = Color.FromArgb(0, 122, 204);
+            dataGridViewCellStyle5.SelectionForeColor = Color.White;
             dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
             cikanRevork.RowHeadersDefaultCellStyle = dataGridViewCellStyle5;
             cikanRevork.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
@@ -546,13 +590,13 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.Gray;
+            BackColor = Color.FromArgb(30, 30, 30);
             ClientSize = new Size(1179, 619);
             Controls.Add(tableLayoutPanel1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Revork";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Revork";
+            Text = "Revork Sistemi";
             WindowState = FormWindowState.Maximized;
             Load += Revork_Load;
             tableLayoutPanel1.ResumeLayout(false);

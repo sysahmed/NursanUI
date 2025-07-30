@@ -30,10 +30,10 @@ namespace Nursan.UI
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AntenKablo));
             panel1 = new Panel();
             label2 = new Label();
             btnHome = new Button();
+            btnClose = new Button();
             panel2 = new Panel();
             label1 = new Label();
             panel3 = new Panel();
@@ -76,20 +76,21 @@ namespace Nursan.UI
             panel1.BackColor = Color.FromArgb(45, 45, 48);
             panel1.Controls.Add(label2);
             panel1.Controls.Add(btnHome);
+            panel1.Controls.Add(btnClose);
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1200, 60);
+            panel1.Size = new Size(1920, 80);
             panel1.TabIndex = 0;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
+            label2.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
             label2.ForeColor = Color.White;
-            label2.Location = new Point(20, 15);
+            label2.Location = new Point(30, 25);
             label2.Name = "label2";
-            label2.Size = new Size(200, 30);
+            label2.Size = new Size(277, 37);
             label2.TabIndex = 1;
             label2.Text = "Anten Kablo Sistemi";
             // 
@@ -98,34 +99,49 @@ namespace Nursan.UI
             btnHome.BackColor = Color.FromArgb(0, 122, 204);
             btnHome.FlatAppearance.BorderSize = 0;
             btnHome.FlatStyle = FlatStyle.Flat;
-            btnHome.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnHome.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             btnHome.ForeColor = Color.White;
-            btnHome.Location = new Point(1100, 15);
+            btnHome.Location = new Point(1800, 25);
             btnHome.Name = "btnHome";
-            btnHome.Size = new Size(80, 30);
+            btnHome.Size = new Size(100, 35);
             btnHome.TabIndex = 0;
-            btnHome.Text = "Ana Sayfa";
+            btnHome.Text = "Close";
             btnHome.UseVisualStyleBackColor = false;
             btnHome.Click += btnHome_Click;
+            // 
+            // btnClose
+            // 
+            btnClose.BackColor = Color.FromArgb(220, 53, 69);
+            btnClose.FlatAppearance.BorderSize = 0;
+            btnClose.FlatStyle = FlatStyle.Flat;
+            btnClose.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnClose.ForeColor = Color.White;
+            btnClose.Location = new Point(1850, 25);
+            btnClose.Name = "btnClose";
+            btnClose.Size = new Size(50, 35);
+            btnClose.TabIndex = 2;
+            btnClose.Text = "X";
+            btnClose.UseVisualStyleBackColor = false;
+            btnClose.Click += btnClose_Click;
             // 
             // panel2
             // 
             panel2.BackColor = Color.FromArgb(60, 60, 65);
             panel2.Controls.Add(label1);
             panel2.Dock = DockStyle.Top;
-            panel2.Location = new Point(0, 60);
+            panel2.Location = new Point(0, 80);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1200, 40);
+            panel2.Size = new Size(1920, 50);
             panel2.TabIndex = 1;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            label1.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 204);
             label1.ForeColor = Color.FromArgb(0, 122, 204);
-            label1.Location = new Point(20, 10);
+            label1.Location = new Point(30, 10);
             label1.Name = "label1";
-            label1.Size = new Size(120, 21);
+            label1.Size = new Size(181, 32);
             label1.TabIndex = 0;
             label1.Text = "Seçilen Model:";
             // 
@@ -133,23 +149,22 @@ namespace Nursan.UI
             // 
             panel3.BackColor = Color.FromArgb(37, 37, 38);
             panel3.Controls.Add(listReferansSec);
-            panel3.Location = new Point(20, 120);
+            panel3.Location = new Point(30, 150);
             panel3.Name = "panel3";
-            panel3.Size = new Size(300, 400);
+            panel3.Size = new Size(400, 600);
             panel3.TabIndex = 2;
             // 
             // listReferansSec
             // 
-            listReferansSec.BackColor = Color.FromArgb(45, 45, 48);
+            listReferansSec.BackColor = Color.Gray;
             listReferansSec.BorderStyle = BorderStyle.None;
             listReferansSec.Dock = DockStyle.Fill;
-            listReferansSec.Font = new Font("Segoe UI", 10F);
+            listReferansSec.Font = new Font("Segoe UI Semibold", 21.75F, FontStyle.Bold, GraphicsUnit.Point, 204);
             listReferansSec.ForeColor = Color.White;
             listReferansSec.FullRowSelect = true;
-            listReferansSec.HideSelection = false;
             listReferansSec.Location = new Point(0, 0);
             listReferansSec.Name = "listReferansSec";
-            listReferansSec.Size = new Size(300, 400);
+            listReferansSec.Size = new Size(400, 600);
             listReferansSec.TabIndex = 0;
             listReferansSec.UseCompatibleStateImageBehavior = false;
             listReferansSec.View = View.Details;
@@ -160,32 +175,32 @@ namespace Nursan.UI
             panel4.BackColor = Color.FromArgb(37, 37, 38);
             panel4.Controls.Add(textBox2);
             panel4.Controls.Add(label3);
-            panel4.Location = new Point(340, 120);
+            panel4.Location = new Point(440, 150);
             panel4.Name = "panel4";
-            panel4.Size = new Size(300, 80);
+            panel4.Size = new Size(400, 80);
             panel4.TabIndex = 3;
             // 
             // textBox2
             // 
             textBox2.BackColor = Color.FromArgb(45, 45, 48);
             textBox2.BorderStyle = BorderStyle.FixedSingle;
-            textBox2.Font = new Font("Segoe UI", 12F);
+            textBox2.Font = new Font("Segoe UI", 18F);
             textBox2.ForeColor = Color.White;
             textBox2.Location = new Point(10, 40);
             textBox2.Name = "textBox2";
-            textBox2.Size = new Size(280, 29);
+            textBox2.PlaceholderText = "Arama...";
+            textBox2.Size = new Size(380, 39);
             textBox2.TabIndex = 1;
-            textBox2.Text = "Arama...";
-            textBox2.KeyUp += textBox2_KeyUp;
+            textBox2.TextChanged += textBox2_TextChanged;
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label3.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             label3.ForeColor = Color.FromArgb(0, 122, 204);
-            label3.Location = new Point(10, 10);
+            label3.Location = new Point(10, -4);
             label3.Name = "label3";
-            label3.Size = new Size(50, 19);
+            label3.Size = new Size(96, 32);
             label3.TabIndex = 0;
             label3.Text = "Arama:";
             // 
@@ -194,32 +209,32 @@ namespace Nursan.UI
             panel5.BackColor = Color.FromArgb(37, 37, 38);
             panel5.Controls.Add(textBox1);
             panel5.Controls.Add(label4);
-            panel5.Location = new Point(340, 220);
+            panel5.Location = new Point(440, 250);
             panel5.Name = "panel5";
-            panel5.Size = new Size(300, 80);
+            panel5.Size = new Size(400, 80);
             panel5.TabIndex = 4;
             // 
             // textBox1
             // 
             textBox1.BackColor = Color.FromArgb(45, 45, 48);
             textBox1.BorderStyle = BorderStyle.FixedSingle;
-            textBox1.Font = new Font("Segoe UI", 12F);
+            textBox1.Font = new Font("Segoe UI", 18F);
             textBox1.ForeColor = Color.White;
             textBox1.Location = new Point(10, 40);
             textBox1.Name = "textBox1";
-            textBox1.Size = new Size(280, 29);
+            textBox1.PlaceholderText = "Barkod oku...";
+            textBox1.Size = new Size(380, 39);
             textBox1.TabIndex = 1;
-            textBox1.Text = "Barkod oku...";
             textBox1.KeyUp += textBox1_KeyUp;
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label4.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             label4.ForeColor = Color.FromArgb(0, 122, 204);
-            label4.Location = new Point(10, 10);
+            label4.Location = new Point(10, -3);
             label4.Name = "label4";
-            label4.Size = new Size(100, 19);
+            label4.Size = new Size(155, 32);
             label4.TabIndex = 0;
             label4.Text = "Barkod Oku:";
             // 
@@ -228,9 +243,9 @@ namespace Nursan.UI
             panel6.BackColor = Color.FromArgb(37, 37, 38);
             panel6.Controls.Add(listAntenCableIn);
             panel6.Controls.Add(label5);
-            panel6.Location = new Point(660, 120);
+            panel6.Location = new Point(860, 150);
             panel6.Name = "panel6";
-            panel6.Size = new Size(250, 300);
+            panel6.Size = new Size(400, 394);
             panel6.TabIndex = 5;
             // 
             // listAntenCableIn
@@ -238,23 +253,23 @@ namespace Nursan.UI
             listAntenCableIn.BackColor = Color.FromArgb(45, 45, 48);
             listAntenCableIn.BorderStyle = BorderStyle.None;
             listAntenCableIn.Dock = DockStyle.Bottom;
-            listAntenCableIn.Font = new Font("Segoe UI", 10F);
+            listAntenCableIn.Font = new Font("Segoe UI Semibold", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
             listAntenCableIn.ForeColor = Color.White;
             listAntenCableIn.FormattingEnabled = true;
-            listAntenCableIn.ItemHeight = 19;
-            listAntenCableIn.Location = new Point(0, 30);
+            listAntenCableIn.ItemHeight = 37;
+            listAntenCableIn.Location = new Point(0, 61);
             listAntenCableIn.Name = "listAntenCableIn";
-            listAntenCableIn.Size = new Size(250, 270);
+            listAntenCableIn.Size = new Size(400, 333);
             listAntenCableIn.TabIndex = 1;
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label5.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             label5.ForeColor = Color.FromArgb(0, 122, 204);
-            label5.Location = new Point(10, 10);
+            label5.Location = new Point(10, -6);
             label5.Name = "label5";
-            label5.Size = new Size(120, 19);
+            label5.Size = new Size(196, 32);
             label5.TabIndex = 0;
             label5.Text = "Bekleyen Kablo:";
             // 
@@ -263,9 +278,9 @@ namespace Nursan.UI
             panel7.BackColor = Color.FromArgb(37, 37, 38);
             panel7.Controls.Add(listAntenCabloOut);
             panel7.Controls.Add(label6);
-            panel7.Location = new Point(930, 120);
+            panel7.Location = new Point(1280, 150);
             panel7.Name = "panel7";
-            panel7.Size = new Size(250, 300);
+            panel7.Size = new Size(400, 394);
             panel7.TabIndex = 6;
             // 
             // listAntenCabloOut
@@ -273,23 +288,23 @@ namespace Nursan.UI
             listAntenCabloOut.BackColor = Color.FromArgb(45, 45, 48);
             listAntenCabloOut.BorderStyle = BorderStyle.None;
             listAntenCabloOut.Dock = DockStyle.Bottom;
-            listAntenCabloOut.Font = new Font("Segoe UI", 10F);
+            listAntenCabloOut.Font = new Font("Segoe UI Semibold", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
             listAntenCabloOut.ForeColor = Color.White;
             listAntenCabloOut.FormattingEnabled = true;
-            listAntenCabloOut.ItemHeight = 19;
-            listAntenCabloOut.Location = new Point(0, 30);
+            listAntenCabloOut.ItemHeight = 37;
+            listAntenCabloOut.Location = new Point(0, 61);
             listAntenCabloOut.Name = "listAntenCabloOut";
-            listAntenCabloOut.Size = new Size(250, 270);
+            listAntenCabloOut.Size = new Size(400, 333);
             listAntenCabloOut.TabIndex = 1;
             // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label6.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             label6.ForeColor = Color.FromArgb(0, 122, 204);
-            label6.Location = new Point(10, 10);
+            label6.Location = new Point(10, -8);
             label6.Name = "label6";
-            label6.Size = new Size(100, 19);
+            label6.Size = new Size(176, 32);
             label6.TabIndex = 0;
             label6.Text = "İşlenen Kablo:";
             // 
@@ -298,9 +313,9 @@ namespace Nursan.UI
             panel8.BackColor = Color.FromArgb(37, 37, 38);
             panel8.Controls.Add(lstBiten);
             panel8.Controls.Add(label7);
-            panel8.Location = new Point(660, 440);
+            panel8.Location = new Point(447, 557);
             panel8.Name = "panel8";
-            panel8.Size = new Size(520, 200);
+            panel8.Size = new Size(1233, 200);
             panel8.TabIndex = 7;
             // 
             // lstBiten
@@ -308,23 +323,23 @@ namespace Nursan.UI
             lstBiten.BackColor = Color.FromArgb(45, 45, 48);
             lstBiten.BorderStyle = BorderStyle.None;
             lstBiten.Dock = DockStyle.Bottom;
-            lstBiten.Font = new Font("Segoe UI", 10F);
+            lstBiten.Font = new Font("Segoe UI", 12F);
             lstBiten.ForeColor = Color.White;
             lstBiten.FormattingEnabled = true;
-            lstBiten.ItemHeight = 19;
-            lstBiten.Location = new Point(0, 30);
+            lstBiten.ItemHeight = 21;
+            lstBiten.Location = new Point(0, 32);
             lstBiten.Name = "lstBiten";
-            lstBiten.Size = new Size(520, 170);
+            lstBiten.Size = new Size(1233, 168);
             lstBiten.TabIndex = 1;
             // 
             // label7
             // 
             label7.AutoSize = true;
-            label7.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label7.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             label7.ForeColor = Color.FromArgb(0, 122, 204);
-            label7.Location = new Point(10, 10);
+            label7.Location = new Point(10, -4);
             label7.Name = "label7";
-            label7.Size = new Size(80, 19);
+            label7.Size = new Size(166, 32);
             label7.TabIndex = 0;
             label7.Text = "Tamamlanan:";
             // 
@@ -333,31 +348,31 @@ namespace Nursan.UI
             panel9.BackColor = Color.FromArgb(37, 37, 38);
             panel9.Controls.Add(numSayi);
             panel9.Controls.Add(label8);
-            panel9.Location = new Point(340, 320);
+            panel9.Location = new Point(440, 350);
             panel9.Name = "panel9";
-            panel9.Size = new Size(300, 80);
+            panel9.Size = new Size(400, 80);
             panel9.TabIndex = 8;
             // 
             // numSayi
             // 
             numSayi.BackColor = Color.FromArgb(45, 45, 48);
             numSayi.BorderStyle = BorderStyle.FixedSingle;
-            numSayi.Font = new Font("Segoe UI", 12F);
+            numSayi.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 204);
             numSayi.ForeColor = Color.White;
             numSayi.Location = new Point(10, 40);
             numSayi.Maximum = new decimal(new int[] { 999999, 0, 0, 0 });
             numSayi.Name = "numSayi";
-            numSayi.Size = new Size(280, 29);
+            numSayi.Size = new Size(380, 39);
             numSayi.TabIndex = 1;
             // 
             // label8
             // 
             label8.AutoSize = true;
-            label8.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label8.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             label8.ForeColor = Color.FromArgb(0, 122, 204);
-            label8.Location = new Point(10, 10);
+            label8.Location = new Point(10, -2);
             label8.Name = "label8";
-            label8.Size = new Size(40, 19);
+            label8.Size = new Size(67, 32);
             label8.TabIndex = 0;
             label8.Text = "Sayı:";
             // 
@@ -365,9 +380,9 @@ namespace Nursan.UI
             // 
             panel10.BackColor = Color.FromArgb(37, 37, 38);
             panel10.Controls.Add(btnPrintConfig);
-            panel10.Location = new Point(340, 420);
+            panel10.Location = new Point(440, 450);
             panel10.Name = "panel10";
-            panel10.Size = new Size(300, 60);
+            panel10.Size = new Size(400, 80);
             panel10.TabIndex = 9;
             // 
             // btnPrintConfig
@@ -376,11 +391,11 @@ namespace Nursan.UI
             btnPrintConfig.Dock = DockStyle.Fill;
             btnPrintConfig.FlatAppearance.BorderSize = 0;
             btnPrintConfig.FlatStyle = FlatStyle.Flat;
-            btnPrintConfig.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnPrintConfig.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
             btnPrintConfig.ForeColor = Color.White;
             btnPrintConfig.Location = new Point(0, 0);
             btnPrintConfig.Name = "btnPrintConfig";
-            btnPrintConfig.Size = new Size(300, 60);
+            btnPrintConfig.Size = new Size(400, 80);
             btnPrintConfig.TabIndex = 0;
             btnPrintConfig.Text = "Yazdırma Ayarları";
             btnPrintConfig.UseVisualStyleBackColor = false;
@@ -391,7 +406,7 @@ namespace Nursan.UI
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(30, 30, 30);
-            ClientSize = new Size(1200, 680);
+            ClientSize = new Size(1920, 1080);
             Controls.Add(panel10);
             Controls.Add(panel9);
             Controls.Add(panel8);
@@ -402,11 +417,12 @@ namespace Nursan.UI
             Controls.Add(panel3);
             Controls.Add(panel2);
             Controls.Add(panel1);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
+            FormBorderStyle = FormBorderStyle.None;
             MaximizeBox = false;
             Name = "AntenKablo";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Anten Kablo Sistemi";
+            WindowState = FormWindowState.Maximized;
             FormClosing += AntenKablo_FormClosing;
             Load += Form1_Load;
             panel1.ResumeLayout(false);
@@ -436,6 +452,7 @@ namespace Nursan.UI
         private Panel panel1;
         private Label label2;
         private Button btnHome;
+        private Button btnClose;
         private Panel panel2;
         private Label label1;
         private Panel panel3;

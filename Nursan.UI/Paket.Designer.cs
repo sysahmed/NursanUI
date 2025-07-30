@@ -61,6 +61,7 @@
             // 
             // tableLayoutPanel1
             // 
+            tableLayoutPanel1.BackColor = Color.FromArgb(30, 30, 30);
             tableLayoutPanel1.ColumnCount = 2;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 85F));
@@ -77,6 +78,7 @@
             // 
             // tableLayoutPanel2
             // 
+            tableLayoutPanel2.BackColor = Color.FromArgb(45, 45, 48);
             tableLayoutPanel2.ColumnCount = 1;
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel2.Controls.Add(panel2, 0, 1);
@@ -93,7 +95,7 @@
             // 
             // panel2
             // 
-            panel2.BackColor = SystemColors.ButtonShadow;
+            panel2.BackColor = Color.FromArgb(60, 60, 60);
             panel2.Controls.Add(pictureBox1);
             panel2.Dock = DockStyle.Fill;
             panel2.Location = new Point(3, 95);
@@ -114,20 +116,21 @@
             // lblMessage
             // 
             lblMessage.AutoSize = true;
-            lblMessage.BackColor = Color.Black;
+            lblMessage.BackColor = Color.FromArgb(30, 30, 30);
             lblMessage.Dock = DockStyle.Fill;
-            lblMessage.Font = new Font("Microsoft Sans Serif", 48F, FontStyle.Bold);
-            lblMessage.ForeColor = Color.FromArgb(128, 255, 128);
+            lblMessage.Font = new Font("Segoe UI", 48F, FontStyle.Bold);
+            lblMessage.ForeColor = Color.Lime;
             lblMessage.Location = new Point(4, 0);
             lblMessage.Margin = new Padding(4, 0, 4, 0);
             lblMessage.Name = "lblMessage";
             lblMessage.Size = new Size(1033, 93);
             lblMessage.TabIndex = 2;
-            lblMessage.Text = "Gelen Barcode Okutun";
+            lblMessage.Text = "Paket Sistemi";
             lblMessage.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel3
             // 
+            tableLayoutPanel3.BackColor = Color.FromArgb(45, 45, 48);
             tableLayoutPanel3.ColumnCount = 1;
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 18F));
@@ -145,6 +148,7 @@
             // 
             // tableLayoutPanel5
             // 
+            tableLayoutPanel5.BackColor = Color.FromArgb(60, 60, 60);
             tableLayoutPanel5.ColumnCount = 1;
             tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
@@ -178,8 +182,10 @@
             // label9
             // 
             label9.AutoSize = true;
+            label9.BackColor = Color.FromArgb(60, 60, 60);
             label9.Dock = DockStyle.Fill;
-            label9.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            label9.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            label9.ForeColor = Color.White;
             label9.Location = new Point(3, 384);
             label9.Name = "label9";
             label9.Size = new Size(166, 48);
@@ -191,8 +197,10 @@
             // label8
             // 
             label8.AutoSize = true;
+            label8.BackColor = Color.FromArgb(60, 60, 60);
             label8.Dock = DockStyle.Fill;
-            label8.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            label8.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            label8.ForeColor = Color.White;
             label8.Location = new Point(3, 336);
             label8.Name = "label8";
             label8.Size = new Size(166, 48);
@@ -204,8 +212,10 @@
             // label7
             // 
             label7.AutoSize = true;
+            label7.BackColor = Color.FromArgb(60, 60, 60);
             label7.Dock = DockStyle.Fill;
-            label7.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            label7.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            label7.ForeColor = Color.White;
             label7.Location = new Point(3, 288);
             label7.Name = "label7";
             label7.Size = new Size(166, 48);
@@ -217,8 +227,10 @@
             // lblOrtalama
             // 
             lblOrtalama.AutoSize = true;
+            lblOrtalama.BackColor = Color.FromArgb(60, 60, 60);
             lblOrtalama.Dock = DockStyle.Fill;
-            lblOrtalama.Font = new Font("Segoe UI Semibold", 20F, FontStyle.Bold);
+            lblOrtalama.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
+            lblOrtalama.ForeColor = Color.Lime;
             lblOrtalama.Location = new Point(3, 240);
             lblOrtalama.Name = "lblOrtalama";
             lblOrtalama.Size = new Size(166, 48);
@@ -230,8 +242,10 @@
             // label5
             // 
             label5.AutoSize = true;
+            label5.BackColor = Color.FromArgb(60, 60, 60);
             label5.Dock = DockStyle.Fill;
-            label5.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            label5.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            label5.ForeColor = Color.White;
             label5.Location = new Point(3, 192);
             label5.Name = "label5";
             label5.Size = new Size(166, 48);
@@ -243,8 +257,10 @@
             // lblToplama
             // 
             lblToplama.AutoSize = true;
+            lblToplama.BackColor = Color.FromArgb(60, 60, 60);
             lblToplama.Dock = DockStyle.Fill;
-            lblToplama.Font = new Font("Segoe UI Semibold", 20F, FontStyle.Bold);
+            lblToplama.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
+            lblToplama.ForeColor = Color.Lime;
             lblToplama.Location = new Point(3, 144);
             lblToplama.Name = "lblToplama";
             lblToplama.Size = new Size(166, 48);
@@ -256,8 +272,10 @@
             // label3
             // 
             label3.AutoSize = true;
+            label3.BackColor = Color.FromArgb(60, 60, 60);
             label3.Dock = DockStyle.Fill;
-            label3.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            label3.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            label3.ForeColor = Color.White;
             label3.Location = new Point(3, 96);
             label3.Name = "label3";
             label3.Size = new Size(166, 48);
@@ -269,8 +287,10 @@
             // lblVardiya
             // 
             lblVardiya.AutoSize = true;
+            lblVardiya.BackColor = Color.FromArgb(60, 60, 60);
             lblVardiya.Dock = DockStyle.Fill;
-            lblVardiya.Font = new Font("Segoe UI Semibold", 20F, FontStyle.Bold);
+            lblVardiya.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
+            lblVardiya.ForeColor = Color.Lime;
             lblVardiya.Location = new Point(3, 48);
             lblVardiya.Name = "lblVardiya";
             lblVardiya.Size = new Size(166, 48);
@@ -282,8 +302,10 @@
             // label1
             // 
             label1.AutoSize = true;
+            label1.BackColor = Color.FromArgb(60, 60, 60);
             label1.Dock = DockStyle.Fill;
-            label1.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            label1.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            label1.ForeColor = Color.White;
             label1.Location = new Point(3, 0);
             label1.Name = "label1";
             label1.Size = new Size(166, 48);
@@ -294,7 +316,7 @@
             // 
             // panel11
             // 
-            panel11.BackColor = Color.Wheat;
+            panel11.BackColor = Color.FromArgb(45, 45, 48);
             panel11.Dock = DockStyle.Fill;
             panel11.Location = new Point(3, 435);
             panel11.Name = "panel11";
@@ -303,6 +325,7 @@
             // 
             // tableLayoutPanel4
             // 
+            tableLayoutPanel4.BackColor = Color.FromArgb(60, 60, 60);
             tableLayoutPanel4.ColumnCount = 1;
             tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel4.Controls.Add(listBox1, 0, 2);
@@ -321,8 +344,11 @@
             // 
             // listBox1
             // 
+            listBox1.BackColor = Color.FromArgb(45, 45, 48);
+            listBox1.BorderStyle = BorderStyle.None;
             listBox1.Dock = DockStyle.Fill;
-            listBox1.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            listBox1.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            listBox1.ForeColor = Color.White;
             listBox1.FormattingEnabled = true;
             listBox1.ItemHeight = 21;
             listBox1.Location = new Point(3, 65);
@@ -333,12 +359,15 @@
             // 
             // txtBarcode
             // 
+            txtBarcode.BackColor = Color.FromArgb(45, 45, 48);
+            txtBarcode.BorderStyle = BorderStyle.None;
             txtBarcode.Dock = DockStyle.Fill;
-            txtBarcode.Font = new Font("Microsoft Sans Serif", 13.8F, FontStyle.Bold);
+            txtBarcode.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
+            txtBarcode.ForeColor = Color.White;
             txtBarcode.Location = new Point(3, 41);
             txtBarcode.Margin = new Padding(3, 2, 3, 2);
             txtBarcode.Name = "txtBarcode";
-            txtBarcode.Size = new Size(166, 28);
+            txtBarcode.Size = new Size(166, 25);
             txtBarcode.TabIndex = 1;
             txtBarcode.TextAlign = HorizontalAlignment.Center;
             txtBarcode.KeyUp += txtBarcode_KeyUpAsync;
@@ -346,27 +375,29 @@
             // lblToplam
             // 
             lblToplam.AutoSize = true;
-            lblToplam.BackColor = Color.FromArgb(255, 255, 128);
+            lblToplam.BackColor = Color.FromArgb(0, 122, 204);
             lblToplam.Dock = DockStyle.Fill;
-            lblToplam.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold);
+            lblToplam.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblToplam.ForeColor = Color.White;
             lblToplam.Location = new Point(3, 0);
             lblToplam.Name = "lblToplam";
             lblToplam.Size = new Size(166, 39);
             lblToplam.TabIndex = 0;
-            lblToplam.Text = "Donanim";
+            lblToplam.Text = "Paket Sistemi";
             lblToplam.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // Paket
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(30, 30, 30);
             ClientSize = new Size(1231, 630);
             Controls.Add(tableLayoutPanel1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(3, 2, 3, 2);
             Name = "Paket";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "UretimOtmasyon";
+            Text = "Paket Sistemi";
             WindowState = FormWindowState.Maximized;
             Load += Form1_Load;
             tableLayoutPanel1.ResumeLayout(false);
