@@ -905,9 +905,12 @@ namespace Nursan.UI
                 if (XMLSeverIp.WebApiTrue())
                 {
                     Console.WriteLine("=== WebAPI е активно, стартираме изпращане ===");
+                    SendTicketWithScreenshot();
+                    Console.WriteLine($"lastScreenshotPath след SendTicketWithScreenshot: {lastScreenshotPath}");
                     
-                    // ТЕСТ: Директно пращане на тикет със снимка БЕЗ QR код
-                    TestDirectTicketSend(ticket.TiketName, ticket.Description, ticket.Role ?? 5);
+                    // Използваме Role параметъра от тикета
+                    int roleValue = ticket.Role ?? 5; // Ако Role е null, използваме 5 като default
+                    ShowQrCodeAfterTicketCreation(ticket.TiketName, ticket.Description, lastScreenshotPath, roleValue);
                 }
                 else
                 {
@@ -1037,60 +1040,6 @@ namespace Nursan.UI
             }
         }
 
-        /// <summary>
-        /// ТЕСТ: Директно пращане на тикет със снимка БЕЗ QR код и други сложности
-        /// </summary>
-        private async void TestDirectTicketSend(string tiketName, string description, int roleValue)
-        {
-            try
-            {
-                Console.WriteLine("=== ТЕСТ: Директно пращане на тикет ===");
-                
-                // 1. Правим снимка
-                Console.WriteLine("1. Правене на снимка...");
-                var bounds = Screen.PrimaryScreen.Bounds;
-                string screenshotPath = null;
-                
-                using (var bmp = new Bitmap(bounds.Width, bounds.Height))
-                {
-                    using (var g = Graphics.FromImage(bmp))
-                    {
-                        g.CopyFromScreen(bounds.Location, Point.Empty, bounds.Size);
-                    }
-                    
-                    string fileName = $"test_screenshot_{DateTime.Now:yyyyMMdd_HHmmss}.png";
-                    screenshotPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
-                    
-                    bmp.Save(screenshotPath, System.Drawing.Imaging.ImageFormat.Png);
-                    Console.WriteLine($"Снимка запазена: {screenshotPath}");
-                    Console.WriteLine($"Файлът съществува: {File.Exists(screenshotPath)}");
-                    Console.WriteLine($"Размер на файла: {new FileInfo(screenshotPath).Length} bytes");
-                }
-                
-                // 2. Пращаме тикета
-                Console.WriteLine("2. Пращане на тикет...");
-                var (success, ticketId) = await _systemTicket.CreateTicket(tiketName, description, screenshotPath, roleValue);
-                
-                Console.WriteLine($"Резултат от пращане: {success}");
-                Console.WriteLine($"Ticket ID от сървъра: {ticketId}");
-                
-                if (success)
-                {
-                    MessageBox.Show($"УСПЕХ! Тикетът е изпратен със снимка!\nTicket ID: {ticketId}\nСнимка: {screenshotPath}", 
-                                  "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                {
-                    MessageBox.Show($"ГРЕШКА! Тикетът НЕ е изпратен!\nСнимка: {screenshotPath}", 
-                                  "Грешка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"ГРЕШКА в TestDirectTicketSend: {ex.Message}");
-                MessageBox.Show($"ГРЕШКА: {ex.Message}", "Грешка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
       
     }
 }
