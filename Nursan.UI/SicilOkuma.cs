@@ -53,7 +53,15 @@ namespace Nursan.UI
             var result = _personal.GetPersonalTakib(istasyonce).Data;
             foreach (var item in result)
             {
-                listBox1.Items.Add($"{item.Sicil}-{item.FullName}-{GitSytemDeAyiklaVesay(item.Sicil)}");
+                // Проверяваме дали персоналът е в фабриката (LAST_DIR = true)
+                var personal = _personal.GetPersonal(item.Sicil).Data;
+                
+                // Добавяме в листа само ако персоналът е в фабриката (LAST_DIR = true)
+                // Ако LAST_DIR е null или false, не добавяме в листа
+                if (personal?.LAST_DIR == true)
+                {
+                    listBox1.Items.Add($"{item.Sicil}-{item.FullName}-{GitSytemDeAyiklaVesay(item.Sicil)}-В ФАБРИКАТА");
+                }
             }
         }
         private int GitSytemDeAyiklaVesay(string? sicil)
@@ -123,6 +131,11 @@ namespace Nursan.UI
             {
                 ProcessValidPersonalInfo(personal, date);
             }
+            else if (personal.LAST_DIR == false || personal.LAST_DIR == null)
+            {
+                // Персоналът не е в фабриката (LAST_DIR = false или null)
+                HandlePersonNotInFactory(personal);
+            }
             else
             {
                 HandleInvalidPersonalInfo(personal.LAST_DIR);
@@ -168,7 +181,12 @@ namespace Nursan.UI
         private void UpdateUIOnSuccess(Nursan.Domain.Personal.Personal personal)
         {
             textBox1.Clear();
-            listBox1.Items.Add($"{personal.USER_CODE}-{personal.FIRST_NAME} {personal.LAST_NAME}");
+            // Добавяме в листа само ако персоналът е в фабриката (LAST_DIR = true)
+            // Ако LAST_DIR е null или false, не добавяме в листа
+            if (personal?.LAST_DIR == true)
+            {
+                listBox1.Items.Add($"{personal.USER_CODE}-{personal.FIRST_NAME} {personal.LAST_NAME}-В ФАБРИКАТА");
+            }
             label1.Text = $"Sicil Okuttunz!!!  - {istasyonce.Name}";
             label1.ForeColor = Color.Lime;
         }
@@ -186,6 +204,13 @@ namespace Nursan.UI
         {
             textBox1.Clear();
             label1.Text = $"Bu Sicil Systemde Gozukmuyor!!! - {istasyonce.Name}";
+            label1.ForeColor = Color.Red;
+        }
+
+        private void HandlePersonNotInFactory(Nursan.Domain.Personal.Personal personal)
+        {
+            textBox1.Clear();
+            label1.Text = $"Персоналът {personal.FIRST_NAME} {personal.LAST_NAME} НЕ Е В ФАБРИКАТА!!! - {istasyonce.Name}";
             label1.ForeColor = Color.Red;
         }
         private void HandleException()
@@ -209,6 +234,9 @@ namespace Nursan.UI
         }
         private void SicilOkuma_Load(object sender, EventArgs e)
         {
+            // При всяко отваряне на формата проверяваме статуса на всички сиджили
+            CheckAllPersonalFactoryStatus();
+            
             listBox1.Items.Clear();
             base.Bounds = Screen.AllScreens[this._ScreenNumber].Bounds;
             
@@ -216,9 +244,41 @@ namespace Nursan.UI
             base.TopMost = true;
             foreach (var item in urPersonalTakibs)
             {
-                listBox1.Items.Add($"{item.Sicil}-{item.FullName}");
+                // Проверяваме дали персоналът е в фабриката (LAST_DIR = true)
+                var personal = _personal.GetPersonal(item.Sicil).Data;
+                
+                // Добавяме в листа само ако персоналът е в фабриката (LAST_DIR = true)
+                // Ако LAST_DIR е null или false, не добавяме в листа
+                if (personal?.LAST_DIR == true)
+                {
+                    listBox1.Items.Add($"{item.Sicil}-{item.FullName}-В ФАБРИКАТА");
+                }
             }
         }
+        /// <summary>
+        /// Проверява статуса на всички персонали дали са в фабриката
+        /// </summary>
+        private void CheckAllPersonalFactoryStatus()
+        {
+            try
+            {
+                var allPersonalTakib = _personal.GetPersonalTakib(istasyonce).Data;
+                foreach (var item in allPersonalTakib)
+                {
+                    var personal = _personal.GetPersonal(item.Sicil).Data;
+                    if (personal != null)
+                    {
+                        // Логваме статуса на персонала
+                        Console.WriteLine($"Сиджил: {item.Sicil}, Име: {item.FullName}, В фабриката: {personal.LAST_DIR}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Грешка при проверка на статуса на персоналите: {ex.Message}");
+            }
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
 

@@ -14,6 +14,8 @@
   </screenSaniye>
     <sayi Sayi="true">
   </sayi>
+  <ticketTracking UrlTemplate="http://{serverIp}/tickets/track/{ticketId}">
+  </ticketTracking>
 </config>
 <!--
 		Form1

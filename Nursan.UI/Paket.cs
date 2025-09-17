@@ -96,34 +96,47 @@ namespace Nursan.UI
                             }
                             pi++;
                             txtBarcode.Clear();
-                            GetCounts();
+                            //GetCounts();
                         }
                     }
                     else
                     {
                         listBox1.Items.Add(txtBarcode.Text);
                         _syBarcodeInputList[pi].BarcodeIcerik = txtBarcode.Text;
-                        if (!txtBarcode.Text.StartsWith(_syBarcodeInputList[pi].OzelChar == null ? "" : _syBarcodeInputList[pi].OzelChar))
+                        if (_syBarcodeInputList.First().BarcodeIcerik.Contains(_syBarcodeInputList.Last().BarcodeIcerik))
                         {
-                            proveri.MessageAyarla($"Yanlis Brcode Okudunuz!", Color.Red, lblMessage);
-                            txtBarcode.Clear(); listBox1.Items.Clear(); pi = 0;
-                            return;
+                            if (!txtBarcode.Text.StartsWith(_syBarcodeInputList[pi].OzelChar == null ? "" : _syBarcodeInputList[pi].OzelChar))
+                            {
+                                proveri.MessageAyarla($"Yanlis Barcode Okudunuz!", Color.Red, lblMessage);
+                                txtBarcode.Clear(); listBox1.Items.Clear(); pi = 0;
+                                return;
+                            }
+                            pi++;
+                            if (_syBarcodeInputList.Count == pi)
+                            {
+                                var veri = tork.GetTorkDonanimBarcode(_syBarcodeInputList);
+                                listBox1.Items.Clear();
+                                for (int i = 0; i < pi; i++)
+                                {
+                                    _syBarcodeInputList[i].BarcodeIcerik = null;
+                                    pi = 0;
+                                }
+                                proveri.MessageAyarla($"{veri.Message} {txtBarcode.Text} ", veri.Success == true ? Color.LightBlue : Color.Red, lblMessage);
+                            }
+                            //proveri.MessageAyarla($"{veri.Message} {txtBarcode.Text} ", veri.Success == true ? Color.LightBlue : Color.Red, lblMessage);
+                            txtBarcode.Clear();
+                            GetCounts();
                         }
-                        pi++;
-                        if (_syBarcodeInputList.Count == pi)
+                        else
                         {
-                            var veri = tork.GetTorkDonanimBarcode(_syBarcodeInputList);
-                            listBox1.Items.Clear();
+                            proveri.MessageAyarla($"Okutugunuz Barcod-lar Yalnis!!!", Color.Red, lblMessage);
                             for (int i = 0; i < pi; i++)
                             {
-                                _syBarcodeInputList[i].BarcodeIcerik = null;
-                                pi = 0;
+                                proveri.MessageAyarla($"Yanlis Brcode Okudunuz!", Color.Red, lblMessage);
+                                txtBarcode.Clear(); listBox1.Items.Clear(); pi = 0;
+                                return;
                             }
-                            proveri.MessageAyarla($"{veri.Message} {txtBarcode.Text} ", veri.Success == true ? Color.LightBlue : Color.Red, lblMessage);
                         }
-                        //proveri.MessageAyarla($"{veri.Message} {txtBarcode.Text} ", veri.Success == true ? Color.LightBlue : Color.Red, lblMessage);
-                        txtBarcode.Clear();
-                        GetCounts();
                     }
                 }
                 else

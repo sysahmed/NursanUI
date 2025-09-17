@@ -904,13 +904,14 @@ namespace Nursan.UI
             {
                 if (XMLSeverIp.WebApiTrue())
                 {
-                    SendTicketWithScreenshot();
-                    // Използваме Role параметъра от тикета
-                    int roleValue = ticket.Role ?? 5; // Ако Role е null, използваме 5 като default
-                    var result = _systemTicket.CreateTicket(ticket.TiketName, ticket.Description, lastScreenshotPath, roleValue);
+                    Console.WriteLine("=== WebAPI е активно, стартираме изпращане ===");
+                    
+                    // ТЕСТ: Директно пращане на тикет със снимка БЕЗ QR код
+                    TestDirectTicketSend(ticket.TiketName, ticket.Description, ticket.Role ?? 5);
                 }
                 else
                 {
+                    Console.WriteLine("=== WebAPI не е активно, използваме локално запазване ===");
                     // Добавяме проверка за nullable Role
                     int roleValue = ticket.Role ?? 5; // Ако Role е null, използваме 5 като default
                     AddTicket(ticket.TiketName, ticket.Description, roleValue);
@@ -956,17 +957,138 @@ namespace Nursan.UI
                     {
                         g.CopyFromScreen(bounds.Location, Point.Empty, bounds.Size);
                     }
+                    
+                    // Създаваме пълен път към файла
                     string fileName = $"screenshot_{DateTime.Now:yyyyMMdd_HHmmss}.png";
-                    bmp.Save(fileName, System.Drawing.Imaging.ImageFormat.Png);
-                    lastScreenshotPath = fileName;
+                    string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
+                    
+                    bmp.Save(fullPath, System.Drawing.Imaging.ImageFormat.Png);
+                    lastScreenshotPath = fullPath;
+                    
+                    Console.WriteLine($"Скрийншот запазен в: {lastScreenshotPath}");
+                    Console.WriteLine($"Файлът съществува: {File.Exists(lastScreenshotPath)}");
                 }
                 // 2. Пращаме тикета (логиката е същата като в ButtonCreateTicket_Click)
-                //CreateTicket();
+               //CreateTicket();
                 // MessageBox.Show("Тикетът и скрийншотът са изпратени автоматично!", "IT тикет", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                labelStatus.Text = $"Грешка при автоматично изпращане: {ex.Message}";
+                Console.WriteLine($"Грешка при SendTicketWithScreenshot: {ex.Message}");
+                // labelStatus може да не е инициализиран
+                if (labelStatus != null)
+                {
+                    labelStatus.Text = $"Грешка при автоматично изпращане: {ex.Message}";
+                }
+            }
+        }
+
+        /// <summary>
+        /// Асинхронно създава тикет и показва QR код за проследяване
+        /// </summary>
+        /// <param name="tiketName">Име на тикета</param>
+        /// <param name="description">Описание на тикета</param>
+        /// <param name="lastScreenshotPath">Път към скрийншота</param>
+        /// <param name="roleValue">Роля на потребителя</param>
+        private async void ShowQrCodeAfterTicketCreation(string tiketName, string description, string lastScreenshotPath, int roleValue)
+        {
+            try
+            {
+                Console.WriteLine("=== ShowQrCodeAfterTicketCreation стартира ===");
+                Console.WriteLine($"tiketName: {tiketName}");
+                Console.WriteLine($"description: {description}");
+                Console.WriteLine($"lastScreenshotPath: {lastScreenshotPath}");
+                Console.WriteLine($"roleValue: {roleValue}");
+                
+                // Първо пращаме тикета
+                Console.WriteLine("Стартиране на CreateTicket...");
+                Console.WriteLine($"_systemTicket е null: {_systemTicket == null}");
+                var (success, serverTicketId) = await _systemTicket.CreateTicket(tiketName, description, lastScreenshotPath, roleValue);
+                Console.WriteLine($"CreateTicket резултат: {success}");
+                Console.WriteLine($"Server Ticket ID: {serverTicketId}");
+                
+                if (success)
+                {
+                    Console.WriteLine("Тикетът е изпратен успешно! Показваме QR кода...");
+                    
+                    // Използваме истинския ticket ID от сървъра
+                    Console.WriteLine($"Използваме server ticket ID: {serverTicketId}");
+                    
+                    // Показваме QR кода САМО ако тикетът е изпратен успешно
+                    string serverIp = XMLSeverIp.XmlWebApiIP();
+                    Console.WriteLine($"Server IP: {serverIp}");
+                    
+                    QrTicketForm qrForm = new QrTicketForm(serverTicketId, serverIp);
+                    qrForm.Show();
+                    Console.WriteLine("QR форма показана");
+                }
+                else
+                {
+                    Console.WriteLine("Грешка при изпращане на тикет към сървъра - QR кода няма да се показва");
+                    MessageBox.Show("Грешка при изпращане на тикета!", "Грешка", 
+                                  MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Грешка в ShowQrCodeAfterTicketCreation: {ex.Message}");
+                MessageBox.Show($"Грешка при създаване на тикет: {ex.Message}", "Грешка", 
+                              MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// ТЕСТ: Директно пращане на тикет със снимка БЕЗ QR код и други сложности
+        /// </summary>
+        private async void TestDirectTicketSend(string tiketName, string description, int roleValue)
+        {
+            try
+            {
+                Console.WriteLine("=== ТЕСТ: Директно пращане на тикет ===");
+                
+                // 1. Правим снимка
+                Console.WriteLine("1. Правене на снимка...");
+                var bounds = Screen.PrimaryScreen.Bounds;
+                string screenshotPath = null;
+                
+                using (var bmp = new Bitmap(bounds.Width, bounds.Height))
+                {
+                    using (var g = Graphics.FromImage(bmp))
+                    {
+                        g.CopyFromScreen(bounds.Location, Point.Empty, bounds.Size);
+                    }
+                    
+                    string fileName = $"test_screenshot_{DateTime.Now:yyyyMMdd_HHmmss}.png";
+                    screenshotPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
+                    
+                    bmp.Save(screenshotPath, System.Drawing.Imaging.ImageFormat.Png);
+                    Console.WriteLine($"Снимка запазена: {screenshotPath}");
+                    Console.WriteLine($"Файлът съществува: {File.Exists(screenshotPath)}");
+                    Console.WriteLine($"Размер на файла: {new FileInfo(screenshotPath).Length} bytes");
+                }
+                
+                // 2. Пращаме тикета
+                Console.WriteLine("2. Пращане на тикет...");
+                var (success, ticketId) = await _systemTicket.CreateTicket(tiketName, description, screenshotPath, roleValue);
+                
+                Console.WriteLine($"Резултат от пращане: {success}");
+                Console.WriteLine($"Ticket ID от сървъра: {ticketId}");
+                
+                if (success)
+                {
+                    MessageBox.Show($"УСПЕХ! Тикетът е изпратен със снимка!\nTicket ID: {ticketId}\nСнимка: {screenshotPath}", 
+                                  "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show($"ГРЕШКА! Тикетът НЕ е изпратен!\nСнимка: {screenshotPath}", 
+                                  "Грешка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"ГРЕШКА в TestDirectTicketSend: {ex.Message}");
+                MessageBox.Show($"ГРЕШКА: {ex.Message}", "Грешка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
       

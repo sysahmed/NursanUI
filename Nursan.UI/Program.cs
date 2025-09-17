@@ -21,6 +21,8 @@ using Nursan.Validations.ValidationCode;
 using System.Data;
 using System.Data.SQLite;
 using System.Diagnostics;
+using System.Net;
+using System.Net.Security;
 
 namespace Nursan.UI
 {
@@ -31,6 +33,12 @@ namespace Nursan.UI
         [STAThread]
         public static void Main(string[] args)
         {
+            // Р“Р»РѕР±Р°Р»РµРЅ SSL bypass - РёР·РєР»СЋС‡РІР°РјРµ РІСЃРёС‡РєРё SSL РїСЂРѕРІРµСЂРєРё
+            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.SystemDefault;
+            ServicePointManager.CheckCertificateRevocationList = false;
+            ServicePointManager.Expect100Continue = false;
+            
             // ReadOnlySpan<char> input="KK2T - 14401 - ABCD_000000004".AsSpan();
             // var veriler= StringSpanConverter.GetCharsMyDecoder(input,'-');
             // var veriler1 = StringSpanConverter.SplitWithoutAllocation(input, '-');
@@ -164,8 +172,8 @@ namespace Nursan.UI
 
             //public void ConfigureServices(IServiceCollection services)
             //{
-            //    services.AddScoped<UnitOfWork>(); // Scoped значи една инстанция на заявка (request)
-            //    services.AddSingleton<DonanimService>(); // Singleton значи една инстанция за целия жизнен цикъл на приложението
+            //    services.AddScoped<UnitOfWork>(); // Scoped пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ (request)
+            //    services.AddSingleton<DonanimService>(); // Singleton пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             //    services.AddSingleton<ToplamV769Services>();
             //    services.AddScoped<PersonalValidasyonu>();
             //    services.AddScoped<OzelReferansControlEt>();

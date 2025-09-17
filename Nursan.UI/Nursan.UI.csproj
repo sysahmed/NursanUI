@@ -2,12 +2,12 @@
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net8.0-windows</TargetFramework>
+		<TargetFramework>net8.0-windows8.0</TargetFramework>
 		<UseWindowsForms>true</UseWindowsForms>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UserSecretsId>9fabd8c2-4d0b-40d3-99e2-bb25d4ca41f8</UserSecretsId>
 		<ApplicationIcon>favicon.ico</ApplicationIcon>
-		<Platforms>AnyCPU;x86</Platforms>
+		<Platforms>AnyCPU;x64</Platforms>
 		<PackageIcon>favicon.ico</PackageIcon>
 		<PackageReleaseNotes>@DateTime.Year</PackageReleaseNotes>
 		<PackAsTool>True</PackAsTool>
@@ -32,7 +32,7 @@
 		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
 		<IsPublishable>False</IsPublishable>
 		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
 	</PropertyGroup>
@@ -42,7 +42,7 @@
 		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
 		<IsPublishable>False</IsPublishable>
 		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
 	</PropertyGroup>
@@ -58,25 +58,7 @@
 		<None Remove="Revork.resx~RF58398f5.TMP" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<COMReference Include="AcroPDFLib">
-			<WrapperTool>tlbimp</WrapperTool>
-			<VersionMinor>0</VersionMinor>
-			<VersionMajor>1</VersionMajor>
-			<Guid>05bfd3f1-6319-4f30-b752-c7a22889bcc4</Guid>
-			<Lcid>0</Lcid>
-			<Isolated>false</Isolated>
-			<EmbedInteropTypes>true</EmbedInteropTypes>
-		</COMReference>
-		<COMReference Include="AxAcroPDFLib">
-			<WrapperTool>aximp</WrapperTool>
-			<VersionMinor>0</VersionMinor>
-			<VersionMajor>1</VersionMajor>
-			<Guid>05bfd3f1-6319-4f30-b752-c7a22889bcc4</Guid>
-			<Lcid>0</Lcid>
-			<Isolated>false</Isolated>
-		</COMReference>
-	</ItemGroup>
+	<!-- COM References заменени с DLL референции за .NET 8 съвместимост -->
 
 	<ItemGroup>
 		<Content Include="favicon.ico" />
@@ -93,6 +75,7 @@
 		<PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
 		<PackageReference Include="System.IO.Ports" Version="8.0.0" />
 		<PackageReference Include="Tesseract" Version="5.2.0" />
+		<PackageReference Include="QRCoder" Version="1.6.0" />
 	</ItemGroup>
 
 	<ItemGroup>

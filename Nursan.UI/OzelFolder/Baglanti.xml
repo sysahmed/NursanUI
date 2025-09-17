@@ -18,6 +18,8 @@
   </webapitrue>
   <webapi WebApi="200.2.10.252">
   </webapi>
+  <ticketTracking UrlTemplate="http://{serverIp}/tickets/track/{ticketId}">
+  </ticketTracking>
 </config>
 <!--
 		Form1
