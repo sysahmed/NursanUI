@@ -2,17 +2,11 @@
 using Nursan.Business.Services;
 using Nursan.Domain.AmbarModels;
 using Nursan.Domain.Entity;
-using Nursan.Domain.Personal;
 using Nursan.Logging.Messages;
 using Nursan.Persistanse.UnitOfWork;
 using Nursan.Validations.SortedList;
 using Nursan.Validations.ValidationCode;
 using Nursan.XMLTools;
-using SQLitePCL;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 using System.Text.RegularExpressions;
 using XMLIslemi = Nursan.Core.Printing.XMLIslemi;
 

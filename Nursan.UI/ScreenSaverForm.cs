@@ -278,7 +278,7 @@ namespace Nursan.UI
                         // Ако LAST_DIR е null или false, не добавяме в листа
                         if (personal?.LAST_DIR == true)
                         {
-                            string itemText = $"{item.Sicil}-{item.FullName}-{GitSytemDeAyiklaVesay(item.Sicil)}-В ФАБРИКАТА";
+                            string itemText = $"{item.Sicil}-{item.FullName}-{GitSytemDeAyiklaVesay(item.Sicil)}";
                             listBox1.Items.Add(itemText);
                         }
                     }
