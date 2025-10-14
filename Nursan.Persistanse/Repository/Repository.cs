@@ -42,7 +42,12 @@ namespace Nursan.Persistanse.Repository
                 _context.SaveChanges();
                 return new DataResult<TEntity>(entity, true, Messages.DataAdded);
             }
-            catch (DbException ex)
+            catch (DbUpdateException ex)
+            {
+                var sqlEx = ex.InnerException;
+                return new DataResult<TEntity>(entity, false, ex.Message);
+            }
+            catch (Exception ex)
             {
                 return new DataResult<TEntity>(entity, false, ex.Message);
             }

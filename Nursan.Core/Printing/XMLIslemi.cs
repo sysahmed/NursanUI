@@ -78,10 +78,48 @@ namespace Nursan.Core.Printing
             XmlNode xmlNodes = BaglantiDosyasiAc.GitDosyaAc().SelectSingleNode("config").SelectSingleNode("saniye");
             return int.Parse(xmlNodes.Attributes["Saniye"].InnerText.ToString().PadRight(4, '0'));
         }
+        public static int XmlBarkodSaniye()
+        {
+            XmlNode xmlNodes = BaglantiDosyasiAc.GitDosyaAc().SelectSingleNode("config").SelectSingleNode("saniye");
+            return int.Parse(xmlNodes.Attributes["Saniye"].InnerText.ToString().PadRight(4, '0'));
+        }
         public static int XmlScreenSaniye()
         {
             XmlNode xmlNodes = BaglantiDosyasiAc.GitDosyaAc().SelectSingleNode("config").SelectSingleNode("screenSaniye");
             return int.Parse(xmlNodes.Attributes["ScreenSaniye"].InnerText.ToString().PadRight(4, '0'));
+        }
+
+        /// <summary>
+        /// Чете URL темплейта за проследяване на тикети от XML файла
+        /// </summary>
+        /// <returns>URL темплейт или default стойност</returns>
+        public static string XmlTicketTrackingUrl()
+        {
+            try
+            {
+                XmlNode xmlNodes = BaglantiDosyasiAc.GitDosyaAc().SelectSingleNode("config").SelectSingleNode("ticketTracking");
+                return xmlNodes.Attributes["UrlTemplate"].InnerText.ToString();
+            }
+            catch (Exception)
+            {
+                // Ако няма настройка в XML файла, връщаме default стойност
+                return "http://{serverIp}/tickets/track/{ticketId}";
+            }
+        }
+
+        /// <summary>
+        /// Генерира URL за проследяване на тикет въз основа на XML темплейта
+        /// </summary>
+        /// <param name="serverIp">IP адрес на сървъра</param>
+        /// <param name="ticketId">ID на тикета</param>
+        /// <returns>Готов URL за проследяване</returns>
+        public static string GenerateTicketTrackingUrl(string serverIp, string ticketId)
+        {
+            string template = XmlTicketTrackingUrl();
+            
+            return template
+                .Replace("{serverIp}", serverIp)
+                .Replace("{ticketId}", ticketId);
         }
 
         public bool xmlSicil(XmlDosya xmlcik)

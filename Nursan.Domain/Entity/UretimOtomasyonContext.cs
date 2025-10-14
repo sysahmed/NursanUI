@@ -160,11 +160,11 @@ namespace Nursan.Domain.Entity
                 entity.ToTable("IzCoaxCableConfig");
 
                 entity.Property(e => e.Activ).HasDefaultValueSql("((1))");
-                entity.Property(e => e.CoaxCabloReferans).HasMaxLength(50);
+                entity.Property(e => e.CoaxCabloReferans).HasMaxLength(150);
                 entity.Property(e => e.CreateDate)
                     .HasDefaultValueSql("(getdate())")
                     .HasColumnType("datetime");
-                entity.Property(e => e.Supplier).HasMaxLength(50);
+                entity.Property(e => e.Supplier).HasMaxLength(150);
                 entity.Property(e => e.UpdateDate)
                     .HasDefaultValueSql("(getdate())")
                     .HasColumnType("datetime");
@@ -174,38 +174,82 @@ namespace Nursan.Domain.Entity
             {
                 entity.ToTable("IzCoaxCableCount");
 
-                entity.Property(e => e.Activ).HasDefaultValueSql("((1))");
-                entity.Property(e => e.CreateDate)
-                    .HasDefaultValueSql("(getdate())")
-                    .HasColumnType("datetime");
-                entity.Property(e => e.UpdateDate)
-                    .HasDefaultValueSql("(getdate())")
-                    .HasColumnType("datetime");
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
-                entity.HasOne(d => d.CoaxCable).WithMany(p => p.IzCoaxCableCounts)
+                entity.Property(e => e.Activ)
+                    .HasDefaultValue(true)
+                    .IsRequired();
+
+                entity.Property(e => e.CoaxCableName)
+                    .HasMaxLength(150)
+                    .IsUnicode(true)
+                    .IsRequired(false);
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.DonanimRederansId)
+                    .HasColumnType("int")
+                    .IsRequired(false);
+
+                entity.Property(e => e.HarnessModelId)
+                    .HasColumnType("int")
+                    .IsRequired();
+
+                entity.Property(e => e.OrPcNameId)
+                    .HasColumnType("int")
+                    .IsRequired();
+
+                entity.Property(e => e.UrIstasyonId)
+                    .HasColumnType("int")
+                    .IsRequired();
+
+                entity.Property(e => e.VardiyaId)
+                    .HasColumnType("int")
+                    .IsRequired();
+
+                entity.HasOne(d => d.CoaxCable)
+                    .WithMany(p => p.IzCoaxCableCounts)
                     .HasForeignKey(d => d.CoaxCableId)
+                    .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_IzCoaxCableCount_IzCoaxCableCross");
 
-                entity.HasOne(d => d.DonanimRederans).WithMany(p => p.IzCoaxCableCounts)
+                entity.HasOne(d => d.DonanimRederans)
+                    .WithMany(p => p.IzCoaxCableCounts)
                     .HasForeignKey(d => d.DonanimRederansId)
+                    .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("FK_IzCoaxCableCount_IzGenerateId");
 
-                entity.HasOne(d => d.HarnessModel).WithMany(p => p.IzCoaxCableCounts)
+                entity.HasOne(d => d.HarnessModel)
+                    .WithMany(p => p.IzCoaxCableCounts)
                     .HasForeignKey(d => d.HarnessModelId)
+                    .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_IzCoaxCableCount_OrHarnessModel");
 
-                entity.HasOne(d => d.OrPcName).WithMany(p => p.IzCoaxCableCounts)
+                entity.HasOne(d => d.OrPcName)
+                    .WithMany(p => p.IzCoaxCableCounts)
                     .HasForeignKey(d => d.OrPcNameId)
+                    .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_IzCoaxCableCount_OpMashin");
 
-                entity.HasOne(d => d.UrIstasyon).WithMany(p => p.IzCoaxCableCounts)
+                entity.HasOne(d => d.UrIstasyon)
+                    .WithMany(p => p.IzCoaxCableCounts)
                     .HasForeignKey(d => d.UrIstasyonId)
+                    .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_IzCoaxCableCount_UrIstasyon1");
 
-                entity.HasOne(d => d.UrVardiyaNavigation).WithMany(p => p.IzCoaxCableCounts)
+                entity.HasOne(d => d.UrVardiyaNavigation)
+                    .WithMany(p => p.IzCoaxCableCounts)
                     .HasForeignKey(d => d.VardiyaId)
+                    .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_IzCoaxCableCount_UrVardiya1");
             });
+
 
             modelBuilder.Entity<IzCoaxCableCross>(entity =>
             {

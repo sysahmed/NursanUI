@@ -13,11 +13,22 @@ namespace Nursan.XMLTools
             var result = xmlNodes.Attributes["EltestCount"].InnerText;
             return Convert.ToBoolean(result);
         }
+        public static bool WebApiTrue()
+        {
+            XmlNode xmlNodes = BaglantiDosyasiAc.GitDosyaAc().SelectSingleNode("config").SelectSingleNode("webapitrue");
+            var result = xmlNodes.Attributes["WebApiTrue"].InnerText;
+            return Convert.ToBoolean(result);
+        }
         public static String XmlServerIP()
         {
             XmlNode xmlNodes = BaglantiDosyasiAc.GitDosyaAc().SelectSingleNode("config").SelectSingleNode("server");
             var result = xmlNodes.Attributes["Server"].InnerText;
             return result;
+        }
+        public static String XmlWebApiIP()
+        {
+            XmlNode xmlNodes = BaglantiDosyasiAc.GitDosyaAc().SelectSingleNode("config").SelectSingleNode("webapi");
+            return xmlNodes.Attributes["WebApi"].InnerText;
         }
         public static int XmlSaniye()
         {

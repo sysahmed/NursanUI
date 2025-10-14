@@ -420,7 +420,7 @@ namespace Nursan.Validations.ValidationCode
             var okunmusResult = GitBakOkunukmu(bar);
             if (!okunmusResult.Success)
             {
-                if (etap == EtapConstants.ELTEST || etap == EtapConstants.KLIPTEST)
+                if (etap == EtapConstants.ELTEST || etap == EtapConstants.KLIPTEST || etap == EtapConstants.GROMET)
                 {
                     GitElTestBarcodeBas(bar);
                     return new Result(false, "Donanim Okunmus!"); // Завършваме тук, няма нужда да спираме Stopwatch.
@@ -475,7 +475,7 @@ namespace Nursan.Validations.ValidationCode
                     break;
 
                 case EtapConstants.GROMET:
-                    GitDegerleHerseySToplamV769Gromet(_donanimCount.IdDonanim.ToString(), personal.USER_CODE);
+                    GitDegerleHerseySToplamV769(_donanimCount.IdDonanim.ToString());
                     GitElTestBarcodeBas(bar);
                     break;
 
@@ -726,8 +726,6 @@ namespace Nursan.Validations.ValidationCode
                 return null;
             }
         }
-
-
         public DataResult<IzGenerateId> GenerateIdBak(SyBarcodeInput barkode)
         {
             try
@@ -1211,8 +1209,8 @@ namespace Nursan.Validations.ValidationCode
                             izToplam.Grometb = false;
                             izToplam.Grometgec = true;
                             izToplam.Kliptestb = true;
-                            izToplam.Gromet = $"{vardiyaFull}*{personal.USER_CODE}";
-                            izToplam.Grometvar = $"{vardiyaFull}*{personal.USER_CODE}";
+                            izToplam.Gromet = vardiyaFull;
+                            izToplam.Grometvar = vardiyaFull;
                             izToplam.Grometdata = tarih;
                             break;
                         //return;
@@ -1874,8 +1872,8 @@ namespace Nursan.Validations.ValidationCode
         }
         public bool IsAlertGkLocked(string barcode)
         {
-            var harness = StringSpanConverter.SafeSubSpan(barcode.AsSpan(), 0, barcode.Length - 8).ToString();
-            var harnes = _repo.GetRepository<OrHarnessModel>().Get(x => x.HarnessModelName == harness).Data;
+            // var harness = StringSpanConverter.SafeSubSpan(barcode.AsSpan(), 0, barcode.Length - 8).ToString();
+            var harnes = _repo.GetRepository<IzGenerateId>().Get(x => x.Barcode == barcode).Data;
             if (harnes == null)
             {
                 return false; // няма такъв харнес, не е заключено

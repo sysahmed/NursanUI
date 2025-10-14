@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Nursan.Domain\Nursan.Domain.csproj" />
-    <ProjectReference Include="..\Nursan.ORM\Nursan.ORM.csproj" />
     <ProjectReference Include="..\Nursan.Persistanse\Nursan.Persistanse.csproj" />
   </ItemGroup>
 
