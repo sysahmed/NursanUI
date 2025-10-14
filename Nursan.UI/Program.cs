@@ -112,15 +112,16 @@ namespace Nursan.UI
                                     Messaglama.MessagYaz($"Etap:{result.ModulerYapiEtap},Makine{result.Makine},Istasyon{result.Istasyon},Family        {result.FamilyName}");
                                     Application.Run(new ElTest(unitOfWork));
                                     break;
-                                case >= 11:
+                                case >= 17 :
                                     Messaglama.MessagYaz($"Etap:{result.ModulerYapiEtap},Makine{result.Makine},Istasyon{result.Istasyon},Family        {result.FamilyName}");
-                                    Application.Run(new Staring(unitOfWork));
+                                    Application.Run(new GrometTSC(unitOfWork));
                                     break;
 
                                 case >= 5:
                                     Messaglama.MessagYaz($"Etap:{result.ModulerYapiEtap},Makine{result.Makine},Istasyon{result.Istasyon},Family        {result.FamilyName}");
                                     Application.Run(new StaringAP(unitOfWork));
                                     break;
+                               
                                 default:
                                     Messaglama.MessagYaz($"Etap:{result.ModulerYapiEtap},Makine{result.Makine},Istasyon{result.Istasyon},Family {result.FamilyName}");
                                     Application.Run(new Staring(unitOfWork));
