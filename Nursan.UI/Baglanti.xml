@@ -8,13 +8,19 @@
   </form>
   <density Density="2">
   </density>
-  <saniye Saniye="5">
+  <saniye Saniye="10">
   </saniye>
   <screenSaniye ScreenSaniye="5">
   </screenSaniye>
     <sayi Sayi="true">
-  </sayi>
-  <ticketTracking UrlTemplate="http://{serverIp}/tickets/track/{ticketId}">
+  </sayi>   
+  <eltestcount EltestCount="true">
+  </eltestcount>
+     <webapitrue WebApiTrue="true">
+  </webapitrue>
+  <webapi WebApi="10.168.0.252:4443">
+  </webapi>
+  <ticketTracking UrlTemplate="https://bakimnbg.nursanbulgaria.com/Islem/Details/{ticketId}">
   </ticketTracking>
 </config>
 <!--

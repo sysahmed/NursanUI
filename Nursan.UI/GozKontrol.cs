@@ -1,9 +1,11 @@
-﻿using Nursan.Domain.Entity;
+﻿using Nursan.Business.Services;
+using Nursan.Domain.Entity;
 using Nursan.Persistanse.UnitOfWork;
 using Nursan.UI.Library;
 using Nursan.UI.OzelClasslar;
 using Nursan.Validations.SortedList;
 using Nursan.Validations.ValidationCode;
+using System.Drawing.Imaging;
 using System.IO.Ports;
 
 namespace Nursan.UI
@@ -30,8 +32,19 @@ namespace Nursan.UI
         Proveri proveri = new Proveri();
         //List<SyBarcodeInput> Barcode = new List<SyBarcodeInput>();
         TorkService tork;
+        private string lastScreenshotPath = "";
+        
+        // Ticket система полета (като в ElTest)
+        private List<Button> dynamicTicketButtons = new List<Button>();
+        private bool isTicketExpanded = false;
+        private readonly SystemTicket _systemTicket;
+        private Button btnAriza;
+        
         public GozKontrol(UnitOfWork repo, OpMashin makine, UrVardiya vardiya, List<UrIstasyon> istasyonList, List<UrModulerYapi> modulerYapiList, List<SyBarcodeInput> syBarcodeInputList, List<SyBarcodeOut> syBarcodeOutList, List<SyPrinter> syPrinterList, List<OrFamily> familyList)
         {
+            // Добавяне на global exception handler за формата
+            Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
              brtSayi = brcodeVCount;
              _modulerYapiList = modulerYapiList;
@@ -48,43 +61,60 @@ namespace Nursan.UI
             _countDegerValidations = new CountDegerValidations(_repo, _makine, _vardiya, _istasyonList);
             Form.CheckForIllegalCrossThreadCalls = false;
             tork = new TorkService(repo, vardiya);
+            _systemTicket = new SystemTicket();
             InitializeComponent();
+            
+            // Създаване на ARIZA бутон
+            CreateArizaButton();
+            
+            // Добавяне на тестов KeyDown handler за crash тест (Ctrl+Shift+F12)
+            this.KeyDown += GozKontrol_KeyDown;
+            this.KeyPreview = true; // Важно за да улавя клавишни комбинации
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
-            GetCounts();
-            StaringAP frm = new StaringAP();
-            Thread.Sleep(500);
-            frm.Dispose();
-            frm.Close();
+            try
+            {
+                GetCounts();
+                StaringAP frm = new StaringAP();
+                Thread.Sleep(500);
+                frm.Dispose();
+                frm.Close();
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex, "Грешка при зареждане на формата GozKontrol");
+            }
         }
+        
         private void txtBarcode_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
+            try
             {
-                if (_vardiya.Name != txtBarcode.Text)
+                if (e.KeyCode == Keys.Enter)
                 {
-                    if (txtBarcode.Text.StartsWith("#"))
-                        barkodGk = txtBarcode.Text.Substring(1);
-                    else
-                        barkodGk = txtBarcode.Text;
-
-                    if (tork.IsAlertGkLocked(barkodGk))
+                    if (_vardiya.Name != txtBarcode.Text)
                     {
-                        // Вземи харнес модела за формата
-                        string harnessName;
-                        try
+                        if (txtBarcode.Text.StartsWith("#"))
+                            barkodGk = txtBarcode.Text.Substring(1);
+                        else
+                            barkodGk = txtBarcode.Text;
+
+                        if (tork.IsAlertGkLocked(barkodGk))
                         {
-                            harnessName = StringSpanConverter.ExtractText(barkodGk.AsSpan()).ToString();
-                        }
-                        catch (ArgumentOutOfRangeException ex)
-                        {
-                            proveri.MessageAyarla($"Невалиден баркод: '{barkodGk}'", Color.Red, lblMessage);
-                            txtBarcode.Clear();
-                            return;
-                        }
+                            // Вземи харнес модела за формата
+                            string harnessName;
+                            try
+                            {
+                                harnessName = StringSpanConverter.ExtractText(barkodGk.AsSpan()).ToString();
+                            }
+                            catch (ArgumentOutOfRangeException ex)
+                            {
+                                proveri.MessageAyarla($"Невалиден баркод: '{barkodGk}'", Color.Red, lblMessage);
+                                txtBarcode.Clear();
+                                return;
+                            }
                         var harnessModel = _repo.GetRepository<OrHarnessModel>().Get(x => x.HarnessModelName == harnessName).Data;
                         using (var dlg = new AlertGkLockedOpen(_repo, harnessModel))
                         {
@@ -151,7 +181,13 @@ namespace Nursan.UI
 
                 }
             }
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex, "Грешка при обработка на баркод в GozKontrol");
+            }
         }
+        
         int ortalamaCount;
         int vardiyaCount;
         int toplamCount;
@@ -186,6 +222,456 @@ namespace Nursan.UI
 
         }
 
+        #region Автоматична система за тикети при crash
+
+        /// <summary>
+        /// Тестов KeyDown handler за симулация на crash (Ctrl+Shift+F12)
+        /// </summary>
+        private void GozKontrol_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Ctrl+Shift+F12 = Тестов crash
+            if (e.Control && e.Shift && e.KeyCode == Keys.F12)
+            {
+                Console.WriteLine("🧪 ТЕСТОВ CRASH АКТИВИРАН! Симулиране на грешка...");
+                
+                // Симулираме различни видове грешки за тест
+                try
+                {
+                    // Вариант 1: NullReferenceException
+                    string testString = null;
+                    int length = testString.Length; // Това ще предизвика NullReferenceException
+                }
+                catch (Exception ex)
+                {
+                    // Пускаме грешката за да я улови нашия handler
+                    throw new Exception("ТЕСТОВА ГРЕШКА: Симулиран crash от GozKontrol формата за тестване на автоматичната система за тикети", ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Global exception handler за Thread exceptions
+        /// </summary>
+        private void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
+        {
+            HandleException(e.Exception, "Thread Exception в GozKontrol");
+        }
+
+        /// <summary>
+        /// Global exception handler за Unhandled exceptions
+        /// </summary>
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            if (e.ExceptionObject is Exception ex)
+            {
+                HandleException(ex, "Unhandled Exception в GozKontrol");
+            }
+        }
+
+        /// <summary>
+        /// Централен метод за обработка на грешки
+        /// </summary>
+        private void HandleException(Exception ex, string context)
+        {
+            try
+            {
+                // Прави screenshot на формата
+                string screenshotPath = TakeScreenshot();
+
+                // Създава детайлно съобщение за грешката
+                string errorDetails = $@"
+ГРЕШКА В ФОРМА: GozKontrol
+КОНТЕКСТ: {context}
+ДАТА/ЧАС: {DateTime.Now:dd.MM.yyyy HH:mm:ss}
+МАШИНА: {Environment.MachineName}
+ПОТРЕБИТЕЛ: {Environment.UserName}
+ВАРДИЯ: {_vardiya?.Name ?? "Неизвестна"}
+
+СЪОБЩЕНИЕ ЗА ГРЕШКА:
+{ex.Message}
+
+STACK TRACE:
+{ex.StackTrace}
+
+ВЪТРЕШНА ГРЕШКА:
+{ex.InnerException?.Message ?? "Няма"}
+{ex.InnerException?.StackTrace ?? ""}
+";
+
+                // Логва в конзолата
+                Console.WriteLine(errorDetails);
+                Console.WriteLine("🚨 GozKontrol: Автоматично се изпраща тикет към IT екипа...");
+
+                // Изпраща тикет към IT системата асинхронно
+                Task.Run(async () =>
+                {
+                    await SendAutoTicketToIT(
+                        $"AUTO CRASH: GozKontrol - {context}",
+                        errorDetails,
+                        screenshotPath,
+                        1 // Role 1 за тикети
+                    );
+                });
+            }
+            catch (Exception ticketEx)
+            {
+                // Ако има грешка при изпращане на тикета, логваме я
+                Console.WriteLine($"Грешка при изпращане на автоматичен тикет: {ticketEx.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Прави screenshot на целия екран
+        /// </summary>
+        private string TakeScreenshot()
+        {
+            try
+            {
+                // Създава LOGS папка ако не съществува
+                string logsFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LOGS");
+                if (!Directory.Exists(logsFolder))
+                {
+                    Directory.CreateDirectory(logsFolder);
+                }
+
+                // Генерира уникално име за screenshot файла
+                string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+                string filename = $"CRASH_GozKontrol_{timestamp}.jpg";
+                string filepath = Path.Combine(logsFolder, filename);
+
+                // Прави screenshot на целия екран
+                Rectangle bounds = Screen.PrimaryScreen.Bounds;
+                using (Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height))
+                {
+                    using (Graphics graphics = Graphics.FromImage(bitmap))
+                    {
+                        graphics.CopyFromScreen(Point.Empty, Point.Empty, bounds.Size);
+                    }
+
+                    // Записва като JPEG
+                    bitmap.Save(filepath, ImageFormat.Jpeg);
+                }
+
+                lastScreenshotPath = filepath;
+                Console.WriteLine($"Screenshot записан в: {filepath}");
+                
+                return filepath;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Грешка при правене на screenshot: {ex.Message}");
+                return string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Изпраща автоматичен тикет към IT системата
+        /// </summary>
+        private async Task<bool> SendAutoTicketToIT(string tiketName, string description, string screenshotPath, int role)
+        {
+            try
+            {
+                string bolge = _makine?.MasineName ?? "GozKontrol";
+                
+                SystemTicket ticketService = new SystemTicket();
+                (bool success, string ticketId) = await ticketService.CreateTicket(
+                    tiketName,
+                    bolge,
+                    screenshotPath,
+                    role
+                );
+
+                if (success)
+                {
+                    Console.WriteLine($"✅ Автоматичен тикет изпратен успешно към IT! Ticket ID: {ticketId}");
+                }
+                else
+                {
+                    Console.WriteLine($"⚠️ Грешка при изпращане на автоматичен тикет към IT!");
+                }
+
+                return success;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Exception при изпращане на тикет: {ex.Message}");
+                return false;
+            }
+        }
+
+        #endregion
+
+        #region Ticket система с бутони (като в ElTest)
+
+        /// <summary>
+        /// Създава ARIZA бутон на мястото на lblToplam (Donanim)
+        /// </summary>
+        private void CreateArizaButton()
+        {
+            // Скриваме lblToplam (надписа "Donanim")
+            lblToplam.Visible = false;
+            
+            // Създаваме ARIZA бутон
+            btnAriza = new Button();
+            btnAriza.Text = "ARIZA";
+            btnAriza.Dock = DockStyle.Fill; // Заема цялото пространство
+            btnAriza.BackColor = Color.FromArgb(220, 53, 69); // Червен цвят
+            btnAriza.ForeColor = Color.White;
+            btnAriza.FlatStyle = FlatStyle.Flat;
+            btnAriza.FlatAppearance.BorderSize = 0;
+            btnAriza.Font = new Font("Segoe UI", 16F, FontStyle.Bold); // По-голям шрифт
+            btnAriza.Cursor = Cursors.Hand;
+            btnAriza.Click += BtnAriza_Click;
+            
+            // Добавяме бутона в tableLayoutPanel4 на мястото на lblToplam (row 0, col 0)
+            tableLayoutPanel4.Controls.Add(btnAriza, 0, 0);
+            btnAriza.BringToFront();
+        }
+
+        /// <summary>
+        /// Обработва натискането на ARIZA бутона
+        /// </summary>
+        private void BtnAriza_Click(object sender, EventArgs e)
+        {
+            if (!isTicketExpanded)
+            {
+                // Разширяваме и зареждаме тикет бутоните
+                LoadTicketButtons();
+                isTicketExpanded = true;
+            }
+            else
+            {
+                // Свиваме и скриваме тикет бутоните
+                CollapseTicketButtons();
+                isTicketExpanded = false;
+            }
+        }
+
+        /// <summary>
+        /// Зарежда динамично тикет бутоните от базата данни
+        /// </summary>
+        private void LoadTicketButtons()
+        {
+            try
+            {
+                // Премахни стари бутони, ако има
+                foreach (var btn in dynamicTicketButtons)
+                {
+                    this.Controls.Remove(btn);
+                    btn.Dispose();
+                }
+                dynamicTicketButtons.Clear();
+
+                int btnWidth = 200;
+                int btnHeight = 40;
+                int marginX = 10;
+                int marginY = 10;
+                int startY = btnAriza.Bottom + 20;
+
+                var ticketsResult = _repo.GetRepository<SyTicketName>().GetAll(null);
+                if (ticketsResult == null || ticketsResult.Data == null)
+                {
+                    Console.WriteLine("❌ GozKontrol: ticketsResult е null! Грешка при зареждане на тикети от базата данни.");
+                    return;
+                }
+
+                var tickets = ticketsResult.Data.ToList();
+                if (!tickets.Any())
+                {
+                    Console.WriteLine("⚠️ GozKontrol: Няма налични тикети в базата данни.");
+                    return;
+                }
+
+                int totalButtons = tickets.Count;
+                int screenWidth = this.Width;
+                int maxColumns = Math.Max(1, screenWidth / (btnWidth + marginX));
+                int buttonsPerRow = Math.Min(maxColumns, Math.Max(1, (int)Math.Ceiling(Math.Sqrt(totalButtons))));
+
+                Console.WriteLine($"Общо тикети: {totalButtons}");
+                
+                int count = 0;
+                foreach (var ticket in tickets)
+                {
+                    int row = count / buttonsPerRow;
+                    int col = count % buttonsPerRow;
+
+                    Button btn = new Button();
+                    btn.Text = ticket.TiketName;
+                    btn.Width = btnWidth;
+                    btn.Height = btnHeight;
+                    btn.Left = 10 + col * (btnWidth + marginX);
+                    btn.Top = startY + row * (btnHeight + marginY);
+
+                    // Модерен дизайн на бутона
+                    btn.FlatStyle = FlatStyle.Flat;
+                    btn.FlatAppearance.BorderSize = 1;
+                    btn.BackColor = Color.FromArgb(45, 45, 48);
+                    btn.ForeColor = Color.White;
+                    btn.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+                    btn.Cursor = Cursors.Hand;
+
+                    // Добавяме hover ефект
+                    btn.MouseEnter += (s, e) =>
+                    {
+                        Button b = s as Button;
+                        b.BackColor = Color.FromArgb(0, 122, 204);
+                        b.ForeColor = Color.White;
+                    };
+                    btn.MouseLeave += (s, e) =>
+                    {
+                        Button b = s as Button;
+                        b.BackColor = Color.FromArgb(45, 45, 48);
+                        b.ForeColor = Color.White;
+                    };
+              
+                    btn.Tag = ticket;
+                    btn.Click += TicketButton_Click;
+
+                    this.Controls.Add(btn);
+                    btn.BringToFront();
+                    dynamicTicketButtons.Add(btn);
+
+                    count++;
+                }
+
+                Console.WriteLine($"Заредени {count} тикет бутона");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Грешка при зареждане на бутоните: {ex.Message}", "Грешка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Console.WriteLine($"Грешка при LoadTicketButtons: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Свива и премахва тикет бутоните
+        /// </summary>
+        private void CollapseTicketButtons()
+        {
+            foreach (var btn in dynamicTicketButtons)
+            {
+                this.Controls.Remove(btn);
+                btn.Dispose();
+            }
+            dynamicTicketButtons.Clear();
+            Console.WriteLine("Тикет бутоните са скрити");
+        }
+
+        /// <summary>
+        /// Обработва натискането на тикет бутон
+        /// </summary>
+        private void TicketButton_Click(object sender, EventArgs e)
+        {
+            var btn = sender as Button;
+            var ticket = btn.Tag as SyTicketName;
+            if (ticket != null)
+            {
+                if (Nursan.XMLTools.XMLSeverIp.WebApiTrue())
+                {
+                    Console.WriteLine("✅ GozKontrol: WebAPI е активно, стартираме изпращане");
+                    ManualSendTicketWithScreenshot();
+                    Console.WriteLine($"📸 Screenshot Path: {lastScreenshotPath}");
+                    
+                    // Използваме Role параметъра от тикета
+                    int roleValue = ticket.Role ?? 5; // Ако Role е null, използваме 5 като default
+                    ShowQrCodeAfterTicketCreation(ticket.TiketName, ticket.Description, lastScreenshotPath, roleValue);
+                }
+                else
+                {
+                    Console.WriteLine("⚠️ GozKontrol: WebAPI не е активно!");
+                }
+
+                // Скриваме тикет бутоните след избор
+                CollapseTicketButtons();
+                isTicketExpanded = false;
+            }
+        }
+
+        /// <summary>
+        /// Прави screenshot за ръчно изпратен тикет
+        /// </summary>
+        private void ManualSendTicketWithScreenshot()
+        {
+            try
+            {
+                // Правим screenshot
+                var bounds = Screen.PrimaryScreen.Bounds;
+                using (var bmp = new Bitmap(bounds.Width, bounds.Height))
+                {
+                    using (var g = Graphics.FromImage(bmp))
+                    {
+                        g.CopyFromScreen(bounds.Location, Point.Empty, bounds.Size);
+                    }
+                    
+                    // Създаваме LOGS папка ако не съществува
+                    string logsFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LOGS");
+                    if (!Directory.Exists(logsFolder))
+                    {
+                        Directory.CreateDirectory(logsFolder);
+                    }
+                    
+                    string fileName = $"ticket_{DateTime.Now:yyyyMMdd_HHmmss}.png";
+                    string fullPath = Path.Combine(logsFolder, fileName);
+                    
+                    bmp.Save(fullPath, System.Drawing.Imaging.ImageFormat.Png);
+                    lastScreenshotPath = fullPath;
+                    
+                    Console.WriteLine($"Скрийншот запазен в: {lastScreenshotPath}");
+                    Console.WriteLine($"Файлът съществува: {File.Exists(lastScreenshotPath)}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Грешка при ManualSendTicketWithScreenshot: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Асинхронно създава тикет и показва QR код за проследяване
+        /// </summary>
+        private async void ShowQrCodeAfterTicketCreation(string tiketName, string description, string screenshotPath, int roleValue)
+        {
+            try
+            {
+                Console.WriteLine("=== ShowQrCodeAfterTicketCreation стартира ===");
+                Console.WriteLine($"tiketName: {tiketName}");
+                Console.WriteLine($"description: {description}");
+                Console.WriteLine($"screenshotPath: {screenshotPath}");
+                Console.WriteLine($"roleValue: {roleValue}");
+                
+                string bolge = _makine?.MasineName ?? "GozKontrol";
+                
+                // Първо пращаме тикета
+                Console.WriteLine("Стартиране на CreateTicket...");
+                var (success, serverTicketId) = await _systemTicket.CreateTicket(tiketName, bolge, screenshotPath, roleValue);
+                Console.WriteLine($"CreateTicket резултат: {success}");
+                Console.WriteLine($"Server Ticket ID: {serverTicketId}");
+                
+                if (success)
+                {
+                    Console.WriteLine("Тикетът е изпратен успешно! Показваме QR кода...");
+                    
+                    // Показваме QR кода САМО ако тикетът е изпратен успешно
+                    string serverIp = Nursan.XMLTools.XMLSeverIp.XmlWebApiIP();
+                    Console.WriteLine($"Server IP: {serverIp}");
+                    
+                    QrTicketForm qrForm = new QrTicketForm(serverTicketId, serverIp);
+                    qrForm.Show();
+                    Console.WriteLine("QR форма показана");
+                }
+                else
+                {
+                    Console.WriteLine("❌ GozKontrol: Грешка при изпращане на тикет към сървъра!");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ GozKontrol.ShowQrCodeAfterTicketCreation грешка: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+            }
+        }
+
+        #endregion
 
     }
 }
