@@ -1,4 +1,5 @@
-﻿using Nursan.Business.Manager;
+﻿using Nursan.Business.Logging;
+using Nursan.Business.Manager;
 using Nursan.Business.Services;
 using Nursan.Domain.AmbarModels;
 using Nursan.Domain.Entity;
@@ -51,6 +52,7 @@ namespace Nursan.UI
         private bool isExpanded = false; // Добавяме променлива за проследяване на състоянието
         private string lastScreenshotPath = null;
         private readonly SystemTicket _systemTicket;
+        private readonly StructuredLogger ticketLogger;
         public KlipV1(UnitOfWork repo)
         {
             InitializeComponent();
@@ -64,6 +66,7 @@ namespace Nursan.UI
             this.BackColor = Color.WhiteSmoke;
             this.TransparencyKey = Color.WhiteSmoke;
             _systemTicket = new SystemTicket();
+            ticketLogger = new StructuredLogger(nameof(KlipV1));
             // Разпъни формата по цялата ширина на екрана и височина 300px
             this.Left = 0;
             this.Top = 0;
@@ -835,20 +838,35 @@ namespace Nursan.UI
                 int marginY = 10;
                 int startY = btnAriza.Bottom + 20;
 
-                var tickets = _repo.GetRepository<SyTicketName>().GetAll(null);
-                if (tickets == null || !tickets.Data.Any())
+                var ticketsResult = _repo.GetRepository<SyTicketName>().GetAll(null);
+                if (ticketsResult == null || ticketsResult.Data == null)
                 {
                     MessageBox.Show("Няма налични билети за зареждане.", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
-                int totalButtons = tickets.Data.Count();
+                var visibleTicketIds = Nursan.XMLTools.XMLSeverIp.VisibleTicketTypeIds();
+                var ticketList = ticketsResult.Data.ToList();
+
+                if (visibleTicketIds.Any())
+                {
+                    ticketList = ticketList.Where(t => visibleTicketIds.Contains(t.Id)).ToList();
+                    Console.WriteLine($"KlipV1: Филтрирани тикети ({ticketList.Count} от {ticketsResult.Data.Count()}) според VisibleTicketTypeIds.");
+                }
+
+                if (!ticketList.Any())
+                {
+                    MessageBox.Show("Няма разрешени тикети за показване.", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                int totalButtons = ticketList.Count;
                 int screenWidth = Screen.PrimaryScreen.WorkingArea.Width;
                 int maxColumns = Math.Max(1, screenWidth / (btnWidth + marginX));
                 int buttonsPerRow = Math.Min(maxColumns, Math.Max(1, (int)Math.Ceiling(Math.Sqrt(totalButtons))));
 
                 int count = 0;
-                foreach (var ticket in tickets.Data)
+                foreach (var ticket in ticketList)
                 {
                     int row = count / buttonsPerRow;
                     int col = count % buttonsPerRow;
@@ -902,6 +920,37 @@ namespace Nursan.UI
             var ticket = btn.Tag as SyTicketName;
             if (ticket != null)
             {
+                // Валидация преди изпращане на тикет
+                //var validationResult = ValidateBeforeTicketSubmission(ticket);
+                //if (!validationResult.IsValid)
+                //{
+                //    Console.WriteLine($"❌ KlipV1: Валидацията не мина - {validationResult.Message}");
+                //    Console.WriteLine($"⚠️ Тикетът '{ticket.TiketName}' НЕ беше изпратен!");
+                    
+                //    // Скриваме бутоните и възстановяваме формата
+                //    foreach (var b in dynamicTicketButtons)
+                //    {
+                //        this.Controls.Remove(b);
+                //        b.Dispose();
+                //    }
+                //    dynamicTicketButtons.Clear();
+                    
+                //    foreach (Control control in this.Controls)
+                //    {
+                //        if (control != btnAriza && control != lblCountProductions)
+                //        {
+                //            control.Visible = false;
+                //        }
+                //    }
+                    
+                //    this.TransparencyKey = Color.WhiteSmoke;
+                //    this.BackColor = Color.WhiteSmoke;
+                //    isExpanded = false;
+                //    return;
+                //}
+                
+                //Console.WriteLine($"✅ KlipV1: Валидацията мина успешно - {validationResult.Message}");
+                
                 if (XMLSeverIp.WebApiTrue())
                 {
                     Console.WriteLine("=== WebAPI е активно, стартираме изпращане ===");
@@ -948,6 +997,63 @@ namespace Nursan.UI
                 isExpanded = false;
             }
         }
+        
+        /// <summary>
+        /// Валидира дали може да се изпрати тикет
+        /// </summary>
+        private (bool IsValid, string Message) ValidateBeforeTicketSubmission(SyTicketName ticket)
+        {
+            try
+            {
+                // 1. Проверка дали има активен файл/баркод
+                if (string.IsNullOrEmpty(deger))
+                {
+                    return (false, "Няма активен баркод/файл в момента");
+                }
+                
+                // 2. Парсваме текущия баркод
+                var gelenDegerler = GitParcalama(new SyBarcodeOut { BarcodeIcerik = deger });
+                string currentBarcode = $"{gelenDegerler.prefix}-{gelenDegerler.family}-{gelenDegerler.suffix}{gelenDegerler.IdDonanim}";
+                string idDonanim = gelenDegerler.IdDonanim;
+                
+                Console.WriteLine($"📋 Проверка на IDDonanim: {idDonanim}");
+                Console.WriteLine($"📋 Пълен баркод: {currentBarcode}");
+                
+                // 3. Проверка дали IDDonanim съществува в системата
+                TorkService = new TorkService(_repo, new UrVardiya() { Name = gelenDegerler.Name });
+                var idBak = TorkService.GitSytemeSayiElTestBack(new SyBarcodeInput() { BarcodeIcerik = currentBarcode });
+                
+                if (idBak.Message == "Donanimi ID Systemde Yok")
+                {
+                    return (false, $"IDDonanim '{idDonanim}' не съществува в системата");
+                }
+                
+                // 4. Ако е IT тикет (Role = 1), проверяваме дали е минал през предходните станции
+                int roleValue = ticket.Role ?? 5;
+                if (roleValue == 1)
+                {
+                    Console.WriteLine($"🔍 IT Тикет (Role=1) - Проверка на станции за IDDonanim: {idDonanim}");
+                    
+                    if (idBak.Message == "Donanimi Bi oceki Istasyona Yonlendirin!")
+                    {
+                        return (false, $"Продуктът с IDDonanim '{idDonanim}' НЕ Е минал през предходните станции. Моля, изпратете го първо към предходната станция!");
+                    }
+                    
+                    if (idBak.Message == "Donanimi")
+                    {
+                        return (false, $"Продуктът с IDDonanim '{idDonanim}' не е готов за тази станция");
+                    }
+                }
+                
+                // 5. Всички проверки минаха успешно
+                return (true, $"IDDonanim '{idDonanim}' е валиден и готов за обработка");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Грешка при валидация: {ex.Message}");
+                return (false, $"Грешка при валидация: {ex.Message}");
+            }
+        }
         private void SendTicketWithScreenshot()
         {
             try
@@ -968,8 +1074,11 @@ namespace Nursan.UI
                     bmp.Save(fullPath, System.Drawing.Imaging.ImageFormat.Png);
                     lastScreenshotPath = fullPath;
                     
-                    Console.WriteLine($"Скрийншот запазен в: {lastScreenshotPath}");
-                    Console.WriteLine($"Файлът съществува: {File.Exists(lastScreenshotPath)}");
+                    Dictionary<string, string> screenshotContext = new Dictionary<string, string>
+                    {
+                        { "ScreenshotName", SensitiveDataMasker.MaskPath(lastScreenshotPath) }
+                    };
+                    ticketLogger.LogInfo("ManualScreenshotCaptured", screenshotContext);
                 }
                 // 2. Пращаме тикета (логиката е същата като в ButtonCreateTicket_Click)
                //CreateTicket();
@@ -977,7 +1086,11 @@ namespace Nursan.UI
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Грешка при SendTicketWithScreenshot: {ex.Message}");
+                Dictionary<string, string> errorContext = new Dictionary<string, string>
+                {
+                    { "Message", ex.Message }
+                };
+                ticketLogger.LogError("ManualScreenshotFailure", errorContext);
                 // labelStatus може да не е инициализиран
                 if (labelStatus != null)
                 {
@@ -997,44 +1110,55 @@ namespace Nursan.UI
         {
             try
             {
-                Console.WriteLine("=== ShowQrCodeAfterTicketCreation стартира ===");
-                Console.WriteLine($"tiketName: {tiketName}");
-                Console.WriteLine($"description: {description}");
-                Console.WriteLine($"lastScreenshotPath: {lastScreenshotPath}");
-                Console.WriteLine($"roleValue: {roleValue}");
-                
+                Dictionary<string, string> startContext = new Dictionary<string, string>
+                {
+                    { "TicketName", SensitiveDataMasker.MaskValue(tiketName) },
+                    { "Role", roleValue.ToString() },
+                    { "ScreenshotName", SensitiveDataMasker.MaskPath(lastScreenshotPath) }
+                };
+                ticketLogger.LogInfo("ManualTicketStart", startContext);
+
                 // Първо пращаме тикета
-                Console.WriteLine("Стартиране на CreateTicket...");
-                Console.WriteLine($"_systemTicket е null: {_systemTicket == null}");
                 var (success, serverTicketId) = await _systemTicket.CreateTicket(tiketName, description, lastScreenshotPath, roleValue);
-                Console.WriteLine($"CreateTicket резултат: {success}");
-                Console.WriteLine($"Server Ticket ID: {serverTicketId}");
+                Dictionary<string, string> resultContext = new Dictionary<string, string>
+                {
+                    { "Success", success.ToString() },
+                    { "TicketId", serverTicketId ?? string.Empty }
+                };
+                ticketLogger.LogInfo("ManualTicketResult", resultContext);
                 
                 if (success)
                 {
-                    Console.WriteLine("Тикетът е изпратен успешно! Показваме QR кода...");
-                    
-                    // Използваме истинския ticket ID от сървъра
-                    Console.WriteLine($"Използваме server ticket ID: {serverTicketId}");
-                    
-                    // Показваме QR кода САМО ако тикетът е изпратен успешно
                     string serverIp = XMLSeverIp.XmlWebApiIP();
-                    Console.WriteLine($"Server IP: {serverIp}");
-                    
+                    Dictionary<string, string> qrContext = new Dictionary<string, string>
+                    {
+                        { "ServerIp", SensitiveDataMasker.MaskIp(serverIp) },
+                        { "TicketId", serverTicketId ?? string.Empty }
+                    };
+                    ticketLogger.LogInfo("QrDisplayTriggered", qrContext);
+
                     QrTicketForm qrForm = new QrTicketForm(serverTicketId, serverIp);
                     qrForm.Show();
-                    Console.WriteLine("QR форма показана");
                 }
                 else
                 {
-                    Console.WriteLine("Грешка при изпращане на тикет към сървъра - QR кода няма да се показва");
                     MessageBox.Show("Грешка при изпращане на тикета!", "Грешка", 
                                   MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ticketLogger.LogError(
+                        "ManualTicketFailed",
+                        new Dictionary<string, string>
+                        {
+                            { "TicketName", SensitiveDataMasker.MaskValue(tiketName) }
+                        });
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Грешка в ShowQrCodeAfterTicketCreation: {ex.Message}");
+                Dictionary<string, string> exceptionContext = new Dictionary<string, string>
+                {
+                    { "Message", ex.Message }
+                };
+                ticketLogger.LogError("ManualTicketException", exceptionContext);
                 MessageBox.Show($"Грешка при създаване на тикет: {ex.Message}", "Грешка", 
                               MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

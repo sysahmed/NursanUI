@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ElTest));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GrometTSC));
             notifyIcon = new NotifyIcon(components);
             contextMenuStrip1 = new ContextMenuStrip(components);
             openToolStripMenuItem = new ToolStripMenuItem();
@@ -117,7 +117,7 @@
             btnAriza.TabStop = false;
             btnAriza.UseVisualStyleBackColor = false;
             // 
-            // ElTest
+            // GrometTSC
             // 
             resources.ApplyResources(this, "$this");
             AutoScaleMode = AutoScaleMode.Font;
@@ -129,7 +129,7 @@
             Controls.Add(button2);
             Controls.Add(button1);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "ElTest";
+            Name = "GrometTSC";
             TopMost = true;
             TransparencyKey = Color.Transparent;
             Load += GrometTSC_Load;

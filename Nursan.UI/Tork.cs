@@ -43,6 +43,26 @@ namespace Nursan.UI
         ITorkManager _torkmanager;
         IHarnesConfigServices _harnessConfig;
         private SpcCalculator _spcCalculator; // CPK функционалност
+
+        // Болтов процес - локално състояние (без да пипаме текущия поток)
+        private class BoltStep
+        {
+            public int StepIndex { get; set; }
+            public int RoiX { get; set; }
+            public int RoiY { get; set; }
+            public int RoiWidth { get; set; }
+            public int RoiHeight { get; set; }
+        }
+
+        private class BoltSession
+        {
+            public string HarnessModelName { get; set; }
+            public List<BoltStep> Steps { get; set; }
+            public int CurrentBoltIndex { get; set; }
+            public long? UretimId { get; set; }
+        }
+
+        private BoltSession _boltSession;
         public Tork(UnitOfWork repo, OpMashin makine, UrVardiya vardiya, List<UrIstasyon> istasyonList, List<UrModulerYapi> modulerYapiList, List<SyBarcodeInput> syBarcodeInputList, List<SyBarcodeOut> syBarcodeOutList, List<SyPrinter> syPrinterList, List<OrFamily> familyList)
         {
             _repo = repo;
@@ -68,6 +88,75 @@ namespace Nursan.UI
             _torkaAktar = new TorkAktar(new Domain.TORKS.NursandatabaseContext(), repo);
             InitializeComponent();
         }
+
+        private void StartBoltSession(string harnessModelName, int urIstasyonId, long? uretimId)
+        {
+            _boltSession = new BoltSession
+            {
+                HarnessModelName = harnessModelName,
+                Steps = LoadBoltSteps(harnessModelName),
+                CurrentBoltIndex = 1,
+                UretimId = uretimId
+            };
+            if (_boltSession.Steps == null || _boltSession.Steps.Count == 0)
+            {
+                _boltSession.Steps = CreateDefaultThreeSteps();
+            }
+            ShowBoltHint(_boltSession.CurrentBoltIndex, _boltSession.Steps.Count);
+        }
+
+        private List<BoltStep> LoadBoltSteps(string harnessModelName)
+        {
+            // За сега: без директно четене – връщаме празно и падаме към 3 по подразбиране
+            return new List<BoltStep>();
+        }
+
+        private List<BoltStep> CreateDefaultThreeSteps()
+        {
+            return new List<BoltStep>
+            {
+                new BoltStep{ StepIndex = 1 },
+                new BoltStep{ StepIndex = 2 },
+                new BoltStep{ StepIndex = 3 }
+            };
+        }
+
+        private void ShowBoltHint(int current, int total)
+        {
+            try
+            {
+                if (lbl2Massage != null)
+                {
+                    lbl2Massage.Text = $"Стегни болт {current} / {total}";
+                    lbl2Massage.ForeColor = Color.Yellow;
+                }
+            }
+            catch { }
+        }
+
+        private void OnBoltOk()
+        {
+            if (_boltSession == null) return;
+            if (_boltSession.CurrentBoltIndex < _boltSession.Steps.Count)
+            {
+                _boltSession.CurrentBoltIndex++;
+                ShowBoltHint(_boltSession.CurrentBoltIndex, _boltSession.Steps.Count);
+            }
+        }
+
+        private void OnProcessFinished(bool success)
+        {
+            _boltSession = null;
+            try
+            {
+                if (lbl2Massage != null)
+                {
+                    lbl2Massage.Text = success ? "Процес приключи" : "Процес отменен";
+                    lbl2Massage.ForeColor = success ? Color.Lime : Color.Red;
+                }
+            }
+            catch { }
+        }
         private async Task GitAktar()
         {
             await _torkaAktar.ExecuteTorkAktar();
@@ -90,21 +179,23 @@ namespace Nursan.UI
             switch (veri)
             {
                 case "1":
+                    OnBoltOk();
                     break;
                 case "2":
                     plc_StopWOrk(Barcode);
                     Barcode.Clear();
+                    OnProcessFinished(true);
                     GetBarcodeInput(); break;
                 case "3":
-                    plc_Zanulqvane(); GetBarcodeInput(); break;
+                    plc_Zanulqvane(); OnProcessFinished(false); GetBarcodeInput(); break;
                 case "4":
-                    plc_Reset(); GetBarcodeInput(); break;
+                    plc_Reset(); OnProcessFinished(false); GetBarcodeInput(); break;
                 case "5":
                     base.WindowState = FormWindowState.Maximized;
-                    plc_Reset(); GetBarcodeInput(); break;
+                    plc_Reset(); OnProcessFinished(false); GetBarcodeInput(); break;
                 case "6":
                     base.WindowState = FormWindowState.Maximized;
-                    plc_StopWOrk(Barcode); break;
+                    plc_StopWOrk(Barcode); OnProcessFinished(true); break;
 
                 default: break;
 
@@ -311,6 +402,23 @@ namespace Nursan.UI
                             lblMessage.Text = "";
                             listBox1.Items.Clear();
                             pi = 0;
+
+                            // Старт на bolt-сесията (без промяна на основния поток)
+                            try
+                            {
+                                var istasyon = _istasyonList.FirstOrDefault(x => x.MashinId == _makine.Id && x.VardiyaId == _vardiya.Id);
+                                string harnessModelName = null;
+                                if (_id != null && _id.HarnesModelId.HasValue)
+                                {
+                                    var hm = _repo.GetRepository<OrHarnessModel>().Get(x => x.Id == _id.HarnesModelId.Value).Data;
+                                    harnessModelName = hm?.HarnessModelName;
+                                }
+                                if (!string.IsNullOrWhiteSpace(harnessModelName))
+                                {
+                                    StartBoltSession(harnessModelName, istasyon?.Id ?? 0, null);
+                                }
+                            }
+                            catch { }
                         }
                         else
                         {

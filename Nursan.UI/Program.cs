@@ -1,4 +1,3 @@
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -14,6 +13,7 @@ using Nursan.Logging.Messages;
 using Nursan.Persistanse.Repository;
 using Nursan.Persistanse.UnitOfWork;
 using Nursan.UI.Kasalama;
+using Nursan.UI.Security;
 using Nursan.Validations.Interface;
 using Nursan.Validations.KasaManager;
 using Nursan.Validations.Opsionlar;
@@ -69,15 +69,62 @@ namespace Nursan.UI
                 Application.EnableVisualStyles();
                 ApplicationConfiguration.Initialize();
                 Application.SetCompatibleTextRenderingDefault(false);
+
+                // Опитваме се да инициализираме лиценза чрез API
+                bool licenseInitialized = false;
+                string licenseError = string.Empty;
+                
+                //try
+                //{
+                //    licenseInitialized = LicenseContext.TryInitialize(out licenseError);
+                //}
+                //catch (Exception ex)
+                //{
+                //    // Ако има изключение при опит за достъп до API, записваме грешката
+                //    licenseError = $"Грешка при достъп до лицензния API: {ex.Message}";
+                //    licenseInitialized = false;
+                //}
+                
+                //// Ако не успее (не може да достъпи API или лицензът не е валиден), показваме формата за активация
+                //if (!licenseInitialized)
+                //{
+                //    try
+                //    {
+                //        using (var licenseForm = new Lisanslama())
+                //        {
+                //            // Показваме формата модално - приложението ще чака докато се затвори
+                //            licenseForm.ShowDialog();
+                //        }
+                        
+                //        // След затваряне на формата, опитваме отново да инициализираме лиценза
+                //        try
+                //        {
+                //            licenseInitialized = LicenseContext.TryInitialize(out licenseError);
+                //        }
+                //        catch (Exception ex)
+                //        {
+                //            // Ако отново има проблем с API, продължаваме със старата логика
+                //            licenseError = $"Грешка при повторен опит за достъп до API: {ex.Message}";
+                //            licenseInitialized = false;
+                //        }
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        // Ако има проблем при създаването или показването на формата, показваме съобщение
+                //        MessageBox.Show($"Грешка при отваряне на формата за лиценз: {ex.Message}\n\nОригинална грешка: {licenseError}", 
+                //            "Лиценз", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //    }
+                //}
+
                 var builder = CreateHostBuilder();
                 builder.Build();
                 UretimOtomasyonContext _context = new();
                 UnitOfWork unitOfWork = new(_context);
                 //Application.Run(new Sigorta("397",unitOfWork));
-                // Application.Run(new Nursan.UI.Kasalama.Kasalama());
-
-                if (new LisanGet().LisanBak(processName))
-                {
+                //Application.Run(new Nursan.UI.Kasalama.Kasalama());
+                //Application.Run(new BoltCameraConfigForm());
+                //if (new LisanGet().LisanBak(processName))
+                //{
                     try
                     {
 
@@ -138,7 +185,7 @@ namespace Nursan.UI
                         Messaglama.MessagYaz($"Etap:{ex.Message}");
                     }
 
-                }
+                //}
             }
             private static IHostBuilder CreateHostBuilder()
             {

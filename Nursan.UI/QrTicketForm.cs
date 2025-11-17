@@ -1,4 +1,6 @@
+using Nursan.Business.Logging;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using QRCoder;
@@ -15,6 +17,7 @@ namespace Nursan.UI
         private PictureBox pictureBoxQr;
         private Label labelInfo;
         private Label labelUrl;
+        private readonly StructuredLogger ticketLogger;
         
         /// <summary>
         /// Конструктор за QR Ticket форма
@@ -23,6 +26,7 @@ namespace Nursan.UI
         /// <param name="serverIp">IP адрес на сървъра</param>
         public QrTicketForm(string ticketId, string serverIp)
         {
+            ticketLogger = new StructuredLogger(nameof(QrTicketForm));
             try
             {
                 InitializeComponent();
@@ -31,7 +35,11 @@ namespace Nursan.UI
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Грешка при създаване на QrTicketForm: {ex.Message}");
+                Dictionary<string, string> errorContext = new Dictionary<string, string>
+                {
+                    { "Message", ex.Message }
+                };
+                ticketLogger.LogError("QrFormInitializationError", errorContext);
                 MessageBox.Show($"Грешка при отваряне на QR формата: {ex.Message}", 
                               "Грешка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -128,7 +136,11 @@ namespace Nursan.UI
                 catch (Exception xmlEx)
                 {
                     // Ако има проблем с XML, използваме default URL
-                    Console.WriteLine($"XML грешка: {xmlEx.Message}");
+                    Dictionary<string, string> xmlContext = new Dictionary<string, string>
+                    {
+                        { "Message", xmlEx.Message }
+                    };
+                    ticketLogger.LogWarning("QrTrackingUrlFallback", xmlContext);
                     trackingUrl = $"http://{serverIp}/tickets/track/{ticketId}";
                 }
                 
@@ -151,7 +163,11 @@ namespace Nursan.UI
                 catch (Exception qrEx)
                 {
                     // Ако QRCoder не работи, показваме само текста
-                    Console.WriteLine($"QR генериране грешка: {qrEx.Message}");
+                    Dictionary<string, string> qrContext = new Dictionary<string, string>
+                    {
+                        { "Message", qrEx.Message }
+                    };
+                    ticketLogger.LogWarning("QrGenerationFallback", qrContext);
                     pictureBoxQr.BackColor = Color.LightGray;
                     
                     // Създаваме просто текстово изображение
@@ -167,7 +183,11 @@ namespace Nursan.UI
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Обща грешка в GenerateQrCode: {ex.Message}");
+                Dictionary<string, string> errorContext = new Dictionary<string, string>
+                {
+                    { "Message", ex.Message }
+                };
+                ticketLogger.LogError("QrGenerationError", errorContext);
                 MessageBox.Show($"Грешка при генериране на QR код: {ex.Message}", 
                               "Грешка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

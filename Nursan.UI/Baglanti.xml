@@ -22,6 +22,8 @@
   </webapi>
   <ticketTracking UrlTemplate="https://bakimnbg.nursanbulgaria.com/Islem/Details/{ticketId}">
   </ticketTracking>
+  <ticketVisibility VisibleIds="">
+  </ticketVisibility>
 </config>
 <!--
 		Form1

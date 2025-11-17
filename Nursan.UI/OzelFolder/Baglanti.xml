@@ -20,6 +20,8 @@
   </webapi>
   <ticketTracking UrlTemplate="http://{serverIp}/tickets/track/{ticketId}">
   </ticketTracking>
+  <ticketVisibility VisibleIds="">
+  </ticketVisibility>
 </config>
 <!--
 		Form1

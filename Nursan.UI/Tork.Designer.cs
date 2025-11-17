@@ -87,15 +87,14 @@ namespace Nursan.UI
             tableLayoutPanel2.Controls.Add(panel2, 0, 1);
             tableLayoutPanel2.Controls.Add(lblMessage, 0, 0);
             tableLayoutPanel2.Controls.Add(listViewCPK, 0, 2);
-            tableLayoutPanel2.Dock = DockStyle.Fill;
             tableLayoutPanel2.Location = new Point(187, 2);
             tableLayoutPanel2.Margin = new Padding(3, 2, 3, 2);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 3;
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 22F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 68F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 13.8479261F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 10.6346483F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 75.64323F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 154F));
             tableLayoutPanel2.Size = new Size(1041, 679);
             tableLayoutPanel2.TabIndex = 1;
             // 
@@ -103,12 +102,11 @@ namespace Nursan.UI
             // 
             lbl2Massage.AutoSize = true;
             lbl2Massage.BackColor = Color.FromArgb(45, 45, 48);
-            lbl2Massage.Dock = DockStyle.Fill;
             lbl2Massage.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             lbl2Massage.ForeColor = Color.White;
-            lbl2Massage.Location = new Point(3, 657);
+            lbl2Massage.Location = new Point(3, 523);
             lbl2Massage.Name = "lbl2Massage";
-            lbl2Massage.Size = new Size(1035, 22);
+            lbl2Massage.Size = new Size(92, 25);
             lbl2Massage.TabIndex = 2;
             lbl2Massage.Text = "NURSAN";
             lbl2Massage.TextAlign = ContentAlignment.MiddleCenter;
@@ -119,9 +117,9 @@ namespace Nursan.UI
             panel2.BackgroundImage = Properties.Resources.nursan_logo;
             panel2.BackgroundImageLayout = ImageLayout.Center;
             panel2.Dock = DockStyle.Fill;
-            panel2.Location = new Point(3, 147);
+            panel2.Location = new Point(3, 75);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1035, 59);
+            panel2.Size = new Size(1035, 49);
             panel2.TabIndex = 1;
             // 
             // lblMessage
@@ -133,7 +131,7 @@ namespace Nursan.UI
             lblMessage.ForeColor = Color.White;
             lblMessage.Location = new Point(3, 0);
             lblMessage.Name = "lblMessage";
-            lblMessage.Size = new Size(1035, 144);
+            lblMessage.Size = new Size(1035, 72);
             lblMessage.TabIndex = 0;
             lblMessage.Text = "Tork Sistemi";
             lblMessage.TextAlign = ContentAlignment.MiddleCenter;
@@ -142,13 +140,12 @@ namespace Nursan.UI
             // 
             listViewCPK.BackColor = Color.FromArgb(45, 45, 48);
             listViewCPK.BorderStyle = BorderStyle.None;
-            listViewCPK.Dock = DockStyle.Fill;
             listViewCPK.Font = new Font("Segoe UI", 10F);
-            listViewCPK.ForeColor = Color.White;
+            listViewCPK.ForeColor = Color.Transparent;
             listViewCPK.FullRowSelect = true;
-            listViewCPK.Location = new Point(3, 212);
+            listViewCPK.Location = new Point(3, 130);
             listViewCPK.Name = "listViewCPK";
-            listViewCPK.Size = new Size(1035, 442);
+            listViewCPK.Size = new Size(122, 124);
             listViewCPK.TabIndex = 3;
             listViewCPK.UseCompatibleStateImageBehavior = false;
             listViewCPK.View = View.Details;
@@ -470,7 +467,7 @@ namespace Nursan.UI
         private Panel panel11;
         private ListBox listBox1;
         private Button button1;
-        private Label lbl2Massage;
         private ListView listViewCPK;
+        private Label lbl2Massage;
     }
 }

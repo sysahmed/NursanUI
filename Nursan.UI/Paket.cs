@@ -1,10 +1,13 @@
-﻿using Nursan.Business.Services;
+﻿using Nursan.Business.Logging;
+using Nursan.Business.Services;
 using Nursan.Domain.Entity;
 using Nursan.Persistanse.Result;
 using Nursan.Persistanse.UnitOfWork;
 using Nursan.UI.Library;
 using Nursan.UI.OzelClasslar;
 using Nursan.Validations.ValidationCode;
+using Nursan.XMLTools;
+using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.Text.RegularExpressions;
 
@@ -37,6 +40,7 @@ namespace Nursan.UI
         private readonly SystemTicket _systemTicket;
         private Button btnAriza;
         private string lastScreenshotPath = "";
+        private readonly StructuredLogger ticketLogger;
         public Paket(UnitOfWork repo, OpMashin makine, UrVardiya vardiya, List<UrIstasyon> istasyonList, List<UrModulerYapi> modulerYapiList, List<SyBarcodeInput> syBarcodeInputList, List<SyBarcodeOut> syBarcodeOutList, List<SyPrinter> syPrinterList, List<OrFamily> familyList)
         {
             _repo = repo;
@@ -52,6 +56,7 @@ namespace Nursan.UI
             brtSayi = brcodeVCount;
             _countDegerValidations = new CountDegerValidations(_repo, _makine, _vardiya, _istasyonList);
             _systemTicket = new SystemTicket();
+            ticketLogger = new StructuredLogger(nameof(Paket));
             InitializeComponent();
             tork = new TorkService(repo, vardiya);
             ozel = new OzelReferansControlEt(repo);
@@ -271,7 +276,15 @@ namespace Nursan.UI
                     return;
                 }
 
+                var visibleTicketIds = XMLSeverIp.VisibleTicketTypeIds();
                 List<SyTicketName> tickets = ticketsResult.Data.ToList();
+
+                if (visibleTicketIds.Any())
+                {
+                    tickets = tickets.Where(t => visibleTicketIds.Contains(t.Id)).ToList();
+                    Console.WriteLine($"Paket: Филтрирани тикети ({tickets.Count} от {ticketsResult.Data.Count()}) според VisibleTicketTypeIds.");
+                }
+
                 if (!tickets.Any())
                 {
                     Console.WriteLine("⚠️ Paket: Няма налични тикети в базата данни.");
@@ -361,19 +374,27 @@ namespace Nursan.UI
             SyTicketName ticket = btn.Tag as SyTicketName;
             if (ticket != null)
             {
+                Dictionary<string, string> selectionContext = new Dictionary<string, string>
+                {
+                    { "TicketName", SensitiveDataMasker.MaskValue(ticket.TiketName) },
+                    { "Role", (ticket.Role ?? 5).ToString() }
+                };
+                ticketLogger.LogInfo("TicketButtonSelected", selectionContext);
+
                 if (Nursan.XMLTools.XMLSeverIp.WebApiTrue())
                 {
-                    Console.WriteLine("✅ Paket: WebAPI е активно, стартираме изпращане");
                     ManualSendTicketWithScreenshot();
-                    Console.WriteLine($"📸 Screenshot Path: {lastScreenshotPath}");
-                    
-                    // Използваме Role параметъра от тикета
                     int roleValue = ticket.Role ?? 5;
                     ShowQrCodeAfterTicketCreation(ticket.TiketName, ticket.Description, lastScreenshotPath, roleValue);
                 }
                 else
                 {
-                    Console.WriteLine("⚠️ Paket: WebAPI не е активно!");
+                    ticketLogger.LogWarning(
+                        "WebApiDisabled",
+                        new Dictionary<string, string>
+                        {
+                            { "TicketName", SensitiveDataMasker.MaskValue(ticket.TiketName) }
+                        });
                 }
 
                 // Скриваме тикет бутоните след избор
@@ -411,13 +432,20 @@ namespace Nursan.UI
                     bmp.Save(fullPath, ImageFormat.Png);
                     lastScreenshotPath = fullPath;
                     
-                    Console.WriteLine($"Скрийншот запазен в: {lastScreenshotPath}");
-                    Console.WriteLine($"Файлът съществува: {File.Exists(lastScreenshotPath)}");
+                    Dictionary<string, string> screenshotContext = new Dictionary<string, string>
+                    {
+                        { "ScreenshotName", SensitiveDataMasker.MaskPath(lastScreenshotPath) }
+                    };
+                    ticketLogger.LogInfo("ManualScreenshotCaptured", screenshotContext);
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Грешка при ManualSendTicketWithScreenshot: {ex.Message}");
+                Dictionary<string, string> errorContext = new Dictionary<string, string>
+                {
+                    { "Message", ex.Message }
+                };
+                ticketLogger.LogError("ManualScreenshotFailure", errorContext);
             }
         }
 
@@ -428,41 +456,55 @@ namespace Nursan.UI
         {
             try
             {
-                Console.WriteLine("=== ShowQrCodeAfterTicketCreation стартира ===");
-                Console.WriteLine($"tiketName: {tiketName}");
-                Console.WriteLine($"description: {description}");
-                Console.WriteLine($"screenshotPath: {screenshotPath}");
-                Console.WriteLine($"roleValue: {roleValue}");
-                
+                Dictionary<string, string> startContext = new Dictionary<string, string>
+                {
+                    { "TicketName", SensitiveDataMasker.MaskValue(tiketName) },
+                    { "Role", roleValue.ToString() },
+                    { "ScreenshotName", SensitiveDataMasker.MaskPath(screenshotPath) }
+                };
+                ticketLogger.LogInfo("ManualTicketStart", startContext);
+
                 string bolge = _makine?.MasineName ?? "Paket";
                 
                 // Първо пращаме тикета
-                Console.WriteLine("Стартиране на CreateTicket...");
                 (bool success, string serverTicketId) = await _systemTicket.CreateTicket(tiketName, bolge, screenshotPath, roleValue);
-                Console.WriteLine($"CreateTicket резултат: {success}");
-                Console.WriteLine($"Server Ticket ID: {serverTicketId}");
+                Dictionary<string, string> resultContext = new Dictionary<string, string>
+                {
+                    { "Success", success.ToString() },
+                    { "TicketId", serverTicketId ?? string.Empty }
+                };
+                ticketLogger.LogInfo("ManualTicketResult", resultContext);
                 
                 if (success)
                 {
-                    Console.WriteLine("Тикетът е изпратен успешно! Показваме QR кода...");
-                    
-                    // Показваме QR кода САМО ако тикетът е изпратен успешно
                     string serverIp = Nursan.XMLTools.XMLSeverIp.XmlWebApiIP();
-                    Console.WriteLine($"Server IP: {serverIp}");
-                    
+                    Dictionary<string, string> qrContext = new Dictionary<string, string>
+                    {
+                        { "ServerIp", SensitiveDataMasker.MaskIp(serverIp) },
+                        { "TicketId", serverTicketId ?? string.Empty }
+                    };
+                    ticketLogger.LogInfo("QrDisplayTriggered", qrContext);
+
                     QrTicketForm qrForm = new QrTicketForm(serverTicketId, serverIp);
                     qrForm.Show();
-                    Console.WriteLine("QR форма показана");
                 }
                 else
                 {
-                    Console.WriteLine("❌ Paket: Грешка при изпращане на тикет към сървъра!");
+                    ticketLogger.LogError(
+                        "ManualTicketFailed",
+                        new Dictionary<string, string>
+                        {
+                            { "TicketName", SensitiveDataMasker.MaskValue(tiketName) }
+                        });
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"❌ Paket.ShowQrCodeAfterTicketCreation грешка: {ex.Message}");
-                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                Dictionary<string, string> exceptionContext = new Dictionary<string, string>
+                {
+                    { "Message", ex.Message }
+                };
+                ticketLogger.LogError("ManualTicketException", exceptionContext);
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using Nursan.Business.Services;
+﻿using Nursan.Business.Logging;
+using Nursan.Business.Services;
 using Nursan.Domain.Entity;
 using Nursan.Persistanse.UnitOfWork;
 using Nursan.UI.Library;
@@ -39,6 +40,7 @@ namespace Nursan.UI
         private bool isTicketExpanded = false;
         private readonly SystemTicket _systemTicket;
         private Button btnAriza;
+        private readonly StructuredLogger ticketLogger;
         
         public GozKontrol(UnitOfWork repo, OpMashin makine, UrVardiya vardiya, List<UrIstasyon> istasyonList, List<UrModulerYapi> modulerYapiList, List<SyBarcodeInput> syBarcodeInputList, List<SyBarcodeOut> syBarcodeOutList, List<SyPrinter> syPrinterList, List<OrFamily> familyList)
         {
@@ -62,6 +64,7 @@ namespace Nursan.UI
             Form.CheckForIllegalCrossThreadCalls = false;
             tork = new TorkService(repo, vardiya);
             _systemTicket = new SystemTicket();
+            ticketLogger = new StructuredLogger(nameof(GozKontrol));
             InitializeComponent();
             
             // Създаване на ARIZA бутон
@@ -298,25 +301,29 @@ STACK TRACE:
 {ex.InnerException?.StackTrace ?? ""}
 ";
 
-                // Логва в конзолата
-                Console.WriteLine(errorDetails);
-                Console.WriteLine("🚨 GozKontrol: Автоматично се изпраща тикет към IT екипа...");
+                Dictionary<string, string> autoContext = new Dictionary<string, string>
+                {
+                    { "Context", SensitiveDataMasker.MaskValue(context) },
+                    { "ScreenshotName", SensitiveDataMasker.MaskPath(screenshotPath) }
+                };
+                ticketLogger.LogError("AutoTicketTriggered", autoContext);
 
-                // Изпраща тикет към IT системата асинхронно
                 Task.Run(async () =>
                 {
                     await SendAutoTicketToIT(
                         $"AUTO CRASH: GozKontrol - {context}",
                         errorDetails,
                         screenshotPath,
-                        1 // Role 1 за тикети
-                    );
+                        1);
                 });
             }
             catch (Exception ticketEx)
             {
-                // Ако има грешка при изпращане на тикета, логваме я
-                Console.WriteLine($"Грешка при изпращане на автоматичен тикет: {ticketEx.Message}");
+                Dictionary<string, string> exceptionContext = new Dictionary<string, string>
+                {
+                    { "Message", ticketEx.Message }
+                };
+                ticketLogger.LogError("AutoTicketFailure", exceptionContext);
             }
         }
 
@@ -353,13 +360,21 @@ STACK TRACE:
                 }
 
                 lastScreenshotPath = filepath;
-                Console.WriteLine($"Screenshot записан в: {filepath}");
+                Dictionary<string, string> screenshotContext = new Dictionary<string, string>
+                {
+                    { "ScreenshotName", SensitiveDataMasker.MaskPath(filepath) }
+                };
+                ticketLogger.LogInfo("ScreenshotCreated", screenshotContext);
                 
                 return filepath;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Грешка при правене на screenshot: {ex.Message}");
+                Dictionary<string, string> errorContext = new Dictionary<string, string>
+                {
+                    { "Message", ex.Message }
+                };
+                ticketLogger.LogError("ScreenshotFailure", errorContext);
                 return string.Empty;
             }
         }
@@ -372,7 +387,15 @@ STACK TRACE:
             try
             {
                 string bolge = _makine?.MasineName ?? "GozKontrol";
-                
+                Dictionary<string, string> startContext = new Dictionary<string, string>
+                {
+                    { "TicketName", SensitiveDataMasker.MaskValue(tiketName) },
+                    { "Bolge", SensitiveDataMasker.MaskValue(bolge) },
+                    { "ScreenshotName", SensitiveDataMasker.MaskPath(screenshotPath) },
+                    { "Role", role.ToString() }
+                };
+                ticketLogger.LogInfo("AutoTicketSendStart", startContext);
+
                 SystemTicket ticketService = new SystemTicket();
                 (bool success, string ticketId) = await ticketService.CreateTicket(
                     tiketName,
@@ -381,20 +404,22 @@ STACK TRACE:
                     role
                 );
 
-                if (success)
+                Dictionary<string, string> resultContext = new Dictionary<string, string>
                 {
-                    Console.WriteLine($"✅ Автоматичен тикет изпратен успешно към IT! Ticket ID: {ticketId}");
-                }
-                else
-                {
-                    Console.WriteLine($"⚠️ Грешка при изпращане на автоматичен тикет към IT!");
-                }
+                    { "Success", success.ToString() },
+                    { "TicketId", ticketId ?? string.Empty }
+                };
+                ticketLogger.LogInfo("AutoTicketSendResult", resultContext);
 
                 return success;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"❌ Exception при изпращане на тикет: {ex.Message}");
+                Dictionary<string, string> exceptionContext = new Dictionary<string, string>
+                {
+                    { "Message", ex.Message }
+                };
+                ticketLogger.LogError("AutoTicketSendException", exceptionContext);
                 return false;
             }
         }
@@ -475,10 +500,18 @@ STACK TRACE:
                     return;
                 }
 
+                var visibleTicketIds = Nursan.XMLTools.XMLSeverIp.VisibleTicketTypeIds();
                 var tickets = ticketsResult.Data.ToList();
+
+                if (visibleTicketIds.Any())
+                {
+                    tickets = tickets.Where(t => visibleTicketIds.Contains(t.Id)).ToList();
+                    Console.WriteLine($"GozKontrol: Филтрирани тикети според Baglanti.xml ({tickets.Count} от {ticketsResult.Data.Count()}).");
+                }
+
                 if (!tickets.Any())
                 {
-                    Console.WriteLine("⚠️ GozKontrol: Няма налични тикети в базата данни.");
+                    Console.WriteLine("⚠️ GozKontrol: Няма налични тикети след прилагане на филтъра VisibleTicketTypeIds.");
                     return;
                 }
 
@@ -566,19 +599,27 @@ STACK TRACE:
             var ticket = btn.Tag as SyTicketName;
             if (ticket != null)
             {
+                Dictionary<string, string> selectionContext = new Dictionary<string, string>
+                {
+                    { "TicketName", SensitiveDataMasker.MaskValue(ticket.TiketName) },
+                    { "Role", (ticket.Role ?? 5).ToString() }
+                };
+                ticketLogger.LogInfo("TicketButtonSelected", selectionContext);
+
                 if (Nursan.XMLTools.XMLSeverIp.WebApiTrue())
                 {
-                    Console.WriteLine("✅ GozKontrol: WebAPI е активно, стартираме изпращане");
                     ManualSendTicketWithScreenshot();
-                    Console.WriteLine($"📸 Screenshot Path: {lastScreenshotPath}");
-                    
-                    // Използваме Role параметъра от тикета
                     int roleValue = ticket.Role ?? 5; // Ако Role е null, използваме 5 като default
                     ShowQrCodeAfterTicketCreation(ticket.TiketName, ticket.Description, lastScreenshotPath, roleValue);
                 }
                 else
                 {
-                    Console.WriteLine("⚠️ GozKontrol: WebAPI не е активно!");
+                    ticketLogger.LogWarning(
+                        "WebApiDisabled",
+                        new Dictionary<string, string>
+                        {
+                            { "TicketName", SensitiveDataMasker.MaskValue(ticket.TiketName) }
+                        });
                 }
 
                 // Скриваме тикет бутоните след избор
@@ -615,14 +656,21 @@ STACK TRACE:
                     
                     bmp.Save(fullPath, System.Drawing.Imaging.ImageFormat.Png);
                     lastScreenshotPath = fullPath;
-                    
-                    Console.WriteLine($"Скрийншот запазен в: {lastScreenshotPath}");
-                    Console.WriteLine($"Файлът съществува: {File.Exists(lastScreenshotPath)}");
+
+                    Dictionary<string, string> screenshotContext = new Dictionary<string, string>
+                    {
+                        { "ScreenshotName", SensitiveDataMasker.MaskPath(lastScreenshotPath) }
+                    };
+                    ticketLogger.LogInfo("ManualScreenshotCaptured", screenshotContext);
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Грешка при ManualSendTicketWithScreenshot: {ex.Message}");
+                Dictionary<string, string> errorContext = new Dictionary<string, string>
+                {
+                    { "Message", ex.Message }
+                };
+                ticketLogger.LogError("ManualScreenshotFailure", errorContext);
             }
         }
 
@@ -633,41 +681,55 @@ STACK TRACE:
         {
             try
             {
-                Console.WriteLine("=== ShowQrCodeAfterTicketCreation стартира ===");
-                Console.WriteLine($"tiketName: {tiketName}");
-                Console.WriteLine($"description: {description}");
-                Console.WriteLine($"screenshotPath: {screenshotPath}");
-                Console.WriteLine($"roleValue: {roleValue}");
-                
+                Dictionary<string, string> startContext = new Dictionary<string, string>
+                {
+                    { "TicketName", SensitiveDataMasker.MaskValue(tiketName) },
+                    { "Role", roleValue.ToString() },
+                    { "ScreenshotName", SensitiveDataMasker.MaskPath(screenshotPath) }
+                };
+                ticketLogger.LogInfo("ManualTicketStart", startContext);
+
                 string bolge = _makine?.MasineName ?? "GozKontrol";
                 
                 // Първо пращаме тикета
-                Console.WriteLine("Стартиране на CreateTicket...");
                 var (success, serverTicketId) = await _systemTicket.CreateTicket(tiketName, bolge, screenshotPath, roleValue);
-                Console.WriteLine($"CreateTicket резултат: {success}");
-                Console.WriteLine($"Server Ticket ID: {serverTicketId}");
+                Dictionary<string, string> createContext = new Dictionary<string, string>
+                {
+                    { "Success", success.ToString() },
+                    { "TicketId", serverTicketId ?? string.Empty }
+                };
+                ticketLogger.LogInfo("ManualTicketResult", createContext);
                 
                 if (success)
                 {
-                    Console.WriteLine("Тикетът е изпратен успешно! Показваме QR кода...");
-                    
-                    // Показваме QR кода САМО ако тикетът е изпратен успешно
                     string serverIp = Nursan.XMLTools.XMLSeverIp.XmlWebApiIP();
-                    Console.WriteLine($"Server IP: {serverIp}");
-                    
+                    Dictionary<string, string> qrContext = new Dictionary<string, string>
+                    {
+                        { "ServerIp", SensitiveDataMasker.MaskIp(serverIp) },
+                        { "TicketId", serverTicketId ?? string.Empty }
+                    };
+                    ticketLogger.LogInfo("QrDisplayTriggered", qrContext);
+
                     QrTicketForm qrForm = new QrTicketForm(serverTicketId, serverIp);
                     qrForm.Show();
-                    Console.WriteLine("QR форма показана");
                 }
                 else
                 {
-                    Console.WriteLine("❌ GozKontrol: Грешка при изпращане на тикет към сървъра!");
+                    ticketLogger.LogError(
+                        "ManualTicketFailed",
+                        new Dictionary<string, string>
+                        {
+                            { "TicketName", SensitiveDataMasker.MaskValue(tiketName) }
+                        });
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"❌ GozKontrol.ShowQrCodeAfterTicketCreation грешка: {ex.Message}");
-                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                Dictionary<string, string> exceptionContext = new Dictionary<string, string>
+                {
+                    { "Message", ex.Message }
+                };
+                ticketLogger.LogError("ManualTicketException", exceptionContext);
             }
         }
 
