@@ -4,18 +4,19 @@ using Nursan.Business.Services;
 using Nursan.Domain.AmbarModels;
 using Nursan.Domain.Entity;
 using Nursan.Logging.Messages;
-using Nursan.Persistanse.UnitOfWork;
+using Nursan.UI.Services;
+using Nursan.UI.DTOs;
 using Nursan.Validations.SortedList;
-using Nursan.Validations.ValidationCode;
 using Nursan.XMLTools;
 using System.Drawing.Imaging;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Forms; // За Clipboard
 using XMLIslemi = Nursan.Core.Printing.XMLIslemi;
 
 namespace Nursan.UI
 {
-    public partial class ElTest : Form
+    public partial class ElTestvApi: Form
     {
         private string deger;
         private FileSystemWatcher watcher1;
@@ -24,13 +25,12 @@ namespace Nursan.UI
         private FileSystemWatcher Kliptest_3;
         private Messaglama mes = new Messaglama();
         // private XMLIslemi xmlis = new XMLIslemi();
-        private TorkService TorkService;
         static string[] pathc = { "C:\\Kliptest\\", "C:\\Kliptest_2\\", "C:\\Klt\\", "C:\\Kliptest_3\\", "C:\\DEMO\\", "C:\\_Kliptest\\", };
-        private EltestValidasyonlari _elTest;
+        private ElTestApiService _elTestApi;
+        private StationBootstrapDto? _stationBootstrap;
         private static string format = $"*.txt";
         private ScreenSaverForm scren;
         private SicilOkuma sicil;
-        private UnitOfWork _repo;
         private ScreenMonitor _screenMonitor;
         private GroupBox groupBoxScreenMonitor;
         private TextBox textBoxTextToWatch;
@@ -49,7 +49,8 @@ namespace Nursan.UI
         private string lastScreenshotPath = null;
         private readonly SystemTicket _systemTicket;
         private readonly StructuredLogger ticketLogger;
-        public ElTest(UnitOfWork repo)
+        private readonly StructuredLogger apiKeyLogger;
+        public ElTestvApi()
         {
             InitializeComponent();
 
@@ -68,7 +69,8 @@ namespace Nursan.UI
             this.Width = Screen.PrimaryScreen.WorkingArea.Width;
             this.Height = 300;
             _systemTicket = new SystemTicket();
-            ticketLogger = new StructuredLogger(nameof(ElTest));
+            ticketLogger = new StructuredLogger(nameof(ElTestvApi));
+            apiKeyLogger = new StructuredLogger("ElTestvApi.ApiKey");
 
             // Добавяне на exception handlers за автоматично генериране на тикети при crash
             Application.ThreadException += Application_ThreadException;
@@ -96,9 +98,8 @@ namespace Nursan.UI
             this.watcher3.Created += new FileSystemEventHandler(this.Watcher3_Created);
             this.Kliptest_3 = new FileSystemWatcher(pathc[3], format);
             this.Kliptest_3.Created += new FileSystemEventHandler(this.KlipTest_3_Created);
-            lblVersion.Text = $"ElTest {Environment.Version}";
-            _elTest = new EltestValidasyonlari(repo);
-            _repo = repo;
+            lblVersion.Text = $"ElTest-vApi {Environment.Version}";
+            _elTestApi = new ElTestApiService();
             GitSytemdenSil();
 
             // Инициализация на ScreenMonitor
@@ -214,49 +215,49 @@ namespace Nursan.UI
             }
         }
 
-        private void Watcher1_Created(object sender, FileSystemEventArgs e)
+        private async void Watcher1_Created(object sender, FileSystemEventArgs e)
         {
             try
             {
                 var veri = ((FileSystemWatcher)sender);
                 Thread.Sleep(XMLIslemi.XmlSaniye());
 
-                Watcher1(veri.Path, veri.Filter);
+                await Watcher1(veri.Path, veri.Filter);
             }
-            catch (ErrorExceptionHandller ex)
+            catch (Exception ex)
             {
                 mes.messanger(ex.Message);
             }
         }
 
-        private void Watcher2_Created(object sender, FileSystemEventArgs e)
+        private async void Watcher2_Created(object sender, FileSystemEventArgs e)
         {
             try
             {
                 var veri = ((FileSystemWatcher)sender);
                 Thread.Sleep(XMLIslemi.XmlSaniye());
-                Watcher2(veri.Path, veri.Filter);
+                await Watcher2(veri.Path, veri.Filter);
             }
-            catch (ErrorExceptionHandller ex)
+            catch (Exception ex)
             {
                 mes.messanger(ex.Message);
             }
         }
 
-        private void Watcher3_Created(object sender, FileSystemEventArgs e)
+        private async void Watcher3_Created(object sender, FileSystemEventArgs e)
         {
             try
             {
                 var veri = ((FileSystemWatcher)sender);
                 Thread.Sleep(XMLIslemi.XmlSaniye());
-                Watcher3(veri.Path, veri.Filter);
+                await Watcher3(veri.Path, veri.Filter);
             }
-            catch (ErrorExceptionHandller ex)
+            catch (Exception ex)
             {
                 mes.messanger(ex.Message);
             }
         }
-        private void Watcher1(string Path, string Format)
+        private async Task Watcher1(string Path, string Format)
         {
             FileInfo[] files = (new DirectoryInfo(Path).GetFiles(Format));
             FileInfo[] fileInfoArray = files;
@@ -269,25 +270,34 @@ namespace Nursan.UI
                 try
                 {
                     File.Copy(string.Concat(Path, fileInfo.Name), string.Concat(pathc[4].ToString(), fileInfo.Name), true);
-                    var result = _elTest.GitSystemeYukle($"{fileInfo.Name.ToUpper()}");
+                    // Проверяваме дали има валиден API Key преди операцията
+                    if (!EnsureApiKeyIsValidForOperation())
+                    {
+                        File.Delete(string.Concat(Path, fileInfo.Name));
+                        return;
+                    }
+                    
+                    string[] getParca = fileInfo.Name.ToUpper().Split('_');
+                    string vardiyaName = getParca.Length > 2 ? getParca[2] : "";
+                    var result = await _elTestApi.GitSystemeYukle(getParca, vardiyaName);
                     File.Delete(string.Concat(Path, fileInfo.Name));
                 }
-                catch (ErrorExceptionHandller ex)
+                catch (Exception ex)
                 {
                     mes.messanger(ex.Message);
                     File.Delete(string.Concat(Path, fileInfo.Name));
                 }
             }
         }
-        private void KlipTest_3_Created(object sender, FileSystemEventArgs e)
+        private async void KlipTest_3_Created(object sender, FileSystemEventArgs e)
         {
             try
             {
                 var veri = ((FileSystemWatcher)sender);
                 Thread.Sleep(XMLIslemi.XmlSaniye());
-                KlipTest_3(veri.Path, veri.Filter);
+                await KlipTest_3(veri.Path, veri.Filter);
             }
-            catch (ErrorExceptionHandller ex)
+            catch (Exception ex)
             {
                 mes.messanger(ex.Message);
             }
@@ -297,7 +307,7 @@ namespace Nursan.UI
         {
             await Task.Run(() => File.Delete(filePath));
         }
-        private void Watcher2(string Path, string Format)
+        private async Task Watcher2(string Path, string Format)
         {
             FileInfo[] files = (new DirectoryInfo(Path).GetFiles(Format));
             FileInfo[] fileInfoArray = files;
@@ -309,10 +319,10 @@ namespace Nursan.UI
                 try
                 {
                     File.Copy(string.Concat(Path, fileInfo.Name), string.Concat(pathc[5].ToString(), $"Start-{fileInfo.Name}"), true);
-                    GitSystemeDesktopKapa(fileInfo.Name.ToUpper());
+                    await GitSystemeDesktopKapa(fileInfo.Name.ToUpper());
                     File.Delete(string.Concat(Path, fileInfo.Name));
                 }
-                catch (ErrorExceptionHandller ex)
+                catch (Exception ex)
                 {
                     mes.messanger(ex.Message);
                     File.Delete(string.Concat(Path, fileInfo.Name));
@@ -320,7 +330,7 @@ namespace Nursan.UI
             }
         }
 
-        private void Watcher3(string Path, string Format)
+        private async Task Watcher3(string Path, string Format)
         {
             FileInfo[] files = (new DirectoryInfo(Path).GetFiles(Format));
             FileInfo[] fileInfoArray = files;
@@ -333,10 +343,21 @@ namespace Nursan.UI
                 {
                     File.Copy(string.Concat(Path, fileInfo.Name), string.Concat(pathc[5].ToString(), fileInfo.Name), true);
                     Thread.Sleep(XMLIslemi.XmlSaniye());
-                    var result = _elTest.GithataYukle($"{Path}{fileInfo.Name.ToUpper()}");
+                    // TODO: За сега използваме същия метод като Watcher1, тъй като GithataYukle не е имплементиран в API
+                    // В бъдеще може да се създаде специален endpoint за обработка на грешки
+                    // Проверяваме дали има валиден API Key преди операцията
+                    if (!EnsureApiKeyIsValidForOperation())
+                    {
+                        File.Delete(string.Concat(Path, fileInfo.Name));
+                        return;
+                    }
+                    
+                    string[] getParca = fileInfo.Name.ToUpper().Split('_');
+                    string vardiyaName = getParca.Length > 2 ? getParca[2] : "";
+                    var result = await _elTestApi.GitSystemeYukle(getParca, vardiyaName);
                     File.Delete(string.Concat(Path, fileInfo.Name));
                 }
-                catch (ErrorExceptionHandller ex)
+                catch (Exception ex)
                 {
                     mes.messanger(ex.Message);
                     File.Delete(string.Concat(Path, fileInfo.Name));
@@ -344,7 +365,7 @@ namespace Nursan.UI
             }
         }
 
-        private void KlipTest_3(string Path, string Format)
+        private async Task KlipTest_3(string Path, string Format)
         {
             FileInfo[] files = (new DirectoryInfo(Path).GetFiles(Format));
             FileInfo[] fileInfoArray = files;
@@ -357,10 +378,10 @@ namespace Nursan.UI
                 {
                     File.Copy(string.Concat(Path, fileInfo.Name), string.Concat(pathc[5].ToString(), fileInfo.Name), true);
                     Thread.Sleep(XMLIslemi.XmlSaniye());
-                    GitSystemeDesktopAc($"{Path}{fileInfo.Name.ToUpper()}");
+                    await GitSystemeDesktopAc($"{Path}{fileInfo.Name.ToUpper()}");
                     File.Delete(string.Concat(Path, fileInfo.Name));
                 }
-                catch (ErrorExceptionHandller ex)
+                catch (Exception ex)
                 {
                     mes.messanger(ex.Message);
                     File.Delete(string.Concat(Path, fileInfo.Name));
@@ -370,9 +391,337 @@ namespace Nursan.UI
 
         private void ElTest_Load(object sender, EventArgs e)
         {
-            // Премахваме минимизирането
-            WatcherStart();
-            TaskBaraAl();
+            // Проверяваме API Key статуса и блокираме ако не е валиден
+            _ = CheckApiKeyStatusAndBlockIfInvalidAsync();
+        }
+
+        /// <summary>
+        /// Флаг дали API Key е валиден и може да работи с API-то
+        /// </summary>
+        private bool _isApiKeyValid = false;
+
+        /// <summary>
+        /// Проверява дали API Key е валиден преди извършване на операция
+        /// Ако не е валиден, показва съобщение и блокира операцията
+        /// </summary>
+        private bool EnsureApiKeyIsValidForOperation()
+        {
+            if (!_isApiKeyValid)
+            {
+                // Операцията е блокирана - API Key не е валиден
+                MessageBox.Show(
+                    "API Key не е валиден или не е аутентикиран.\n\nПриложението не може да работи без валиден API Key.\n\nМоля, проверете API Key в конфигурацията или рестартирайте приложението.",
+                    "API Key грешка",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return false;
+            }
+            return true;
+        }
+        
+        /// <summary>
+        /// Проверява API Key от XML конфигурацията, валидира срещу API-то и блокира приложението ако не е валиден
+        /// </summary>
+        private async Task CheckApiKeyStatusAndBlockIfInvalidAsync()
+        {
+            try
+            {
+                // Четем API Key и DeviceId от XML
+                string? apiKey = ApiKeyManager.GetApiKey();
+                string? deviceId = ApiKeyManager.GetDeviceId();
+                
+                if (string.IsNullOrEmpty(apiKey))
+                {
+                    // API Key не е намерен - блокираме приложението
+                    apiKeyLogger.LogError("ApiKeyNotFound", new Dictionary<string, string>
+                    {
+                        { "Message", "API Key не е намерен в XML конфигурацията" },
+                        { "MachineName", Environment.MachineName }
+                    });
+                    
+                    _isApiKeyValid = false;
+                    BlockApplication("API Key не е намерен в конфигурацията.\n\nМоля, генерирайте API Key от MVC интерфейса на API-то и го запишете в Baglanti.xml файла.");
+                    return;
+                }
+
+                // Ако ключът е в стар (plaintext) формат, мигрираме го към DPAPI (LocalMachine)
+                // Това не променя ключа към API-то, само начина на съхранение в Baglanti.xml
+                ApiKeyManager.TryMigratePlaintextApiKeyToDpapi(deviceId);
+
+                // Валидираме срещу API-то
+                bool isValid = await ValidateApiKeyWithServerAsync(apiKey, deviceId);
+                
+                if (!isValid)
+                {
+                    // API Key не е валиден - блокираме приложението
+                    apiKeyLogger.LogError("ApiKeyValidationFailed", new Dictionary<string, string>
+                    {
+                        { "Message", "API Key не е валиден или не е активен" },
+                        { "DeviceId", deviceId ?? "NotProvided" },
+                        { "MachineName", Environment.MachineName }
+                    });
+                    
+                    _isApiKeyValid = false;
+                    BlockApplication("API Key не е валиден или не е активен.\n\nМоля, проверете API Key в MVC интерфейса на API-то или генерирайте нов.");
+                    return;
+                }
+
+                // API Key е валиден - активираме приложението
+                apiKeyLogger.LogInfo("ApiKeyValidated", new Dictionary<string, string>
+                {
+                    { "Message", "API Key е валидиран успешно" },
+                    { "DeviceId", deviceId ?? "NotProvided" },
+                    { "MachineName", Environment.MachineName }
+                });
+                
+                _isApiKeyValid = true;
+
+                // 1) Зареждаме конфигурацията за станцията при старт (както локалната версия я "знае" от Program.cs/DB)
+                _stationBootstrap = await _elTestApi.GetStationBootstrapAsync(Environment.MachineName);
+                if (_stationBootstrap == null || _stationBootstrap.Station == null)
+                {
+                    _isApiKeyValid = false;
+                    BlockApplication(
+                        "Не успях да заредя конфигурацията на станцията от API.\n\n" +
+                        "Проверете дали API работи и дали е настроена активна станция за тази машина (MachineName).\n\n" +
+                        $"MachineName: {Environment.MachineName}");
+                    return;
+                }
+                
+                // 2) Стартираме функционалностите едва след като bootstrap конфигурацията е налична
+                WatcherStart();
+                TaskBaraAl();
+            }
+            catch (Exception ex)
+            {
+                // Грешка при проверка - блокираме приложението за сигурност
+                apiKeyLogger.LogError("ApiKeyCheckException", new Dictionary<string, string>
+                {
+                    { "Message", ex.Message },
+                    { "StackTrace", ex.StackTrace ?? "N/A" },
+                    { "MachineName", Environment.MachineName }
+                });
+                
+                _isApiKeyValid = false;
+                BlockApplication($"Грешка при валидация на API Key:\n{ex.Message}\n\nМоля, проверете връзката с API сървъра.");
+            }
+        }
+
+        /// <summary>
+        /// Блокира приложението - скрива контролите и показва съобщение
+        /// </summary>
+        private void BlockApplication(string message)
+        {
+            try
+            {
+                // Спираме FileSystemWatcher ако работи
+                WatcherStop();
+                
+                // Скриваме всички контроли (освен може би съобщението)
+                this.Enabled = false;
+                
+                // Показваме съобщение
+                MessageBox.Show(
+                    $"Приложението е блокирано!\n\n{message}\n\nПриложението ще се затвори.",
+                    "ElTestvApi - API Key грешка",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+                // Затваряме приложението
+                this.Close();
+            }
+            catch (Exception)
+            {
+                // Грешка при блокиране на приложението - игнорираме
+            }
+        }
+
+        /// <summary>
+        /// Валидира API Key срещу API сървъра
+        /// Връща true ако API Key е валиден и може да работи с API-то
+        /// </summary>
+        private async Task<bool> ValidateApiKeyWithServerAsync(string apiKey, string? deviceId)
+        {
+            try
+            {
+                // Вземаме Master API Address от XML - това е основният адрес за всички API заявки
+                // Тикетите имат свой отделен адрес в ticketTracking node
+                string masterApiAddress = XMLSeverIp.XmlMasterApiAddress();
+                
+                // Определяме протокола: за localhost използваме http, за останалото https
+                string protocol = (masterApiAddress.StartsWith("localhost", StringComparison.OrdinalIgnoreCase) || 
+                                  masterApiAddress.StartsWith("127.0.0.1")) ? "http" : "https";
+                string apiUrl = $"{protocol}://{masterApiAddress}/api/auth/validate-api-key";
+                
+                if (!string.IsNullOrEmpty(deviceId))
+                {
+                    apiUrl += $"?deviceId={Uri.EscapeDataString(deviceId)}";
+                }
+
+                var handler = new System.Net.Http.HttpClientHandler
+                {
+                    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+                };
+                
+                using (var client = new System.Net.Http.HttpClient(handler))
+                {
+                    client.Timeout = TimeSpan.FromSeconds(10);
+                    client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
+                    if (!string.IsNullOrEmpty(deviceId))
+                    {
+                        client.DefaultRequestHeaders.Add("X-Device-Id", deviceId);
+                    }
+                    
+                    var response = await client.PostAsync(apiUrl, null);
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Парсваме отговора
+                        try
+                        {
+                            var result = System.Text.Json.JsonSerializer.Deserialize<System.Text.Json.JsonElement>(responseContent);
+                            var canWork = result.TryGetProperty("CanWorkWithApi", out var canWorkProp) && canWorkProp.GetBoolean();
+                            
+                            if (canWork)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        catch
+                        {
+                            // Ако не можем да парснем отговора, приемаме че е успешен ако статусът е OK
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                apiKeyLogger.LogError("ApiKeyValidationException", new Dictionary<string, string>
+                {
+                    { "Message", ex.Message },
+                    { "StackTrace", ex.StackTrace ?? "N/A" },
+                    { "DeviceId", deviceId ?? "NotProvided" },
+                    { "MachineName", Environment.MachineName }
+                });
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Генерира API Key локално и го записва в XML (тихо без съобщения)
+        /// </summary>
+        private void GenerateApiKeyLocally()
+        {
+            try
+            {
+                // Използваме ApiKeyManager за генериране
+                string? newApiKey = ApiKeyManager.GenerateAndSaveApiKey();
+                
+                if (!string.IsNullOrEmpty(newApiKey))
+                {
+                    // Презареждаме API Service с новия ключ
+                    _elTestApi?.Dispose();
+                    _elTestApi = new ElTestApiService();
+                }
+                // API Key не може да се генерира - правата за достъп до Baglanti.xml не са достатъчни
+            }
+            catch (Exception)
+            {
+                // Грешка при генериране на API Key - игнорираме
+            }
+        }
+
+        /// <summary>
+        /// Генерира API Key от API endpoint (ако API е достъпен) - тихо без съобщения
+        /// </summary>
+        private async void GenerateApiKeyFromApi()
+        {
+            try
+            {
+                string serverIp = XMLSeverIp.XmlWebApiIP();
+                string apiUrl = $"https://{serverIp}/api/auth/generate-api-key";
+                
+                var handler = new System.Net.Http.HttpClientHandler
+                {
+                    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+                };
+                
+                using (var client = new System.Net.Http.HttpClient(handler))
+                {
+                    client.Timeout = TimeSpan.FromSeconds(10);
+                    var response = await client.PostAsync(apiUrl, null);
+                    
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var jsonResponse = await response.Content.ReadAsStringAsync();
+                        
+                        // Парсваме JSON и записваме в XML
+                        try
+                        {
+                            using (var doc = System.Text.Json.JsonDocument.Parse(jsonResponse))
+                            {
+                                if (doc.RootElement.TryGetProperty("ApiKey", out var apiKeyElement))
+                                {
+                                    string? apiKey = apiKeyElement.GetString();
+                                    if (!string.IsNullOrEmpty(apiKey))
+                                    {
+                                        // Записваме в локалния XML
+                                        if (ApiKeyManager.SaveApiKey(apiKey))
+                                        {
+                                            // API Key е генериран от сървъра и записан
+                                            
+                                            // Презареждаме API Service
+                                            _elTestApi?.Dispose();
+                                            _elTestApi = new ElTestApiService();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            // Fallback към локално генериране
+                            GenerateApiKeyLocally();
+                        }
+                    }
+                    else
+                    {
+                        // Fallback към локално генериране
+                        GenerateApiKeyLocally();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // Fallback към локално генериране
+                GenerateApiKeyLocally();
+            }
+        }
+
+        /// <summary>
+        /// Маскира API Key за показване (показва само първите и последните символи)
+        /// </summary>
+        private string MaskApiKey(string apiKey)
+        {
+            if (string.IsNullOrEmpty(apiKey) || apiKey.Length <= 8)
+            {
+                return "***";
+            }
+            
+            // Показваме първите 4 и последните 4 символа
+            string start = apiKey.Substring(0, 4);
+            string end = apiKey.Substring(apiKey.Length - 4);
+            return $"{start}...{end}";
         }
 
         public void WatcherStart()
@@ -409,7 +758,7 @@ namespace Nursan.UI
             return barcodece;
         }
 
-        private void GitSystemeDesktopAc(string name)
+        private async Task GitSystemeDesktopAc(string name)
         {
             FileInfo[] files = (new DirectoryInfo("C:\\kliptest_3")).GetFiles("*.txt");
             for (int i = 0; i < (int)files.Length; i++)
@@ -419,8 +768,14 @@ namespace Nursan.UI
                 this.deger = fileInfo.Name.ToUpper();
                 string[] strArrays = this.deger.Split(new char[] { '\u005F' });
                 var gelenDegerler = GitParcalama(new SyBarcodeOut { BarcodeIcerik = deger });
-                TorkService = new TorkService(_repo, new UrVardiya() { Name = gelenDegerler.Name });
-                var idBak = TorkService.GitSytemeSayiElTestBack(new SyBarcodeInput() { BarcodeIcerik = $"{gelenDegerler.prefix}-{gelenDegerler.family}-{gelenDegerler.suffix}{gelenDegerler.IdDonanim}" });
+                string barcodeIcerik = $"{gelenDegerler.prefix}-{gelenDegerler.family}-{gelenDegerler.suffix}{gelenDegerler.IdDonanim}";
+                // Проверяваме дали има валиден API Key преди операцията
+                if (!EnsureApiKeyIsValidForOperation())
+                {
+                    return;
+                }
+                
+                var idBak = await _elTestApi.CheckSystemElTest(barcodeIcerik, gelenDegerler.Name);
                 scren = new ScreenSaverForm(0, strArrays[2].ToString());
                 // scren.Owner = this;
                 sicil = new SicilOkuma(strArrays[2].ToString());
@@ -450,7 +805,7 @@ namespace Nursan.UI
                             break;
                     }
                 }
-                catch (ErrorExceptionHandller ex)
+                catch (Exception ex)
                 {
                     File.Delete(string.Concat("C:\\kliptest_3\\", fileInfo.Name));
                     scren.Dispose();
@@ -470,7 +825,7 @@ namespace Nursan.UI
             screenSaverForm.pictureBox1.Image = Image.FromFile(string.Concat(AppDomain.CurrentDomain.BaseDirectory, path));
             screenSaverForm.ShowDialog();
         }
-        private void GitSystemeDesktopKapa(string name)
+        private async Task GitSystemeDesktopKapa(string name)
         {
             FileInfo[] files = (new DirectoryInfo("C:\\kliptest_2")).GetFiles("*.txt");
             for (int i = 0; i < (int)files.Length; i++)
@@ -482,8 +837,14 @@ namespace Nursan.UI
                 {
                     string[] strArrays = this.deger.Split(new char[] { '\u005F' });
                     var gelenDegerler = GitParcalama(new SyBarcodeOut { BarcodeIcerik = deger });
-                    TorkService = new TorkService(_repo, new UrVardiya() { Name = gelenDegerler.Name });
-                    var idBak = TorkService.GitSytemeSayiBac(new SyBarcodeInput() { BarcodeIcerik = $"{gelenDegerler.prefix}-{gelenDegerler.family}-{gelenDegerler.suffix}{gelenDegerler.IdDonanim}" });
+                    string barcodeIcerik = $"{gelenDegerler.prefix}-{gelenDegerler.family}-{gelenDegerler.suffix}{gelenDegerler.IdDonanim}";
+                    // Проверяваме дали има валиден API Key преди операцията
+                    if (!EnsureApiKeyIsValidForOperation())
+                    {
+                        return;
+                    }
+                    
+                    var idBak = await _elTestApi.CheckSystem(barcodeIcerik, gelenDegerler.Name);
                     scren = new ScreenSaverForm(0, strArrays[2].ToString());
                     //scren.Owner = this;
                     sicil = new SicilOkuma(strArrays[2].ToString());
@@ -516,7 +877,7 @@ namespace Nursan.UI
                             scren.ShowDialog(); break;
                     }
                 }
-                catch (ErrorExceptionHandller ex)
+                catch (Exception ex)
                 {
                     File.Delete(string.Concat("C:\\kliptest_2\\", fileInfo.Name));
                     scren.Dispose();
@@ -771,8 +1132,9 @@ namespace Nursan.UI
         {
             base.OnFormClosing(e);
 
-            // Освобождаваме ресурсите на ScreenMonitor
+            // Освобождаваме ресурсите
             _screenMonitor?.Dispose();
+            _elTestApi?.Dispose();
         }
 
         private void ExpandTimer_Tick(object sender, EventArgs e)
@@ -797,27 +1159,27 @@ namespace Nursan.UI
                 LoadTicketButtons();
             }
         }
-        public void AddTicket(string tiketName, string description, int role)
+        public async Task AddTicket(string tiketName, string description, int role)
         {
-            decimal? pcId = _elTest.GetPcId();
-            using (var context = new AmbarContext())
+            // Използваме SystemTicket.CreateTicket който вече работи с API
+            // Ако WebApi е изключено, все пак използваме SystemTicket за консистентност
+            try
             {
-                // Ограничаваме дължината на tiketName до 50 символа за да избегнем SQL truncation error
-                string truncatedTiketName = tiketName?.Length > 50 ? tiketName.Substring(0, 50) : tiketName;
-                
-                var islemler = new Islemler
+                // Проверяваме дали има валиден API Key преди операцията
+                if (!EnsureApiKeyIsValidForOperation())
                 {
-                    Ariza = truncatedTiketName,
-                    // Islem = description,
-                    Tarih = DateTime.Now,
-                    Role = role,
-                    PcId = pcId,
-                    Active = true
-
-                    // ... други полета по желание
-                };
-                context.Islemlers.Add(islemler);
-                context.SaveChanges();
+                    return;
+                }
+                
+                decimal? pcId = await _elTestApi.GetPcId();
+                string bolge = Environment.MachineName;
+                
+                // SystemTicket.CreateTicket вече използва API
+                await _systemTicket.CreateTicket(tiketName, bolge, null, role);
+            }
+            catch (Exception ex)
+            {
+                mes.messanger($"Грешка при добавяне на тикет: {ex.Message}");
             }
         }
 
@@ -854,7 +1216,7 @@ namespace Nursan.UI
                 if (visibleTicketIds.Any())
                 {
                     tickets = tickets.Where(t => visibleTicketIds.Contains(t.Id)).ToList();
-                    Console.WriteLine($"ElTest: Филтрирани тикети ({tickets.Count}) според VisibleTicketTypeIds.");
+                    // Тикетите са филтрирани според VisibleTicketTypeIds
                 }
 
                 if (!tickets.Any())
@@ -918,7 +1280,7 @@ namespace Nursan.UI
             }
         }
 
-        private void TicketButton_Click(object sender, EventArgs e)
+        private async void TicketButton_Click(object sender, EventArgs e)
         {
             var btn = sender as Button;
             var ticket = btn.Tag as TickedRolleNote;
@@ -981,7 +1343,7 @@ namespace Nursan.UI
                         });
                     // Добавяме проверка за nullable RoleId
                     int roleValue = ticket.RoleId ?? 5; // Ако RoleId е null, използваме 5 като default
-                    AddTicket(ticket.Description, ticket.Description, roleValue);
+                    await AddTicket(ticket.Description, ticket.Description, roleValue);
                 }
                 // Първо премахваме динамичните бутони
                 foreach (var b in dynamicTicketButtons)
@@ -1016,27 +1378,23 @@ namespace Nursan.UI
         /// <summary>
         /// Валидира дали може да се изпрати тикет
         /// </summary>
-        private (bool IsValid, string Message) ValidateBeforeTicketSubmission(TickedRolleNote ticket)
+        private async Task<(bool IsValid, string Message)> ValidateBeforeTicketSubmission(TickedRolleNote ticket)
         {
             try
             {
                 // 1. Проверка дали има активен файл/баркод
-                //if (string.IsNullOrEmpty(deger))
-                //{
-                //    return (false, "Няма активен баркод/файл в момента");
-                //}
+                if (string.IsNullOrEmpty(deger))
+                {
+                    return (false, "Няма активен баркод/файл в момента");
+                }
                 
                 // 2. Парсваме текущия баркод
                 var gelenDegerler = GitParcalama(new SyBarcodeOut { BarcodeIcerik = deger });
                 string currentBarcode = $"{gelenDegerler.prefix}-{gelenDegerler.family}-{gelenDegerler.suffix}{gelenDegerler.IdDonanim}";
                 string idDonanim = gelenDegerler.IdDonanim;
                 
-                Console.WriteLine($"📋 Проверка на IDDonanim: {idDonanim}");
-                Console.WriteLine($"📋 Пълен баркод: {currentBarcode}");
-                
                 // 3. Проверка дали IDDonanim съществува в системата
-                TorkService = new TorkService(_repo, new UrVardiya() { Name = gelenDegerler.Name });
-                var idBak = TorkService.GitSytemeSayiElTestBack(new SyBarcodeInput() { BarcodeIcerik = currentBarcode });
+                var idBak = await _elTestApi.CheckSystemElTest(currentBarcode, gelenDegerler.Name);
                 
                 if (idBak.Message == "Donanimi ID Systemde Yok")
                 {
@@ -1047,8 +1405,6 @@ namespace Nursan.UI
                 int roleValue = ticket.RoleId ?? 5;
                 if (roleValue == 1)
                 {
-                    Console.WriteLine($"🔍 IT Тикет (Role=1) - Проверка на станции за IDDonanim: {idDonanim}");
-                    
                     if (idBak.Message == "Donanimi Bi oceki Istasyona Yonlendirin!")
                     {
                         return (false, $"Продуктът с IDDonanim '{idDonanim}' НЕ Е минал през предходните станции. Моля, изпратете го първо към предходната станция!");
@@ -1065,7 +1421,6 @@ namespace Nursan.UI
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"❌ Грешка при валидация: {ex.Message}");
                 return (false, $"Грешка при валидация: {ex.Message}");
             }
         }

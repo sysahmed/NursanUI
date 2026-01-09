@@ -13,8 +13,10 @@ using SQLitePCL;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using XMLIslemi = Nursan.Core.Printing.XMLIslemi;
 
 namespace Nursan.UI
@@ -67,6 +69,11 @@ namespace Nursan.UI
             this.TransparencyKey = Color.WhiteSmoke;
             _systemTicket = new SystemTicket();
             ticketLogger = new StructuredLogger(nameof(KlipV1));
+
+            // Добавяне на exception handlers за автоматично генериране на тикети при crash
+            Application.ThreadException += Application_ThreadException;
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
             // Разпъни формата по цялата ширина на екрана и височина 300px
             this.Left = 0;
             this.Top = 0;
@@ -820,7 +827,7 @@ namespace Nursan.UI
             }
         }
 
-        private void LoadTicketButtons()
+        private async void LoadTicketButtons()
         {
             try
             {
@@ -838,41 +845,43 @@ namespace Nursan.UI
                 int marginY = 10;
                 int startY = btnAriza.Bottom + 20;
 
-                var ticketsResult = _repo.GetRepository<SyTicketName>().GetAll(null);
-                if (ticketsResult == null || ticketsResult.Data == null)
+                // Зареждаме тикетите от API
+                string roleName = string.Empty; // Може да се конфигурира в baglanti.xml ако е необходимо
+                List<TickedRolleNote> tickets = await _systemTicket.GetTicketsByRoleName();
+
+                if (tickets == null || !tickets.Any())
                 {
                     MessageBox.Show("Няма налични билети за зареждане.", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
-                var visibleTicketIds = Nursan.XMLTools.XMLSeverIp.VisibleTicketTypeIds();
-                var ticketList = ticketsResult.Data.ToList();
-
+                // Прилагаме филтъра от baglanti.xml
+                var visibleTicketIds = XMLSeverIp.VisibleTicketTypeIds();
                 if (visibleTicketIds.Any())
                 {
-                    ticketList = ticketList.Where(t => visibleTicketIds.Contains(t.Id)).ToList();
-                    Console.WriteLine($"KlipV1: Филтрирани тикети ({ticketList.Count} от {ticketsResult.Data.Count()}) според VisibleTicketTypeIds.");
+                    tickets = tickets.Where(t => visibleTicketIds.Contains(t.Id)).ToList();
+                    Console.WriteLine($"KlipV1: Филтрирани тикети ({tickets.Count}) според VisibleTicketTypeIds.");
                 }
 
-                if (!ticketList.Any())
+                if (!tickets.Any())
                 {
                     MessageBox.Show("Няма разрешени тикети за показване.", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
-                int totalButtons = ticketList.Count;
+                int totalButtons = tickets.Count;
                 int screenWidth = Screen.PrimaryScreen.WorkingArea.Width;
                 int maxColumns = Math.Max(1, screenWidth / (btnWidth + marginX));
                 int buttonsPerRow = Math.Min(maxColumns, Math.Max(1, (int)Math.Ceiling(Math.Sqrt(totalButtons))));
 
                 int count = 0;
-                foreach (var ticket in ticketList)
+                foreach (var ticket in tickets)
                 {
                     int row = count / buttonsPerRow;
                     int col = count % buttonsPerRow;
 
                     Button btn = new Button();
-                    btn.Text = ticket.TiketName;
+                    btn.Text = ticket.Description; // Използваме Description като текст на бутона
                     btn.Width = btnWidth;
                     btn.Height = btnHeight;
                     btn.Left = 30 + col * (btnWidth + marginX);
@@ -917,56 +926,40 @@ namespace Nursan.UI
         private void TicketButton_Click(object sender, EventArgs e)
         {
             var btn = sender as Button;
-            var ticket = btn.Tag as SyTicketName;
+            var ticket = btn.Tag as TickedRolleNote;
             if (ticket != null)
             {
-                // Валидация преди изпращане на тикет
+                Dictionary<string, string> selectionContext = new Dictionary<string, string>
+                {
+                    { "TicketDescription", SensitiveDataMasker.MaskValue(ticket.Description) },
+                    { "TicketId", ticket.Id.ToString() },
+                    { "RoleId", (ticket.RoleId ?? 5).ToString() }
+                };
+                ticketLogger.LogInfo("TicketButtonSelected", selectionContext);
+
+                // Валидация преди изпращане на тикет - коментирана за TickedRolleNote (може да се имплементира при нужда)
                 //var validationResult = ValidateBeforeTicketSubmission(ticket);
-                //if (!validationResult.IsValid)
-                //{
-                //    Console.WriteLine($"❌ KlipV1: Валидацията не мина - {validationResult.Message}");
-                //    Console.WriteLine($"⚠️ Тикетът '{ticket.TiketName}' НЕ беше изпратен!");
-                    
-                //    // Скриваме бутоните и възстановяваме формата
-                //    foreach (var b in dynamicTicketButtons)
-                //    {
-                //        this.Controls.Remove(b);
-                //        b.Dispose();
-                //    }
-                //    dynamicTicketButtons.Clear();
-                    
-                //    foreach (Control control in this.Controls)
-                //    {
-                //        if (control != btnAriza && control != lblCountProductions)
-                //        {
-                //            control.Visible = false;
-                //        }
-                //    }
-                    
-                //    this.TransparencyKey = Color.WhiteSmoke;
-                //    this.BackColor = Color.WhiteSmoke;
-                //    isExpanded = false;
-                //    return;
-                //}
-                
-                //Console.WriteLine($"✅ KlipV1: Валидацията мина успешно - {validationResult.Message}");
+                //if (!validationResult.IsValid) { ... }
                 
                 if (XMLSeverIp.WebApiTrue())
                 {
-                    Console.WriteLine("=== WebAPI е активно, стартираме изпращане ===");
                     SendTicketWithScreenshot();
-                    Console.WriteLine($"lastScreenshotPath след SendTicketWithScreenshot: {lastScreenshotPath}");
                     
-                    // Използваме Role параметъра от тикета
-                    int roleValue = ticket.Role ?? 5; // Ако Role е null, използваме 5 като default
-                    ShowQrCodeAfterTicketCreation(ticket.TiketName, ticket.Description, lastScreenshotPath, roleValue);
+                    // Използваме RoleId параметъра от тикета
+                    int roleValue = ticket.RoleId ?? 5; // Ако RoleId е null, използваме 5 като default
+                    ShowQrCodeAfterTicketCreation(ticket.Description, ticket.Description, lastScreenshotPath, roleValue);
                 }
                 else
                 {
-                    Console.WriteLine("=== WebAPI не е активно, използваме локално запазване ===");
-                    // Добавяме проверка за nullable Role
-                    int roleValue = ticket.Role ?? 5; // Ако Role е null, използваме 5 като default
-                    AddTicket(ticket.TiketName, ticket.Description, roleValue);
+                    ticketLogger.LogWarning(
+                        "WebApiDisabled",
+                        new Dictionary<string, string>
+                        {
+                            { "TicketDescription", SensitiveDataMasker.MaskValue(ticket.Description) }
+                        });
+                    // Добавяме проверка за nullable RoleId
+                    int roleValue = ticket.RoleId ?? 5; // Ако RoleId е null, използваме 5 като default
+                    AddTicket(ticket.Description, ticket.Description, roleValue);
                 }
                 // Първо премахваме динамичните бутони
                 foreach (var b in dynamicTicketButtons)
@@ -1001,7 +994,7 @@ namespace Nursan.UI
         /// <summary>
         /// Валидира дали може да се изпрати тикет
         /// </summary>
-        private (bool IsValid, string Message) ValidateBeforeTicketSubmission(SyTicketName ticket)
+        private (bool IsValid, string Message) ValidateBeforeTicketSubmission(TickedRolleNote ticket)
         {
             try
             {
@@ -1028,8 +1021,8 @@ namespace Nursan.UI
                     return (false, $"IDDonanim '{idDonanim}' не съществува в системата");
                 }
                 
-                // 4. Ако е IT тикет (Role = 1), проверяваме дали е минал през предходните станции
-                int roleValue = ticket.Role ?? 5;
+                // 4. Ако е IT тикет (RoleId = 1), проверяваме дали е минал през предходните станции
+                int roleValue = ticket.RoleId ?? 5;
                 if (roleValue == 1)
                 {
                     Console.WriteLine($"🔍 IT Тикет (Role=1) - Проверка на станции за IDDonanim: {idDonanim}");
@@ -1164,6 +1157,132 @@ namespace Nursan.UI
             }
         }
 
-      
+        #region Автоматична система за тикети при crash
+
+        /// <summary>
+        /// Global exception handler за Thread exceptions
+        /// </summary>
+        private void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
+        {
+            HandleException(e.Exception, "Thread Exception в KlipV1");
+        }
+
+        /// <summary>
+        /// Global exception handler за Unhandled exceptions
+        /// </summary>
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            if (e.ExceptionObject is Exception ex)
+            {
+                HandleException(ex, "Unhandled Exception в KlipV1");
+            }
+        }
+
+        /// <summary>
+        /// Централен метод за обработка на грешки
+        /// </summary>
+        private void HandleException(Exception ex, string context)
+        {
+            try
+            {
+                string screenshotPath = TakeScreenshot();
+                string errorDetails = $@"
+ГРЕШКА В ФОРМА: KlipV1
+КОНТЕКСТ: {context}
+ДАТА/ЧАС: {DateTime.Now:dd.MM.yyyy HH:mm:ss}
+МАШИНА: {Environment.MachineName}
+ПОТРЕБИТЕЛ: {Environment.UserName}
+
+СЪОБЩЕНИЕ ЗА ГРЕШКА:
+{ex.Message}
+
+STACK TRACE:
+{ex.StackTrace}
+
+ВЪТРЕШНА ГРЕШКА:
+{ex.InnerException?.Message ?? "Няма"}
+{ex.InnerException?.StackTrace ?? ""}
+";
+
+                Dictionary<string, string> autoContext = new Dictionary<string, string>
+                {
+                    { "Context", SensitiveDataMasker.MaskValue(context) },
+                    { "ScreenshotName", SensitiveDataMasker.MaskPath(screenshotPath) }
+                };
+                ticketLogger.LogError("AutoTicketTriggered", autoContext);
+
+                Task.Run(async () =>
+                {
+                    await SendAutoTicketToIT($"AUTO CRASH: KlipV1 - {context}", errorDetails, screenshotPath, 1);
+                });
+            }
+            catch (Exception ticketEx)
+            {
+                ticketLogger.LogError("AutoTicketFailure", new Dictionary<string, string> { { "Message", ticketEx.Message } });
+            }
+        }
+
+        private string TakeScreenshot()
+        {
+            try
+            {
+                string logsFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LOGS");
+                if (!Directory.Exists(logsFolder))
+                    Directory.CreateDirectory(logsFolder);
+
+                string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+                string filename = $"CRASH_KlipV1_{timestamp}.jpg";
+                string filepath = Path.Combine(logsFolder, filename);
+
+                Rectangle bounds = Screen.PrimaryScreen.Bounds;
+                using (Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height))
+                {
+                    using (Graphics graphics = Graphics.FromImage(bitmap))
+                    {
+                        graphics.CopyFromScreen(Point.Empty, Point.Empty, bounds.Size);
+                    }
+                    bitmap.Save(filepath, ImageFormat.Jpeg);
+                }
+
+                lastScreenshotPath = filepath;
+                ticketLogger.LogInfo("ScreenshotCreated", new Dictionary<string, string> { { "ScreenshotName", SensitiveDataMasker.MaskPath(filepath) } });
+                return filepath;
+            }
+            catch (Exception ex)
+            {
+                ticketLogger.LogError("ScreenshotFailure", new Dictionary<string, string> { { "Message", ex.Message } });
+                return string.Empty;
+            }
+        }
+
+        private async Task<bool> SendAutoTicketToIT(string tiketName, string description, string screenshotPath, int role)
+        {
+            try
+            {
+                string bolge = Environment.MachineName;
+                ticketLogger.LogInfo("AutoTicketSendStart", new Dictionary<string, string>
+                {
+                    { "TicketName", SensitiveDataMasker.MaskValue(tiketName) },
+                    { "Bolge", SensitiveDataMasker.MaskValue(bolge) },
+                    { "ScreenshotName", SensitiveDataMasker.MaskPath(screenshotPath) },
+                    { "Role", role.ToString() }
+                });
+
+                (bool success, string ticketId) = await _systemTicket.CreateTicket(tiketName, bolge, screenshotPath, role);
+                ticketLogger.LogInfo("AutoTicketSendResult", new Dictionary<string, string>
+                {
+                    { "Success", success.ToString() },
+                    { "TicketId", ticketId ?? string.Empty }
+                });
+                return success;
+            }
+            catch (Exception ex)
+            {
+                ticketLogger.LogError("AutoTicketSendException", new Dictionary<string, string> { { "Message", ex.Message } });
+                return false;
+            }
+        }
+
+        #endregion
     }
 }

@@ -2,7 +2,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Win32;
+using Nursan.Business.Logging;
 using Nursan.Business.Manager;
+using Nursan.Business.Services;
 using Nursan.Domain.AmbarModels;
 using Nursan.Domain.Entity;
 using Nursan.Domain.NursanBarcode;
@@ -21,8 +23,11 @@ using Nursan.Validations.ValidationCode;
 using System.Data;
 using System.Data.SQLite;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Net;
 using System.Net.Security;
+using System.Threading.Tasks;
 
 namespace Nursan.UI
 {
@@ -69,6 +74,11 @@ namespace Nursan.UI
                 Application.EnableVisualStyles();
                 ApplicationConfiguration.Initialize();
                 Application.SetCompatibleTextRenderingDefault(false);
+
+                // Добавяне на глобални exception handlers за автоматично генериране на тикети при crash
+                Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+                Application.ThreadException += Application_ThreadException;
+                AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
                 // Опитваме се да инициализираме лиценза чрез API
                 bool licenseInitialized = false;
@@ -121,7 +131,7 @@ namespace Nursan.UI
                 UretimOtomasyonContext _context = new();
                 UnitOfWork unitOfWork = new(_context);
                 //Application.Run(new Sigorta("397",unitOfWork));
-                //Application.Run(new Nursan.UI.Kasalama.Kasalama());
+                // Application.Run(new ElTestvApi());
                 //Application.Run(new BoltCameraConfigForm());
                 //if (new LisanGet().LisanBak(processName))
                 //{
@@ -159,9 +169,9 @@ namespace Nursan.UI
                                     Messaglama.MessagYaz($"Etap:{result.ModulerYapiEtap},Makine{result.Makine},Istasyon{result.Istasyon},Family        {result.FamilyName}");
                                     Application.Run(new ElTest(unitOfWork));
                                     break;
-                                case >= 17 :
+                                case >= 18 :
                                     Messaglama.MessagYaz($"Etap:{result.ModulerYapiEtap},Makine{result.Makine},Istasyon{result.Istasyon},Family        {result.FamilyName}");
-                                    Application.Run(new GrometTSC(unitOfWork));
+                                    Application.Run(new Staring(unitOfWork));
                                     break;
 
                                 case >= 5:
@@ -187,6 +197,126 @@ namespace Nursan.UI
 
                 //}
             }
+            /// <summary>
+            /// Глобален exception handler за Thread exceptions
+            /// </summary>
+            private static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
+            {
+                HandleGlobalException(e.Exception, "Thread Exception");
+            }
+
+            /// <summary>
+            /// Глобален exception handler за Unhandled exceptions
+            /// </summary>
+            private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+            {
+                if (e.ExceptionObject is Exception ex)
+                {
+                    HandleGlobalException(ex, "Unhandled Exception");
+                }
+            }
+
+            /// <summary>
+            /// Централен метод за обработка на глобални грешки
+            /// </summary>
+            private static void HandleGlobalException(Exception ex, string context)
+            {
+                try
+                {
+                    string formName = Application.OpenForms.Count > 0 
+                        ? Application.OpenForms[0].GetType().Name 
+                        : "Unknown";
+                    
+                    // Прави screenshot на целия екран
+                    string screenshotPath = TakeGlobalScreenshot(formName);
+
+                    // Създава детайлно съобщение за грешката
+                    string errorDetails = $@"
+ГРЕШКА В ПРИЛОЖЕНИЕТО
+ФОРМА: {formName}
+КОНТЕКСТ: {context}
+ДАТА/ЧАС: {DateTime.Now:dd.MM.yyyy HH:mm:ss}
+МАШИНА: {Environment.MachineName}
+ПОТРЕБИТЕЛ: {Environment.UserName}
+
+СЪОБЩЕНИЕ ЗА ГРЕШКА:
+{ex.Message}
+
+STACK TRACE:
+{ex.StackTrace}
+
+ВЪТРЕШНА ГРЕШКА:
+{ex.InnerException?.Message ?? "Няма"}
+{ex.InnerException?.StackTrace ?? ""}
+";
+
+                    // Изпраща автоматичен тикет към IT системата
+                    Task.Run(async () =>
+                    {
+                        try
+                        {
+                            SystemTicket ticketService = new SystemTicket();
+                            string bolge = Environment.MachineName;
+                            await ticketService.CreateTicket(
+                                $"AUTO CRASH: {formName} - {context}",
+                                bolge,
+                                screenshotPath,
+                                1 // Role = 1 (IT)
+                            );
+                        }
+                        catch (Exception ticketEx)
+                        {
+                            Messaglama.MessagException($"Грешка при автоматично изпращане на тикет: {ticketEx.Message}");
+                        }
+                    });
+                }
+                catch (Exception handlerEx)
+                {
+                    Messaglama.MessagException($"Грешка в exception handler: {handlerEx.Message}");
+                }
+            }
+
+            /// <summary>
+            /// Прави screenshot на целия екран
+            /// </summary>
+            private static string TakeGlobalScreenshot(string formName)
+            {
+                try
+                {
+                    // Създава LOGS папка ако не съществува
+                    string logsFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LOGS");
+                    if (!Directory.Exists(logsFolder))
+                    {
+                        Directory.CreateDirectory(logsFolder);
+                    }
+
+                    // Генерира уникално име за screenshot файла
+                    string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+                    string filename = $"CRASH_{formName}_{timestamp}.jpg";
+                    string filepath = Path.Combine(logsFolder, filename);
+
+                    // Прави screenshot на целия екран
+                    Rectangle bounds = Screen.PrimaryScreen.Bounds;
+                    using (Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height))
+                    {
+                        using (Graphics graphics = Graphics.FromImage(bitmap))
+                        {
+                            graphics.CopyFromScreen(Point.Empty, Point.Empty, bounds.Size);
+                        }
+
+                        // Записва като JPEG
+                        bitmap.Save(filepath, ImageFormat.Jpeg);
+                    }
+
+                    return filepath;
+                }
+                catch (Exception ex)
+                {
+                    Messaglama.MessagException($"Грешка при създаване на screenshot: {ex.Message}");
+                    return string.Empty;
+                }
+            }
+
             private static IHostBuilder CreateHostBuilder()
             {
                 AppDomain.CurrentDomain.FirstChanceException += (sender, eventArgs) =>

@@ -57,7 +57,7 @@ namespace Nursan.UI.Security
 
     internal static class LicenseValidator
     {
-        private const string ApiUrl = "https://license.example.com/api/license/check"; // TODO: замени с реалното API
+        private const string ApiUrl = "https://license.example.comlicense/check"; // TODO: замени с реалното API
         private static readonly HttpClient Http = CreateHttpClient();
 
         internal static LicenseSession EnsureLicense()

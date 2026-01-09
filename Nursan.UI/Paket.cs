@@ -57,6 +57,10 @@ namespace Nursan.UI
             _countDegerValidations = new CountDegerValidations(_repo, _makine, _vardiya, _istasyonList);
             _systemTicket = new SystemTicket();
             ticketLogger = new StructuredLogger(nameof(Paket));
+
+            // Добавяне на exception handlers за автоматично генериране на тикети при crash
+            Application.ThreadException += Application_ThreadException;
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             InitializeComponent();
             tork = new TorkService(repo, vardiya);
             ozel = new OzelReferansControlEt(repo);
@@ -505,6 +509,123 @@ namespace Nursan.UI
                     { "Message", ex.Message }
                 };
                 ticketLogger.LogError("ManualTicketException", exceptionContext);
+            }
+        }
+
+        #endregion
+
+        #region Автоматична система за тикети при crash
+
+        private void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
+        {
+            HandleException(e.Exception, "Thread Exception в Paket");
+        }
+
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            if (e.ExceptionObject is Exception ex)
+            {
+                HandleException(ex, "Unhandled Exception в Paket");
+            }
+        }
+
+        private void HandleException(Exception ex, string context)
+        {
+            try
+            {
+                string screenshotPath = TakeScreenshot();
+                string errorDetails = $@"
+ГРЕШКА В ФОРМА: Paket
+КОНТЕКСТ: {context}
+ДАТА/ЧАС: {DateTime.Now:dd.MM.yyyy HH:mm:ss}
+МАШИНА: {Environment.MachineName}
+ПОТРЕБИТЕЛ: {Environment.UserName}
+
+СЪОБЩЕНИЕ ЗА ГРЕШКА:
+{ex.Message}
+
+STACK TRACE:
+{ex.StackTrace}
+
+ВЪТРЕШНА ГРЕШКА:
+{ex.InnerException?.Message ?? "Няма"}
+{ex.InnerException?.StackTrace ?? ""}
+";
+
+                ticketLogger.LogError("AutoTicketTriggered", new Dictionary<string, string>
+                {
+                    { "Context", SensitiveDataMasker.MaskValue(context) },
+                    { "ScreenshotName", SensitiveDataMasker.MaskPath(screenshotPath) }
+                });
+
+                Task.Run(async () =>
+                {
+                    await SendAutoTicketToIT($"AUTO CRASH: Paket - {context}", errorDetails, screenshotPath, 1);
+                });
+            }
+            catch (Exception ticketEx)
+            {
+                ticketLogger.LogError("AutoTicketFailure", new Dictionary<string, string> { { "Message", ticketEx.Message } });
+            }
+        }
+
+        private string TakeScreenshot()
+        {
+            try
+            {
+                string logsFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LOGS");
+                if (!Directory.Exists(logsFolder))
+                    Directory.CreateDirectory(logsFolder);
+
+                string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+                string filename = $"CRASH_Paket_{timestamp}.jpg";
+                string filepath = Path.Combine(logsFolder, filename);
+
+                Rectangle bounds = Screen.PrimaryScreen.Bounds;
+                using (Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height))
+                {
+                    using (Graphics graphics = Graphics.FromImage(bitmap))
+                    {
+                        graphics.CopyFromScreen(Point.Empty, Point.Empty, bounds.Size);
+                    }
+                    bitmap.Save(filepath, ImageFormat.Jpeg);
+                }
+
+                ticketLogger.LogInfo("ScreenshotCreated", new Dictionary<string, string> { { "ScreenshotName", SensitiveDataMasker.MaskPath(filepath) } });
+                return filepath;
+            }
+            catch (Exception ex)
+            {
+                ticketLogger.LogError("ScreenshotFailure", new Dictionary<string, string> { { "Message", ex.Message } });
+                return string.Empty;
+            }
+        }
+
+        private async Task<bool> SendAutoTicketToIT(string tiketName, string description, string screenshotPath, int role)
+        {
+            try
+            {
+                string bolge = Environment.MachineName;
+                ticketLogger.LogInfo("AutoTicketSendStart", new Dictionary<string, string>
+                {
+                    { "TicketName", SensitiveDataMasker.MaskValue(tiketName) },
+                    { "Bolge", SensitiveDataMasker.MaskValue(bolge) },
+                    { "ScreenshotName", SensitiveDataMasker.MaskPath(screenshotPath) },
+                    { "Role", role.ToString() }
+                });
+
+                (bool success, string ticketId) = await _systemTicket.CreateTicket(tiketName, bolge, screenshotPath, role);
+                ticketLogger.LogInfo("AutoTicketSendResult", new Dictionary<string, string>
+                {
+                    { "Success", success.ToString() },
+                    { "TicketId", ticketId ?? string.Empty }
+                });
+                return success;
+            }
+            catch (Exception ex)
+            {
+                ticketLogger.LogError("AutoTicketSendException", new Dictionary<string, string> { { "Message", ex.Message } });
+                return false;
             }
         }
 

@@ -48,6 +48,7 @@ namespace Nursan.UI
        
         string names;
         private void txtBarcode_KeyUp(object sender, KeyEventArgs e)
+        
         {
             if (e.KeyCode == Keys.Enter)
             {

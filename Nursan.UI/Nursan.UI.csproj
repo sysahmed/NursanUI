@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
@@ -58,6 +58,26 @@
 		<None Remove="Revork.resx~RF58398f5.TMP" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <COMReference Include="WMPLib">
+	    <WrapperTool>tlbimp</WrapperTool>
+	    <VersionMinor>0</VersionMinor>
+	    <VersionMajor>1</VersionMajor>
+	    <Guid>6bf52a50-394a-11d3-b153-00c04f79faa6</Guid>
+	    <Lcid>0</Lcid>
+	    <Isolated>false</Isolated>
+	    <EmbedInteropTypes>true</EmbedInteropTypes>
+	  </COMReference>
+	  <COMReference Include="AxWMPLib">
+	    <WrapperTool>aximp</WrapperTool>
+	    <VersionMinor>0</VersionMinor>
+	    <VersionMajor>1</VersionMajor>
+	    <Guid>6bf52a50-394a-11d3-b153-00c04f79faa6</Guid>
+	    <Lcid>0</Lcid>
+	    <Isolated>false</Isolated>
+	  </COMReference>
+	</ItemGroup>
+
 	<!-- COM References заменени с DLL референции за .NET 8 съвместимост -->
 
 	<ItemGroup>
@@ -90,6 +110,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\Nursan.API\Nursan.API.csproj" />
 		<ProjectReference Include="..\Nursan.Business\Nursan.Business.csproj" />
 		<ProjectReference Include="..\Nursan.Core\Nursan.Core.csproj" />
 		<ProjectReference Include="..\Nursan.Domain\Nursan.Domain.csproj" />
@@ -97,15 +118,28 @@
 		<ProjectReference Include="..\Nursan.Persistanse\Nursan.Persistanse.csproj" />
 		<ProjectReference Include="..\Nursan.Personal\Nursan.Personal.csproj" />
 		<ProjectReference Include="..\Nursan.Validations\Nursan.Validations.csproj" />
+		<ProjectReference Include="..\Nursan.XMLTools\Nursan.XMLTools.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Reference Include="AxInterop.AcroPDFLib">
 			<HintPath>AxInterop.AcroPDFLib.dll</HintPath>
 		</Reference>
+		<!-- Windows Media Player Interop DLL-и - генерират се с Visual Studio или aximp/tlbimp -->
+		<Reference Include="AxWMPLib" Condition="Exists('AxWMPLib.dll')">
+			<HintPath>AxWMPLib.dll</HintPath>
+			<Private>True</Private>
+		</Reference>
+		<Reference Include="WMPLib" Condition="Exists('WMPLib.dll')">
+			<HintPath>WMPLib.dll</HintPath>
+			<Private>True</Private>
+		</Reference>
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="ElTestvApi.cs">
+		  <SubType>Form</SubType>
+		</Compile>
 		<Compile Update="GrometTSC.cs">
 		  <SubType>Form</SubType>
 		</Compile>

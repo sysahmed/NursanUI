@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<config PLS="COM1" print="COM4" PrinterNormal="COM5" PrinterQR="COM5"  print1="1" print2="7" toplamRakkam="50" Hata="0" sicil="*397*391" tarih="" id="0">
+<config PLS="COM1" print="COM4" PrinterNormal="COM5" PrinterQR="COM5" print1="1" print2="7" toplamRakkam="50" Hata="0" sicil="*397*391" tarih="" id="0">
    <server Server="10.168.0.5">
    </server>
     <lserver LServer="localhost">
@@ -20,16 +20,16 @@
   </webapitrue>
   <webapi WebApi="10.168.0.252:4443">
   </webapi>
+  <!-- Master API Address - основен адрес за всички API заявки (ElTest, Tork и др.) -->
+  <!-- Тикетите имат свой отделен адрес в ticketTracking node по-долу -->
+  <masterApiAddress Address="localhost:5226">
+  </masterApiAddress>
+  <!-- Video API Address - отделен адрес за видео API заявки -->
+  <videoApiAddress Address="localhost:12012" Token="">
+  </videoApiAddress>
   <ticketTracking UrlTemplate="https://bakimnbg.nursanbulgaria.com/Islem/Details/{ticketId}">
   </ticketTracking>
   <ticketVisibility VisibleIds="">
   </ticketVisibility>
+ <apiKey Value="L7-3fqLClgHhQFv6gPXg33yxx163JmewKTHNRr77KNM" DeviceId="86" />
 </config>
-<!--
-		Form1
-		FormYazaki
-		FormYazakiNewId
-		FormNewProject
-		FormNewProjectBaypas
-		FormYazakiBaypas
-		-->
