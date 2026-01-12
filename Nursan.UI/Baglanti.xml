@@ -25,7 +25,7 @@
   <masterApiAddress Address="localhost:5226">
   </masterApiAddress>
   <!-- Video API Address - отделен адрес за видео API заявки -->
-  <videoApiAddress Address="localhost:12012" Token="">
+  <videoApiAddress Address="http://10.168.0.252:5151" Token="">
   </videoApiAddress>
   <ticketTracking UrlTemplate="https://bakimnbg.nursanbulgaria.com/Islem/Details/{ticketId}">
   </ticketTracking>

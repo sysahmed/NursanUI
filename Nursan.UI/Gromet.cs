@@ -47,7 +47,12 @@ namespace Nursan.UI
         UrIstasyon _istasyon;
         System.Windows.Forms.Timer timer;
         VideoApiService _videoApiService;
-        WebBrowser? _videoBrowser;
+        // WebBrowser? _videoBrowser;
+        
+        // Кеширане на последния баркод и видео за да избегнем ненужни API заявки
+        private string? _lastBarcode;
+        private Video? _lastVideo;
+        private string? _lastVideoUrl;
         public Gromet(UnitOfWork repo, OpMashin makine, UrVardiya vardiya, List<UrIstasyon> istasyonList, List<UrModulerYapi> modulerYapiList, List<SyBarcodeInput> syBarcodeInputList, List<SyBarcodeOut> syBarcodeOutList, List<SyPrinter> syPrinterList, List<OrFamily> familyList)
         {
 
@@ -79,6 +84,12 @@ namespace Nursan.UI
             timer.Tick += new System.EventHandler(GetTikket);
             timer.Start();
             InitializeComponent();
+            
+            // Добавяме event handler за Windows Media Player за да засичаме кога видеото свършва
+            if (axWindowsMediaPlayer1 != null)
+            {
+                axWindowsMediaPlayer1.PlayStateChange += AxWindowsMediaPlayer1_PlayStateChange;
+            }
         }
 
         private void GetTikket(object? sender, EventArgs e)
@@ -89,7 +100,6 @@ namespace Nursan.UI
         private async void Form1_Load(object sender, EventArgs e)
         {
             txtBarcode.Focus();
-            await GetPDF();
             GetCounts();
             GetPersonal();
             StaringAP frm = new StaringAP();
@@ -98,84 +108,7 @@ namespace Nursan.UI
             frm.Close();
         }
 
-        private async Task GetPDF()
-        {
-            // Initialize Windows Media Player
-            // Ще се разкоментира след генериране на interop DLL-ите (AxWMPLib.dll и WMPLib.dll)
-            /*
-            if (axWindowsMediaPlayer1 != null)
-            {
-                try
-                {
-                    axWindowsMediaPlayer1.uiMode = "none";
-                    axWindowsMediaPlayer1.stretchToFit = true;
-                    axWindowsMediaPlayer1.enableContextMenu = false;
-                    
-                    // Зареждане на видео файл
-                    string mediaPath = $"{Environment.CurrentDirectory}\\media.mp4";
-                    if (System.IO.File.Exists(mediaPath))
-                    {
-                        axWindowsMediaPlayer1.URL = mediaPath;
-                        axWindowsMediaPlayer1.Ctlcontrols.play();
-                    }
-                    else
-                    {
-                        // Ако няма видео, показваме PDF
-                        await LoadPDF();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // При грешка с видео, опитваме се да заредим PDF
-                    await LoadPDF();
-                }
-            }
-            else
-            {
-                await LoadPDF();
-            }
-            */
-
-            // За сега показваме само PDF
-            await LoadPDF();
-        }
-
-        private async Task LoadPDF()
-        {
-            // Скриваме видео плеър ако е видим
-            if (_videoBrowser != null)
-            {
-                _videoBrowser.Visible = false;
-                _videoBrowser.Hide();
-                _videoBrowser.SendToBack();
-            }
-
-            // Зареждане на PDF viewer ако няма видео
-            if (axAcropdf1 != null)
-            {
-                try
-                {
-                    string veri = $"{Environment.CurrentDirectory}\\pdfdoc.pdf";
-                    if (System.IO.File.Exists(veri))
-                    {
-                        axAcropdf1.src = veri;
-                        axAcropdf1.Dock = DockStyle.Fill;
-                        axAcropdf1.setShowToolbar(false);
-                        axAcropdf1.Show();
-                        axAcropdf1.BringToFront();
-                    }
-                }
-                catch (Exception)
-                {
-                    if (axAcropdf1 != null)
-                    {
-                        axAcropdf1.Dispose();
-                    }
-                }
-            }
-        }
-
-        private void txtBarcode_KeyUp(object sender, KeyEventArgs e)
+        private async void txtBarcode_KeyUp(object sender, KeyEventArgs e)
         {
             DateTime date = OtherTools.GetValuesDatetime();
             if (e.KeyCode == Keys.Enter)
@@ -224,6 +157,15 @@ namespace Nursan.UI
                 {
                     if (_vardiya.Name != txtBarcode.Text)
                     {
+                        // ВАЖНО: Проверяваме дали pi е в границите преди достъп
+                        if (pi < 0 || pi >= _syBarcodeInputList.Count)
+                        {
+                            proveri.MessageAyarla($"Грешка: Индекс извън границите (pi={pi}, Count={_syBarcodeInputList.Count})", Color.Red, lblMessage);
+                            txtBarcode.Clear();
+                            pi = 0;
+                            return;
+                        }
+                        
                         listBox1.Items.Add(txtBarcode.Text);
                         _syBarcodeInputList[pi].BarcodeIcerik = txtBarcode.Text;
                         if (!txtBarcode.Text.StartsWith(_syBarcodeInputList[pi].OzelChar == null ? "" : _syBarcodeInputList[pi].OzelChar))
@@ -236,19 +178,28 @@ namespace Nursan.UI
                         if (_syBarcodeInputList.Count == pi)
                         {
                             var veri = tork.GetTorkDonanimBarcode(_syBarcodeInputList);
+                            if (veri.Success)
+                            {
+                                // ВАЖНО: Проверяваме дали pi е в границите преди достъп
+                                // pi вече е увеличено, така че използваме pi - 1 за последния елемент
+                                if (pi > 0 && pi <= _syBarcodeInputList.Count)
+                                {
+                                    var lastBarcode = _syBarcodeInputList[pi - 1];
+                                    if (lastBarcode != null && !string.IsNullOrEmpty(lastBarcode.BarcodeIcerik))
+                                    {
+                                        await LoadVideoByBarcode(lastBarcode.BarcodeIcerik);
+                                    }
+                                }
+                            }
                             listBox1.Items.Clear();
-                            for (int i = 0; i < pi; i++)
+                            for (int i = 0; i < pi && i < _syBarcodeInputList.Count; i++)
                             {
                                 _syBarcodeInputList[i].BarcodeIcerik = null;
-                                pi = 0;
                             }
+                            pi = 0;
                             proveri.MessageAyarla($"{veri.Message} {txtBarcode.Text} ", veri.Success == true ? Color.LightBlue : Color.Red, lblMessage);
 
                             // Ако баркодът е успешно обработен, опитваме се да заредим видео
-                            if (veri.Success)
-                            {
-                                LoadVideoByBarcode(txtBarcode.Text);
-                            }
                         }
                         //proveri.MessageAyarla($"{veri.Message} {txtBarcode.Text} ", veri.Success == true ? Color.LightBlue : Color.Red, lblMessage);
                         txtBarcode.Clear();
@@ -328,36 +279,36 @@ namespace Nursan.UI
         /// </summary>
         private void InitializeVideoPlayer()
         {
-            try
-            {
-                _videoBrowser = new WebBrowser
-                {
-                    Dock = DockStyle.Fill,
-                    IsWebBrowserContextMenuEnabled = false,
-                    WebBrowserShortcutsEnabled = false,
-                    ScriptErrorsSuppressed = true,
-                    AllowWebBrowserDrop = false
-                };
+            //try
+            //{
+            //    _videoBrowser = new WebBrowser
+            //    {
+            //        Dock = DockStyle.Fill,
+            //        IsWebBrowserContextMenuEnabled = false,
+            //        WebBrowserShortcutsEnabled = false,
+            //        ScriptErrorsSuppressed = true,
+            //        AllowWebBrowserDrop = false
+            //    };
 
-                // Забраняваме сваляне на файлове - обработваме Navigating event
-                _videoBrowser.Navigating += VideoBrowser_Navigating;
+            //    // Забраняваме сваляне на файлове - обработваме Navigating event
+            //    _videoBrowser.Navigating += VideoBrowser_Navigating;
 
-                // Обработваме DocumentCompleted за да предотвратим сваляне
-                _videoBrowser.DocumentCompleted += VideoBrowser_DocumentCompleted;
+            //    // Обработваме DocumentCompleted за да предотвратим сваляне
+            //    _videoBrowser.DocumentCompleted += VideoBrowser_DocumentCompleted;
 
-                // Добавяме WebBrowser в panel2
-                if (panel2 != null)
-                {
-                    panel2.Controls.Add(_videoBrowser);
-                    _videoBrowser.Dock = DockStyle.Fill;
-                    _videoBrowser.Visible = false; // Скриваме го докато няма видео
-                    _videoBrowser.BringToFront();
-                }
-            }
-            catch (Exception ex)
-            {
-                Messaglama.MessagException($"Грешка при инициализация на видео плеър: {ex.Message}");
-            }
+            //    // Добавяме WebBrowser в panel2
+            //    if (panel2 != null)
+            //    {
+            //        panel2.Controls.Add(_videoBrowser);
+            //        _videoBrowser.Dock = DockStyle.Fill;
+            //        _videoBrowser.Visible = false; // Скриваме го докато няма видео
+            //        _videoBrowser.BringToFront();
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Messaglama.MessagException($"Грешка при инициализация на видео плеър: {ex.Message}");
+            //}
         }
 
         /// <summary>
@@ -383,32 +334,32 @@ namespace Nursan.UI
         /// </summary>
         private void VideoBrowser_DocumentCompleted(object? sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            try
-            {
-                // Осигуряваме че видеото се стриймва, не сваля
-                if (_videoBrowser?.Document != null)
-                {
-                    // Добавяме JavaScript за предотвратяване на сваляне
-                    var script = @"
-                        if (document.getElementById('videoPlayer')) {
-                            var video = document.getElementById('videoPlayer');
-                            video.addEventListener('error', function(e) {
-                                console.error('Video error:', video.error);
-                            });
-                        }
-                    ";
+            //try
+            //{
+            //    // Осигуряваме че видеото се стриймва, не сваля
+            //    if (_videoBrowser?.Document != null)
+            //    {
+            //        // Добавяме JavaScript за предотвратяване на сваляне
+            //        var script = @"
+            //            if (document.getElementById('videoPlayer')) {
+            //                var video = document.getElementById('videoPlayer');
+            //                video.addEventListener('error', function(e) {
+            //                    console.error('Video error:', video.error);
+            //                });
+            //            }
+            //        ";
 
-                    var head = _videoBrowser.Document.GetElementsByTagName("head")[0];
-                    var scriptEl = _videoBrowser.Document.CreateElement("script");
-                    scriptEl.SetAttribute("type", "text/javascript");
-                    scriptEl.SetAttribute("text", script);
-                    head.AppendChild(scriptEl);
-                }
-            }
-            catch
-            {
-                // Игнорираме грешки при добавяне на JavaScript
-            }
+            //        var head = _videoBrowser.Document.GetElementsByTagName("head")[0];
+            //        var scriptEl = _videoBrowser.Document.CreateElement("script");
+            //        scriptEl.SetAttribute("type", "text/javascript");
+            //        scriptEl.SetAttribute("text", script);
+            //        head.AppendChild(scriptEl);
+            //    }
+            //}
+            //catch
+            //{
+            //    // Игнорираме грешки при добавяне на JavaScript
+            //}
         }
 
         private void Panel2_Paint(object? sender, PaintEventArgs e)
@@ -427,9 +378,38 @@ namespace Nursan.UI
         }
 
         /// <summary>
+        /// Event handler за Windows Media Player - засича кога видеото свършва
+        /// </summary>
+        private void AxWindowsMediaPlayer1_PlayStateChange(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
+        {
+            try
+            {
+                // WMPPlayState enum: 0=Undefined, 1=Stopped, 2=Paused, 3=Playing, 4=ScanForward, 5=ScanReverse, 
+                // 6=Buffering, 7=MediaEnded, 8=Transitioning, 9=Ready, 10=Reconnecting, 11=Last
+                
+                // Когато видеото свърши (MediaEnded = 8), го плейваме отново
+                if (e.newState == 8) // MediaEnded
+                {
+                    if (axWindowsMediaPlayer1 != null && !string.IsNullOrEmpty(_lastVideoUrl))
+                    {
+                        // Плейваме видеото отново (loop)
+                        axWindowsMediaPlayer1.Ctlcontrols.currentPosition = 0;
+                        axWindowsMediaPlayer1.Ctlcontrols.play();
+                        System.Diagnostics.Debug.WriteLine("LoadVideo: Видеото свърши, плейваме отново (loop)");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Игнорираме грешки при обработка на PlayStateChange
+                System.Diagnostics.Debug.WriteLine($"AxWindowsMediaPlayer1_PlayStateChange грешка: {ex.Message}");
+            }
+        }
+
+        /// <summary>
         /// Зарежда видео по баркод референса
         /// </summary>
-        private async void LoadVideoByBarcode(string barcodeText)
+        private async Task LoadVideoByBarcode(string barcodeText)
         {
             try
             {
@@ -440,6 +420,20 @@ namespace Nursan.UI
                 var firstBarcode = _syBarcodeInputList.FirstOrDefault();
                 if (firstBarcode == null || string.IsNullOrEmpty(firstBarcode.BarcodeIcerik))
                     return;
+
+                // ВАЖНО: Проверяваме дали баркодът е същият като предишния
+                // Ако е същият, не правим нова API заявка, а плейваме същото видео отново
+                string currentBarcode = firstBarcode.BarcodeIcerik;
+                if (!string.IsNullOrEmpty(_lastBarcode) && _lastBarcode.Equals(currentBarcode, StringComparison.OrdinalIgnoreCase))
+                {
+                    // Баркодът е същият - плейваме същото видео отново без нова API заявка
+                    if (_lastVideo != null && !string.IsNullOrEmpty(_lastVideoUrl))
+                    {
+                        System.Diagnostics.Debug.WriteLine($"LoadVideoByBarcode: Същият баркод ({currentBarcode}), плейваме същото видео отново");
+                        await LoadVideo(_lastVideo, skipApiCall: true);
+                        return;
+                    }
+                }
 
                 // Извличаме заглавието за търсене от BarcodeIcerik
                 // Формат: prefix-family-suffix_... или prefix-family-suffix
@@ -460,7 +454,7 @@ namespace Nursan.UI
                         string suffix = System.Text.RegularExpressions.Regex.Replace(harnessParts[2], "[^a-z,A-Z,@,^,/,]", "");
 
                         // Използваме prefix, family и suffix за търсене (напр. "8D 401Q16-428" или "8D-401Q16-ABC")
-                        searchTitle = $"{harnessParts[0]} {harnessParts[1]}-{suffix}";
+                        searchTitle = $"{harnessParts[0]}-{harnessParts[1]}-{suffix}";
                     }
                     else if (harnessParts.Length >= 2)
                     {
@@ -484,20 +478,16 @@ namespace Nursan.UI
 
                     if (video != null)
                     {
+                        // Запазваме текущия баркод и видео за кеширане
+                        _lastBarcode = currentBarcode;
+                        _lastVideo = video;
+                        
                         // Зареждаме видеото
                         await LoadVideo(video);
                     }
-                    else
-                    {
-                        // Ако няма активно видео, fallback към PDF
-                        await LoadPDF();
-                    }
+
                 }
-                else
-                {
-                    // Ако няма намерени видеа, fallback към PDF
-                    await LoadPDF();
-                }
+
             }
             catch (Exception ex)
             {
@@ -509,44 +499,73 @@ namespace Nursan.UI
         /// <summary>
         /// Зарежда видео файл в видео плеъра
         /// </summary>
-        private async Task LoadVideo(Video video)
+        /// <param name="video">Видеото за зареждане</param>
+        /// <param name="skipApiCall">Ако е true, използва кеширания URL вместо да го генерира отново</param>
+        private async Task LoadVideo(Video video, bool skipApiCall = false)
         {
             try
             {
                 // Използваме Windows Media Player за стрийминг (най-добрият вариант за WinForms)
                 if (axWindowsMediaPlayer1 != null)
                 {
-                    // Скриваме PDF viewer и WebBrowser ако са видими
-                    if (axAcropdf1 != null)
+                    // Debug: Логваме че използваме Windows Media Player
+                    System.Diagnostics.Debug.WriteLine($"LoadVideo: Използваме Windows Media Player за видео ID: {video.Id}");
+
+                    // Ако видеото е различно от предишното, спираме текущото и освобождаваме паметта
+                    if (!string.IsNullOrEmpty(_lastVideoUrl) && _lastVideoUrl != _videoApiService.GetVideoFileUrl(video.Id))
                     {
-                        axAcropdf1.Hide();
-                        axAcropdf1.SendToBack();
+                        try
+                        {
+                            axWindowsMediaPlayer1.Ctlcontrols.stop();
+                            axWindowsMediaPlayer1.URL = string.Empty; // Освобождаваме паметта
+                            System.Diagnostics.Debug.WriteLine("LoadVideo: Спирано предишно видео и освободена памет");
+                        }
+                        catch
+                        {
+                            // Игнорираме грешки при спиране
+                        }
                     }
-                    
-                    if (_videoBrowser != null)
-                    {
-                        _videoBrowser.Hide();
-                        _videoBrowser.SendToBack();
-                    }
-                    
+
                     // Показваме Windows Media Player
                     axWindowsMediaPlayer1.Visible = true;
                     axWindowsMediaPlayer1.BringToFront();
-                    
+
                     // Настройваме Windows Media Player
                     axWindowsMediaPlayer1.uiMode = "none"; // Скриваме UI, показваме само видео
                     axWindowsMediaPlayer1.stretchToFit = true; // Разтягаме видеото да запълни пространството
                     axWindowsMediaPlayer1.enableContextMenu = false; // Забраняваме контекстното меню
-                    
+
                     // Използваме видео API endpoint за стрийминг
-                    string videoFileUrl1 = _videoApiService.GetVideoFileUrl(video.Id);
-                    
+                    string videoFileUrl1;
+                    if (skipApiCall && !string.IsNullOrEmpty(_lastVideoUrl))
+                    {
+                        // Използваме кеширания URL
+                        videoFileUrl1 = _lastVideoUrl;
+                        System.Diagnostics.Debug.WriteLine($"LoadVideo: Използваме кеширан URL: {videoFileUrl1}");
+                    }
+                    else
+                    {
+                        // Генерираме нов URL
+                        videoFileUrl1 = _videoApiService.GetVideoFileUrl(video.Id);
+                        _lastVideoUrl = videoFileUrl1; // Кешираме URL-а
+                    }
+
+                    // ВАЖНО: Оставяме URL-а както е (HTTPS или HTTP)
+                    // За HTTPS да работи без диалог, SSL сертификатът трябва да е инсталиран в Windows Trusted Root Certificate Authorities
+                    // Инструкции: Отворете HTTPS URL в браузър → Преглед на сертификата → Копиране във файл → Инсталиране в Trusted Root Certification Authorities
+
+                    // Debug: Логваме URL-а
+                    System.Diagnostics.Debug.WriteLine($"LoadVideo: Video URL: {videoFileUrl1}");
+
                     // Задаваме URL-а на видеото (Windows Media Player автоматично стриймва от URL)
                     axWindowsMediaPlayer1.URL = videoFileUrl1;
-                    
+
                     // Започваме възпроизвеждане
                     axWindowsMediaPlayer1.Ctlcontrols.play();
-                    
+
+                    // Debug: Логваме че сме стартирали възпроизвеждането
+                    System.Diagnostics.Debug.WriteLine($"LoadVideo: Стартирано възпроизвеждане");
+
                     proveri.MessageAyarla($"Възпроизвеждане: {video.Title}", Color.LightGreen, lblMessage);
                     return;
                 }
@@ -557,196 +576,44 @@ namespace Nursan.UI
                 // Този endpoint поддържа Range requests (HTTP 206 Partial Content) за стрийминг
                 string videoFileUrl = _videoApiService.GetVideoFileUrl(video.Id);
 
-                // Показваме видеото във вградения WebBrowser плеър (fallback)
-                if (_videoBrowser != null && panel2 != null)
+                try
                 {
-                    try
+                    if (panel2 != null)
                     {
-                        // Скриваме PDF viewer ако е видим
-                        if (axAcropdf1 != null)
-                        {
-                            axAcropdf1.Hide();
-                            axAcropdf1.SendToBack();
-                        }
-                        
-                        // Уверяваме се че WebBrowser е видим и на преден план
-                        _videoBrowser.Visible = true;
-                        _videoBrowser.BringToFront();
-                        _videoBrowser.Dock = DockStyle.Fill;
-                        
-                        // WebBrowser в WinForms използва IE engine
-                        // За да предотвратим сваляне на файл, използваме HTML5 video tag
-                        // с правилни настройки за стрийминг (preload='metadata' или 'none')
-                        // и използваме object-fit за правилно показване
+                        panel2.Visible = true;
+                        panel2.BringToFront();
+                    }
 
-                        // Проблем: WebBrowser (IE engine) може да сваля файла вместо да го стриймва
-                        // Решение: Използваме HTML5 video tag с правилни настройки за стрийминг
-                        // и осигуряваме че endpoint-ът поддържа Range requests (HTTP 206)
-                        
-                        // Важно: 
-                        // 1. Използваме preload='metadata' за да започне стрийминг веднага
-                        // 2. Endpoint-ът /api/Videos/{id}/file трябва да поддържа Range requests
-                        // 3. Endpoint-ът трябва да връща правилни headers (Content-Type, Accept-Ranges)
-                        
-                        // Debug: Показваме URL-а в съобщението
-                        proveri.MessageAyarla($"Зареждане на видео: {video.Title}...", Color.Yellow, lblMessage);
-                        
-                        string htmlContent = $@"
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <style>
-        * {{
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }}
-        html, body {{
-            width: 100%;
-            height: 100%;
-            background-color: #2d2d2d;
-            overflow: hidden;
-        }}
-        video {{
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            background-color: #000;
-        }}
-    </style>
-</head>
-<body>
-    <video id='videoPlayer' controls autoplay preload='metadata' playsinline>
-        <source src='{videoFileUrl}' type='video/mp4'>
-        Вашият браузър не поддържа HTML5 video.
-    </video>
-    <script>
-        (function() {{
-            var video = document.getElementById('videoPlayer');
-            
-            // Предотвратяваме сваляне на файл при кликване с десен бутон
-            document.addEventListener('contextmenu', function(e) {{
-                e.preventDefault();
-                return false;
-            }}, false);
-            
-            // Осигуряваме стрийминг режим - не сваляне
-            if (video) {{
-                // Принудително задаваме preload='metadata' за стрийминг
-                // Това казва на браузъра да зареди само метаданните първо
-                video.preload = 'metadata';
-                
-                // Обработваме грешки
-                video.addEventListener('error', function(e) {{
-                    console.error('Video loading error:', video.error ? video.error.code : 'unknown');
-                }}, false);
-                
-                // Когато има достатъчно данни, започваме възпроизвеждане
-                video.addEventListener('loadedmetadata', function() {{
-                    console.log('Video metadata loaded, starting playback');
-                    // Започваме възпроизвеждане веднага след зареждане на метаданните
-                    video.play().catch(function(err) {{
-                        console.error('Play error:', err);
-                    }});
-                }}, false);
-                
-                // Предотвратяваме сваляне - използваме стрийминг
-                video.addEventListener('loadstart', function() {{
-                    console.log('Video loading started (streaming mode)');
-                }}, false);
-                
-                // Когато има достатъчно данни за възпроизвеждане
-                video.addEventListener('canplay', function() {{
-                    console.log('Video can start playing (streaming)');
-                }}, false);
-            }}
-        }})();
-    </script>
-</body>
-</html>";
-                        
-                        // Зареждаме HTML в WebBrowser
-                        // WebBrowser ще използва HTML5 video tag който автоматично
-                        // ще изпраща Range requests (HTTP 206) за стрийминг
-                        _videoBrowser.DocumentText = htmlContent;
-                        
-                        // Уверяваме се че WebBrowser е видим и на преден план
-                        _videoBrowser.Visible = true;
-                        _videoBrowser.Show();
-                        _videoBrowser.BringToFront();
-                        _videoBrowser.Refresh();
-                        
-                        // Уверяваме се че panel2 е видим
-                        if (panel2 != null)
-                        {
-                            panel2.Visible = true;
-                            panel2.BringToFront();
-                        }
-                        
-                        // Очакваме малко за да се зареди HTML-а
-                        await Task.Delay(1000);
-                        
-                        // Проверяваме дали видеото се зарежда
-                        try
-                        {
-                            if (_videoBrowser.Document != null && _videoBrowser.Document.Body != null)
-                            {
-                                var videoElement = _videoBrowser.Document.GetElementById("videoPlayer");
-                                if (videoElement != null)
-                                {
-                                    proveri.MessageAyarla($"Видео заредено: {video.Title}", Color.LightGreen, lblMessage);
-                                }
-                                else
-                                {
-                                    // Ако няма video елемент, опитваме се с fallback
-                                    proveri.MessageAyarla($"Видео елемент не е намерен, опитвам се с fallback...", Color.Orange, lblMessage);
-                                    await Task.Delay(1000);
-                                    proveri.MessageAyarla($"Възпроизвеждане: {video.Title}", Color.LightGreen, lblMessage);
-                                }
-                            }
-                            else
-                            {
-                                proveri.MessageAyarla($"Възпроизвеждане: {video.Title}", Color.LightGreen, lblMessage);
-                            }
-                        }
-                        catch (Exception docEx)
-                        {
-                            // Ако има проблем с Document, все пак показваме съобщение
-                            proveri.MessageAyarla($"Възпроизвеждане: {video.Title}", Color.LightGreen, lblMessage);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        proveri.MessageAyarla($"Грешка при зареждане на видео: {ex.Message}", Color.Red, lblMessage);
-                        await LoadPDF(); // Fallback към PDF
-                    }
+                    // Очакваме малко за да се зареди HTML-а
+                    await Task.Delay(1000);
+
+
                 }
-                else
+                catch (Exception ex)
                 {
-                    // Ако няма WebBrowser, опитваме се с default плеър
-                    try
-                    {
-                        Process.Start(new ProcessStartInfo
-                        {
-                            FileName = videoFileUrl,
-                            UseShellExecute = true
-                        });
+                    proveri.MessageAyarla($"Грешка при зареждане на видео: {ex.Message}", Color.Red, lblMessage);
 
-                        proveri.MessageAyarla($"Видео отворено: {video.Title}", Color.LightGreen, lblMessage);
-                    }
-                    catch (Exception ex)
+                }
+                try
+                {
+                    Process.Start(new ProcessStartInfo
                     {
-                        proveri.MessageAyarla($"Грешка при отваряне на видео: {ex.Message}", Color.Red, lblMessage);
-                        await LoadPDF(); // Fallback към PDF
-                    }
+                        FileName = videoFileUrl,
+                        UseShellExecute = true
+                    });
+
+                    proveri.MessageAyarla($"Видео отворено: {video.Title}", Color.LightGreen, lblMessage);
+                }
+                catch (Exception ex)
+                {
+                    proveri.MessageAyarla($"Грешка при отваряне на видео: {ex.Message}", Color.Red, lblMessage);
+
                 }
             }
             catch (Exception ex)
             {
-                Messaglama.MessagException($"Грешка при зареждане на видео файл: {ex.Message}");
-                await LoadPDF(); // Fallback към PDF при грешка
+                proveri.MessageAyarla($"Грешка при зареждане на видео: {ex.Message}", Color.Red, lblMessage);
+                //await LoadPDF(); // Fallback към PDF
             }
         }
 
@@ -764,11 +631,7 @@ namespace Nursan.UI
                     // Зареждаме видеото
                     await LoadVideo(video);
                 }
-                else
-                {
-                    // Ако няма активно видео, fallback към PDF
-                    await LoadPDF();
-                }
+
             }
         }
     }

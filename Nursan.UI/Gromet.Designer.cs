@@ -34,6 +34,8 @@ namespace Nursan.UI
             tableLayoutPanel1 = new TableLayoutPanel();
             tableLayoutPanel2 = new TableLayoutPanel();
             lblMessage = new Label();
+            panel1 = new Panel();
+            axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
             tableLayoutPanel3 = new TableLayoutPanel();
             tableLayoutPanel5 = new TableLayoutPanel();
             label9 = new Label();
@@ -51,26 +53,22 @@ namespace Nursan.UI
             listBox1 = new ListBox();
             lblToplam = new Label();
             txtBarcode = new TextBox();
-            axAcropdf1 = new AxAcroPDFLib.AxAcroPDF();
             tableLayoutPanel6 = new TableLayoutPanel();
             label2 = new Label();
             label4 = new Label();
             tableLayoutPanel7 = new TableLayoutPanel();
             label6 = new Label();
             label10 = new Label();
-            panel1 = new Panel();
-            axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
+            panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)axWindowsMediaPlayer1).BeginInit();
             tableLayoutPanel3.SuspendLayout();
             tableLayoutPanel5.SuspendLayout();
             panel2.SuspendLayout();
             tableLayoutPanel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)axAcropdf1).BeginInit();
             tableLayoutPanel6.SuspendLayout();
             tableLayoutPanel7.SuspendLayout();
-            panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)axWindowsMediaPlayer1).BeginInit();
             SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -83,10 +81,11 @@ namespace Nursan.UI
             tableLayoutPanel1.Controls.Add(tableLayoutPanel3, 0, 0);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
+            tableLayoutPanel1.Margin = new Padding(3, 2, 3, 2);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Size = new Size(1407, 840);
+            tableLayoutPanel1.Size = new Size(1231, 630);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // tableLayoutPanel2
@@ -97,12 +96,13 @@ namespace Nursan.UI
             tableLayoutPanel2.Controls.Add(lblMessage, 0, 0);
             tableLayoutPanel2.Controls.Add(panel1, 0, 1);
             tableLayoutPanel2.Dock = DockStyle.Fill;
-            tableLayoutPanel2.Location = new Point(204, 3);
+            tableLayoutPanel2.Location = new Point(179, 2);
+            tableLayoutPanel2.Margin = new Padding(3, 2, 3, 2);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 2;
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 9.744409F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 90.25559F));
-            tableLayoutPanel2.Size = new Size(1200, 834);
+            tableLayoutPanel2.Size = new Size(1049, 626);
             tableLayoutPanel2.TabIndex = 1;
             // 
             // lblMessage
@@ -112,29 +112,51 @@ namespace Nursan.UI
             lblMessage.Dock = DockStyle.Fill;
             lblMessage.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
             lblMessage.ForeColor = Color.FromArgb(0, 255, 128);
-            lblMessage.Location = new Point(5, 0);
-            lblMessage.Margin = new Padding(5, 0, 5, 0);
+            lblMessage.Location = new Point(4, 0);
+            lblMessage.Margin = new Padding(4, 0, 4, 0);
             lblMessage.Name = "lblMessage";
-            lblMessage.Size = new Size(1190, 81);
+            lblMessage.Size = new Size(1041, 61);
             lblMessage.TabIndex = 2;
             lblMessage.Text = "Gelen Barcode Okutun";
             lblMessage.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // panel1
+            // 
+            panel1.Controls.Add(axWindowsMediaPlayer1);
+            panel1.Dock = DockStyle.Fill;
+            panel1.Location = new Point(3, 63);
+            panel1.Margin = new Padding(3, 2, 3, 2);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(1043, 561);
+            panel1.TabIndex = 3;
+            // 
+            // axWindowsMediaPlayer1
+            // 
+            axWindowsMediaPlayer1.Dock = DockStyle.Fill;
+            axWindowsMediaPlayer1.Enabled = true;
+            axWindowsMediaPlayer1.Location = new Point(0, 0);
+            axWindowsMediaPlayer1.Margin = new Padding(3, 2, 3, 2);
+            axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
+            axWindowsMediaPlayer1.OcxState = (AxHost.State)resources.GetObject("axWindowsMediaPlayer1.OcxState");
+            axWindowsMediaPlayer1.Size = new Size(1043, 561);
+            axWindowsMediaPlayer1.TabIndex = 0;
             // 
             // tableLayoutPanel3
             // 
             tableLayoutPanel3.BackColor = Color.FromArgb(30, 30, 30);
             tableLayoutPanel3.ColumnCount = 1;
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 21F));
+            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 18F));
             tableLayoutPanel3.Controls.Add(tableLayoutPanel5, 0, 1);
             tableLayoutPanel3.Controls.Add(tableLayoutPanel4, 0, 0);
             tableLayoutPanel3.Dock = DockStyle.Fill;
-            tableLayoutPanel3.Location = new Point(3, 3);
+            tableLayoutPanel3.Location = new Point(3, 2);
+            tableLayoutPanel3.Margin = new Padding(3, 2, 3, 2);
             tableLayoutPanel3.Name = "tableLayoutPanel3";
             tableLayoutPanel3.RowCount = 2;
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 29.89691F));
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 70.1031F));
-            tableLayoutPanel3.Size = new Size(195, 834);
+            tableLayoutPanel3.Size = new Size(170, 626);
             tableLayoutPanel3.TabIndex = 2;
             // 
             // tableLayoutPanel5
@@ -142,7 +164,7 @@ namespace Nursan.UI
             tableLayoutPanel5.BackColor = Color.FromArgb(40, 40, 40);
             tableLayoutPanel5.ColumnCount = 1;
             tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 23F));
+            tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
             tableLayoutPanel5.Controls.Add(label9, 0, 8);
             tableLayoutPanel5.Controls.Add(label8, 0, 7);
             tableLayoutPanel5.Controls.Add(label7, 0, 6);
@@ -154,8 +176,7 @@ namespace Nursan.UI
             tableLayoutPanel5.Controls.Add(label1, 0, 0);
             tableLayoutPanel5.Controls.Add(panel2, 0, 9);
             tableLayoutPanel5.Dock = DockStyle.Fill;
-            tableLayoutPanel5.Location = new Point(3, 253);
-            tableLayoutPanel5.Margin = new Padding(3, 4, 3, 4);
+            tableLayoutPanel5.Location = new Point(3, 190);
             tableLayoutPanel5.Name = "tableLayoutPanel5";
             tableLayoutPanel5.RowCount = 10;
             tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
@@ -168,7 +189,7 @@ namespace Nursan.UI
             tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
             tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 5.542725F));
             tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 15.0115471F));
-            tableLayoutPanel5.Size = new Size(189, 577);
+            tableLayoutPanel5.Size = new Size(164, 433);
             tableLayoutPanel5.TabIndex = 2;
             // 
             // label9
@@ -178,9 +199,9 @@ namespace Nursan.UI
             label9.Dock = DockStyle.Fill;
             label9.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             label9.ForeColor = Color.FromArgb(0, 255, 128);
-            label9.Location = new Point(3, 456);
+            label9.Location = new Point(3, 344);
             label9.Name = "label9";
-            label9.Size = new Size(183, 31);
+            label9.Size = new Size(158, 23);
             label9.TabIndex = 0;
             label9.Text = "000";
             label9.TextAlign = ContentAlignment.MiddleCenter;
@@ -193,9 +214,9 @@ namespace Nursan.UI
             label8.Dock = DockStyle.Fill;
             label8.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             label8.ForeColor = Color.FromArgb(0, 255, 128);
-            label8.Location = new Point(3, 399);
+            label8.Location = new Point(3, 301);
             label8.Name = "label8";
-            label8.Size = new Size(183, 57);
+            label8.Size = new Size(158, 43);
             label8.TabIndex = 0;
             label8.Text = "000";
             label8.TextAlign = ContentAlignment.MiddleCenter;
@@ -208,9 +229,9 @@ namespace Nursan.UI
             label7.Dock = DockStyle.Fill;
             label7.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             label7.ForeColor = Color.FromArgb(0, 255, 128);
-            label7.Location = new Point(3, 342);
+            label7.Location = new Point(3, 258);
             label7.Name = "label7";
-            label7.Size = new Size(183, 57);
+            label7.Size = new Size(158, 43);
             label7.TabIndex = 0;
             label7.Text = "000";
             label7.TextAlign = ContentAlignment.MiddleCenter;
@@ -223,9 +244,9 @@ namespace Nursan.UI
             lblOrtalama.Dock = DockStyle.Fill;
             lblOrtalama.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
             lblOrtalama.ForeColor = Color.FromArgb(0, 255, 128);
-            lblOrtalama.Location = new Point(3, 285);
+            lblOrtalama.Location = new Point(3, 215);
             lblOrtalama.Name = "lblOrtalama";
-            lblOrtalama.Size = new Size(183, 57);
+            lblOrtalama.Size = new Size(158, 43);
             lblOrtalama.TabIndex = 0;
             lblOrtalama.Text = "000";
             lblOrtalama.TextAlign = ContentAlignment.MiddleCenter;
@@ -238,9 +259,9 @@ namespace Nursan.UI
             label5.Dock = DockStyle.Fill;
             label5.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             label5.ForeColor = Color.FromArgb(255, 255, 255);
-            label5.Location = new Point(3, 228);
+            label5.Location = new Point(3, 172);
             label5.Name = "label5";
-            label5.Size = new Size(183, 57);
+            label5.Size = new Size(158, 43);
             label5.TabIndex = 0;
             label5.Text = "ORTALAMA";
             label5.TextAlign = ContentAlignment.MiddleCenter;
@@ -253,9 +274,9 @@ namespace Nursan.UI
             lblToplama.Dock = DockStyle.Fill;
             lblToplama.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
             lblToplama.ForeColor = Color.FromArgb(0, 255, 128);
-            lblToplama.Location = new Point(3, 171);
+            lblToplama.Location = new Point(3, 129);
             lblToplama.Name = "lblToplama";
-            lblToplama.Size = new Size(183, 57);
+            lblToplama.Size = new Size(158, 43);
             lblToplama.TabIndex = 0;
             lblToplama.Text = "000";
             lblToplama.TextAlign = ContentAlignment.MiddleCenter;
@@ -268,9 +289,9 @@ namespace Nursan.UI
             label3.Dock = DockStyle.Fill;
             label3.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             label3.ForeColor = Color.FromArgb(255, 255, 255);
-            label3.Location = new Point(3, 114);
+            label3.Location = new Point(3, 86);
             label3.Name = "label3";
-            label3.Size = new Size(183, 57);
+            label3.Size = new Size(158, 43);
             label3.TabIndex = 0;
             label3.Text = "TOPLAM";
             label3.TextAlign = ContentAlignment.MiddleCenter;
@@ -283,9 +304,9 @@ namespace Nursan.UI
             lblVardiya.Dock = DockStyle.Fill;
             lblVardiya.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
             lblVardiya.ForeColor = Color.FromArgb(0, 255, 128);
-            lblVardiya.Location = new Point(3, 57);
+            lblVardiya.Location = new Point(3, 43);
             lblVardiya.Name = "lblVardiya";
-            lblVardiya.Size = new Size(183, 57);
+            lblVardiya.Size = new Size(158, 43);
             lblVardiya.TabIndex = 0;
             lblVardiya.Text = "000";
             lblVardiya.TextAlign = ContentAlignment.MiddleCenter;
@@ -300,7 +321,7 @@ namespace Nursan.UI
             label1.ForeColor = Color.FromArgb(255, 255, 255);
             label1.Location = new Point(3, 0);
             label1.Name = "label1";
-            label1.Size = new Size(183, 57);
+            label1.Size = new Size(158, 43);
             label1.TabIndex = 0;
             label1.Text = "VARDIYA SAYI";
             label1.TextAlign = ContentAlignment.MiddleCenter;
@@ -311,10 +332,9 @@ namespace Nursan.UI
             panel2.BackColor = Color.FromArgb(60, 60, 60);
             panel2.Controls.Add(listBox2);
             panel2.Dock = DockStyle.Fill;
-            panel2.Location = new Point(3, 491);
-            panel2.Margin = new Padding(3, 4, 3, 4);
+            panel2.Location = new Point(3, 370);
             panel2.Name = "panel2";
-            panel2.Size = new Size(183, 82);
+            panel2.Size = new Size(158, 60);
             panel2.TabIndex = 9;
             // 
             // listBox2
@@ -325,11 +345,10 @@ namespace Nursan.UI
             listBox2.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             listBox2.ForeColor = Color.FromArgb(255, 255, 255);
             listBox2.FormattingEnabled = true;
-            listBox2.ItemHeight = 28;
+            listBox2.ItemHeight = 21;
             listBox2.Location = new Point(0, 0);
-            listBox2.Margin = new Padding(3, 4, 3, 4);
             listBox2.Name = "listBox2";
-            listBox2.Size = new Size(183, 82);
+            listBox2.Size = new Size(158, 60);
             listBox2.TabIndex = 0;
             // 
             // tableLayoutPanel4
@@ -341,14 +360,15 @@ namespace Nursan.UI
             tableLayoutPanel4.Controls.Add(lblToplam, 0, 0);
             tableLayoutPanel4.Controls.Add(txtBarcode, 0, 1);
             tableLayoutPanel4.Dock = DockStyle.Fill;
-            tableLayoutPanel4.Location = new Point(3, 3);
+            tableLayoutPanel4.Location = new Point(3, 2);
+            tableLayoutPanel4.Margin = new Padding(3, 2, 3, 2);
             tableLayoutPanel4.Name = "tableLayoutPanel4";
             tableLayoutPanel4.RowCount = 3;
             tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 43.19526F));
             tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 16.0804F));
             tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 41.20603F));
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Absolute, 27F));
-            tableLayoutPanel4.Size = new Size(189, 243);
+            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel4.Size = new Size(164, 183);
             tableLayoutPanel4.TabIndex = 0;
             // 
             // listBox1
@@ -359,10 +379,11 @@ namespace Nursan.UI
             listBox1.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             listBox1.ForeColor = Color.FromArgb(255, 255, 255);
             listBox1.FormattingEnabled = true;
-            listBox1.ItemHeight = 31;
-            listBox1.Location = new Point(3, 145);
+            listBox1.ItemHeight = 25;
+            listBox1.Location = new Point(3, 109);
+            listBox1.Margin = new Padding(3, 2, 3, 2);
             listBox1.Name = "listBox1";
-            listBox1.Size = new Size(183, 95);
+            listBox1.Size = new Size(158, 72);
             listBox1.TabIndex = 4;
             // 
             // lblToplam
@@ -374,7 +395,7 @@ namespace Nursan.UI
             lblToplam.ForeColor = Color.FromArgb(255, 255, 128);
             lblToplam.Location = new Point(3, 0);
             lblToplam.Name = "lblToplam";
-            lblToplam.Size = new Size(183, 104);
+            lblToplam.Size = new Size(158, 78);
             lblToplam.TabIndex = 0;
             lblToplam.Text = "Donanim";
             lblToplam.TextAlign = ContentAlignment.MiddleCenter;
@@ -387,19 +408,13 @@ namespace Nursan.UI
             txtBarcode.Dock = DockStyle.Fill;
             txtBarcode.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
             txtBarcode.ForeColor = Color.FromArgb(255, 255, 255);
-            txtBarcode.Location = new Point(3, 107);
+            txtBarcode.Location = new Point(3, 80);
+            txtBarcode.Margin = new Padding(3, 2, 3, 2);
             txtBarcode.Name = "txtBarcode";
-            txtBarcode.Size = new Size(183, 43);
+            txtBarcode.Size = new Size(158, 36);
             txtBarcode.TabIndex = 1;
             txtBarcode.TextAlign = HorizontalAlignment.Center;
             txtBarcode.KeyUp += txtBarcode_KeyUp;
-            // 
-            // axAcropdf1
-            // 
-            axAcropdf1.Enabled = true;
-            axAcropdf1.Location = new Point(0, 0);
-            axAcropdf1.Name = "axAcropdf1";
-            axAcropdf1.TabIndex = 0;
             // 
             // tableLayoutPanel6
             // 
@@ -501,33 +516,15 @@ namespace Nursan.UI
             label10.Text = "000";
             label10.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // panel1
-            // 
-            panel1.Controls.Add(axWindowsMediaPlayer1);
-            panel1.Dock = DockStyle.Fill;
-            panel1.Location = new Point(3, 84);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(1194, 747);
-            panel1.TabIndex = 3;
-            // 
-            // axWindowsMediaPlayer1
-            // 
-            axWindowsMediaPlayer1.Dock = DockStyle.Fill;
-            axWindowsMediaPlayer1.Enabled = true;
-            axWindowsMediaPlayer1.Location = new Point(0, 0);
-            axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
-            axWindowsMediaPlayer1.OcxState = (AxHost.State)resources.GetObject("axWindowsMediaPlayer1.OcxState");
-            axWindowsMediaPlayer1.Size = new Size(1194, 747);
-            axWindowsMediaPlayer1.TabIndex = 0;
-            // 
             // Gromet
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(30, 30, 30);
-            ClientSize = new Size(1407, 840);
+            ClientSize = new Size(1231, 630);
             Controls.Add(tableLayoutPanel1);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(3, 2, 3, 2);
             Name = "Gromet";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "UretimOtmasyon";
@@ -536,19 +533,18 @@ namespace Nursan.UI
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel2.ResumeLayout(false);
             tableLayoutPanel2.PerformLayout();
+            panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)axWindowsMediaPlayer1).EndInit();
             tableLayoutPanel3.ResumeLayout(false);
             tableLayoutPanel5.ResumeLayout(false);
             tableLayoutPanel5.PerformLayout();
             panel2.ResumeLayout(false);
             tableLayoutPanel4.ResumeLayout(false);
             tableLayoutPanel4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)axAcropdf1).EndInit();
             tableLayoutPanel6.ResumeLayout(false);
             tableLayoutPanel6.PerformLayout();
             tableLayoutPanel7.ResumeLayout(false);
             tableLayoutPanel7.PerformLayout();
-            panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)axWindowsMediaPlayer1).EndInit();
             ResumeLayout(false);
         }
 
@@ -580,10 +576,8 @@ namespace Nursan.UI
         private Label label10;
         private ListBox listBox1;
         private ListBox listBox2;
-        private AxAcroPDFLib.AxAcroPDF axAcropdf1;
         private Panel panel1;
         private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer1;
-        // private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer1; // Ще се разкоментира след генериране на interop DLL-ите
+        // private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer1; // Ще се раскомeнтира след генериране на interop DLL-ите
     }
 }
-

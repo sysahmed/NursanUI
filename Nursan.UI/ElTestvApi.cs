@@ -475,7 +475,7 @@ namespace Nursan.UI
                 });
                 
                 _isApiKeyValid = true;
-
+                
                 // 1) Зареждаме конфигурацията за станцията при старт (както локалната версия я "знае" от Program.cs/DB)
                 _stationBootstrap = await _elTestApi.GetStationBootstrapAsync(Environment.MachineName);
                 if (_stationBootstrap == null || _stationBootstrap.Station == null)

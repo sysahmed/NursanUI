@@ -126,7 +126,10 @@ namespace Nursan.UI
                     {
                         listBox1.Items.Add(txtBarcode.Text);
                         _syBarcodeInputList[pi].BarcodeIcerik = txtBarcode.Text;
-                        if (_syBarcodeInputList.First().BarcodeIcerik.Contains(_syBarcodeInputList.Last().BarcodeIcerik))
+                        if (_syBarcodeInputList != null && _syBarcodeInputList.Count > 0 && 
+                            _syBarcodeInputList.First().BarcodeIcerik != null &&
+                            _syBarcodeInputList.Last().BarcodeIcerik != null &&
+                            _syBarcodeInputList.First().BarcodeIcerik.Contains(_syBarcodeInputList.Last().BarcodeIcerik))
                         {
                             if (!txtBarcode.Text.StartsWith(_syBarcodeInputList[pi].OzelChar == null ? "" : _syBarcodeInputList[pi].OzelChar))
                             {

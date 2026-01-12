@@ -262,9 +262,14 @@ namespace Nursan.UI
                 base.TopMost = true;
 
                 var veriler = urPersonalTakibs?.Count() == 0 ? null : urPersonalTakibs;
-                if (veriler != null)
+                if (veriler != null && veriler.Any())
                 {
-                    string[] parca = veriler.First().DayOfYear.Split('*');
+                    var firstItem = veriler.FirstOrDefault();
+                    if (firstItem == null || string.IsNullOrEmpty(firstItem.DayOfYear))
+                    {
+                        return;
+                    }
+                    string[] parca = firstItem.DayOfYear.Split('*');
                     string datece = $"{date.Year}{date.Month}{date.Day}";
 
                     listBox1.Items.Clear();

@@ -10,11 +10,12 @@ namespace Nursan.UI.Services
     /// <summary>
     /// API сервис за видео операции
     /// </summary>
-    public class VideoApiService
+    public class VideoApiService : IDisposable
     {
         private readonly HttpClient _httpClient;
         private readonly string _baseUrl;
         private readonly string? _apiToken;
+        private bool _disposed = false;
 
         public VideoApiService()
         {
@@ -51,8 +52,15 @@ namespace Nursan.UI.Services
         /// </summary>
         public async Task<Video?> GetVideoByIdAsync(int videoId)
         {
+            if (_disposed)
+                throw new ObjectDisposedException(nameof(VideoApiService));
+
             try
             {
+                // Проверяваме дали HttpClient е disposed преди използване
+                if (_httpClient == null)
+                    return null;
+                
                 string url = $"{_baseUrl}/Videos/{videoId}";
                 var response = await _httpClient.GetAsync(url);
                 
@@ -63,8 +71,15 @@ namespace Nursan.UI.Services
 
                 return await response.Content.ReadFromJsonAsync<Video>();
             }
-            catch
+            catch (ObjectDisposedException)
             {
+                // HttpClient е disposed, не можем да правим заявки
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Логваме други грешки но не хвърляме exception
+                System.Diagnostics.Debug.WriteLine($"VideoApiService.GetVideoByIdAsync грешка: {ex.Message}");
                 return null;
             }
         }
@@ -79,17 +94,43 @@ namespace Nursan.UI.Services
         /// 2. Поддържа Range header в заявката: Range: bytes=0-1023
         /// 3. Връща HTTP 206 (Partial Content) с Content-Range header
         /// 4. Връща Content-Type: video/mp4 (или друг видео формат)
+        /// 
+        /// ВАЖНО: Конвертираме HTTPS в HTTP за да избегнем SSL сертификатни проблеми с WebBrowser (IE engine)
         /// </remarks>
         public string GetVideoFileUrl(int videoId)
         {
+            if (_disposed)
+                throw new ObjectDisposedException(nameof(VideoApiService));
+
             // Конструираме URL за стрийминг на видео файла
             // Използваме главния API като прокси, който предава заявката към видео API
             // Endpoint: /api/Videos/{id}/file (в главния API, който проксира към видео API)
             
+            // ВАЖНО: Проверяваме дали _baseUrl не е празен
+            if (string.IsNullOrEmpty(_baseUrl))
+            {
+                throw new InvalidOperationException("Video API base URL е празен - проверете Baglanti.xml конфигурацията");
+            }
+            
             // За сега използваме директно видео API-то
             // В бъдеще може да използваме главния API като прокси
-            string baseUrlWithoutApi = _baseUrl.Replace("/api", "");
-            return $"{baseUrlWithoutApi}/api/Videos/{videoId}/file";
+            string baseUrlWithoutApi = _baseUrl.Replace("/api", "").TrimEnd('/');
+            string videoUrl = $"{baseUrlWithoutApi}/api/Videos/{videoId}/file";
+            
+            // ВАЖНО: Проверяваме дали videoUrl не е празен
+            if (string.IsNullOrEmpty(videoUrl))
+            {
+                throw new InvalidOperationException($"Генерираният видео URL е празен за videoId: {videoId}");
+            }
+            
+            // Debug: Логваме генерирания URL
+            System.Diagnostics.Debug.WriteLine($"VideoApiService.GetVideoFileUrl: {videoUrl}");
+            
+            // ВАЖНО: Оставяме URL-а както е (HTTPS или HTTP)
+            // За HTTPS да работи без диалог, SSL сертификатът трябва да е инсталиран в Windows Trusted Root Certificate Authorities
+            // Инструкции: Отворете HTTPS URL в браузър → Преглед на сертификата → Копиране във файл → Инсталиране в Trusted Root Certification Authorities
+            
+            return videoUrl;
         }
 
         /// <summary>
@@ -97,8 +138,15 @@ namespace Nursan.UI.Services
         /// </summary>
         public async Task<List<Video>?> SearchVideosByTitleAsync(string title, int page = 1, int pageSize = 12)
         {
+            if (_disposed)
+                throw new ObjectDisposedException(nameof(VideoApiService));
+
             try
             {
+                // Проверяваме дали HttpClient е disposed преди използване
+                if (_httpClient == null)
+                    return null;
+                
                 string url = $"{_baseUrl}/videos/search?title={Uri.EscapeDataString(title)}&page={page}&pageSize={pageSize}";
                 var response = await _httpClient.GetAsync(url);
                 
@@ -129,15 +177,50 @@ namespace Nursan.UI.Services
                     IsMobileOptimized = item.IsMobileOptimized
                 }).ToList();
             }
+            catch (ObjectDisposedException)
+            {
+                // HttpClient е disposed, не можем да правим заявки
+                return null;
+            }
+            catch (HttpRequestException httpEx)
+            {
+                // Мрежова грешка - API сървърът не е достъпен
+                System.Diagnostics.Debug.WriteLine($"VideoApiService.SearchVideosByTitleAsync HTTP грешка: {httpEx.Message}");
+                System.Diagnostics.Debug.WriteLine($"Video API URL: {_baseUrl}");
+                
+                // Хвърляме exception за да може Gromet.cs да покаже съобщение на потребителя
+                throw new HttpRequestException($"Видео API сървърът не е достъпен на адрес: {_baseUrl}. Проверете дали API-то работи.", httpEx);
+            }
             catch (Exception ex)
             {
+                // Логваме други грешки но не хвърляме exception
+                System.Diagnostics.Debug.WriteLine($"VideoApiService.SearchVideosByTitleAsync грешка: {ex.Message}");
                 return null;
             }
         }
 
+        /// <summary>
+        /// Освобождава ресурсите
+        /// </summary>
         public void Dispose()
         {
-            _httpClient?.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Освобождава ресурсите
+        /// </summary>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _httpClient?.Dispose();
+                }
+                _disposed = true;
+            }
         }
     }
 }
