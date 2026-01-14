@@ -11,29 +11,47 @@ namespace Nursan.Validations.Opsionlar
         {
             _repo = repo ?? throw new ArgumentNullException(nameof(_repo));
         }
-        public SuccessDataResults<IzToplamV769> AddToplamV769(IzToplamV769 id)
+        public DataResult<IzToplamV769> AddToplamV769(IzToplamV769 id)
         {
             try
             {
+                if (id == null)
+                {
+                    return new ErrorDataResults<IzToplamV769>("Данните за добавяне са null!");
+                }
+
                 var result = _repo.GetRepository<IzToplamV769>().Add(id);
-                return new SuccessDataResults<IzToplamV769>(result.Data, result.Message);
+                if (result?.Success == true && result.Data != null)
+                {
+                    return new SuccessDataResults<IzToplamV769>(result.Data, result.Message);
+                }
+                return new ErrorDataResults<IzToplamV769>(result?.Message ?? "Грешка при добавяне на ToplamV769");
             }
             catch (Exception ex)
             {
-                return null;
+                return new ErrorDataResults<IzToplamV769>($"Грешка при добавяне: {ex.Message}");
             }
         }
 
-        public SuccessDataResults<IzToplamV769> UpdateToplamV769(IzToplamV769 data)
+        public DataResult<IzToplamV769> UpdateToplamV769(IzToplamV769 data)
         {
             try
             {
+                if (data == null)
+                {
+                    return new ErrorDataResults<IzToplamV769>("Данните за актуализация са null!");
+                }
+
                 var result = _repo.GetRepository<IzToplamV769>().Update(data);
-                return new SuccessDataResults<IzToplamV769>(result.Data, result.Message);
+                if (result?.Success == true && result.Data != null)
+                {
+                    return new SuccessDataResults<IzToplamV769>(result.Data, result.Message);
+                }
+                return new ErrorDataResults<IzToplamV769>(result?.Message ?? "Грешка при актуализация на ToplamV769");
             }
             catch (Exception ex)
             {
-                return null;
+                return new ErrorDataResults<IzToplamV769>($"Грешка при актуализация: {ex.Message}");
             }
         }
     }

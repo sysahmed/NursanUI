@@ -16,7 +16,7 @@ namespace Nursan.Domain.SystemClass
                 var result = xmlNodes.Attributes["Server"].InnerText;
                 return result;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 return string.Empty;

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config PLS="COM1" print="COM4" PrinterNormal="COM5" PrinterQR="COM5" print1="1" print2="7" toplamRakkam="50" Hata="0" sicil="*397*391" tarih="" id="0">
+   <server Server="10.168.0.5">
+   </server>
+    <lserver LServer="localhost">
+   </lserver>
+  <form Form="FormYazakiNewId">
+  </form>
+  <density Density="2">
+  </density>
+  <saniye Saniye="10">
+  </saniye>
+  <screenSaniye ScreenSaniye="5">
+  </screenSaniye>
+    <sayi Sayi="true">
+  </sayi>   
+  <eltestcount EltestCount="true">
+  </eltestcount>
+     <webapitrue WebApiTrue="true">
+  </webapitrue>
+  <webapi WebApi="10.168.0.252:4443">
+  </webapi>
+  <ticketTracking UrlTemplate="https://bakimnbg.nursanbulgaria.com/Islem/Details/{ticketId}">
+  </ticketTracking>
+  <ticketVisibility VisibleIds="">
+  </ticketVisibility>
+  <!-- Video API Address - отделен адрес за видео API заявки -->
+  <videoApiAddress Address="localhost:12012" Token="">
+  </videoApiAddress>
+</config>

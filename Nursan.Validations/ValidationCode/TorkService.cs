@@ -756,7 +756,7 @@ namespace Nursan.Validations.ValidationCode
         }
 
         //029559415 INFORMCIONNA SISTEMA ZA OTPADACI
-        public SuccessDataResults<IzToplamV769> GitDegerleHerseySToplamV769IsBaypass(string barcode)
+        public DataResult<IzToplamV769> GitDegerleHerseySToplamV769IsBaypass(string barcode)
         {
             try
             {
@@ -957,16 +957,16 @@ namespace Nursan.Validations.ValidationCode
                 }
                 else
                 {
-                    return new SuccessDataResults<IzToplamV769>(null, "Donanim Toplamda Yok!!!");
+                    return new ErrorDataResults<IzToplamV769>("Donanim Toplamda Yok!!!");
                 }
             }
             catch (ErrorExceptionHandller ex)
             {
                 Messaglama.MessagException(ex.Message);
-                return new SuccessDataResults<IzToplamV769>(null, "Hata Systemde Bulunamadi!");
+                return new ErrorDataResults<IzToplamV769>("Hata Systemde Bulunamadi!");
             }
         }
-        public SuccessDataResults<IzToplamV769> GitDegerleHerseySToplamV769Gromet(string barcode, string sicil)
+        public DataResult<IzToplamV769> GitDegerleHerseySToplamV769Gromet(string barcode, string sicil)
         {
             try
             {
@@ -986,7 +986,7 @@ namespace Nursan.Validations.ValidationCode
                     {
                         return HandleNewIzToplam(izToplam, vardiyaPersonal, currentDate, barcode);
                     }
-                    return new SuccessDataResults<IzToplamV769>(null, "Donanim Toplamda Yok!!!");
+                    return new ErrorDataResults<IzToplamV769>("Donanim Toplamda Yok!!!");
                 }
 
                 var istasNewPaketVarmi = FindNextStation(istasyonList, istayon);
@@ -997,7 +997,7 @@ namespace Nursan.Validations.ValidationCode
             catch (ErrorExceptionHandller ex)
             {
                 Messaglama.MessagException(ex.Message);
-                return new SuccessDataResults<IzToplamV769>(null, $"Грешка: {ex.Message}");
+                return new ErrorDataResults<IzToplamV769>($"Грешка: {ex.Message}");
             }
         }
 
@@ -1011,7 +1011,7 @@ namespace Nursan.Validations.ValidationCode
         }
 
         // Обработва нов обект IzToplam
-        private SuccessDataResults<IzToplamV769> HandleNewIzToplam(IzToplamV769 izToplam, string vardiyaPersonal, DateTime currentDate, string barcode)
+        private DataResult<IzToplamV769> HandleNewIzToplam(IzToplamV769 izToplam, string vardiyaPersonal, DateTime currentDate, string barcode)
         {
             izToplam = new IzToplamV769
             {
@@ -1146,7 +1146,7 @@ namespace Nursan.Validations.ValidationCode
         }
 
 
-        public SuccessDataResults<IzToplamV769> GitDegerleHerseySToplamV769(string barcode)
+        public DataResult<IzToplamV769> GitDegerleHerseySToplamV769(string barcode)
         {
             UrIstasyon istasNewPaketVarmi;
             try
@@ -1392,13 +1392,13 @@ namespace Nursan.Validations.ValidationCode
                 }
                 else
                 {
-                    return new SuccessDataResults<IzToplamV769>(null, "Donanim Toplamda Yok!!!");
+                    return new ErrorDataResults<IzToplamV769>("Donanim Toplamda Yok!!!");
                 }
             }
             catch (ErrorExceptionHandller ex)
             {
                 Messaglama.MessagException(ex.Message);
-                return new SuccessDataResults<IzToplamV769>(null, "Hata Systemde Bulunamadi!");
+                return new ErrorDataResults<IzToplamV769>("Hata Systemde Bulunamadi!");
             }
         }
 
@@ -1692,7 +1692,15 @@ namespace Nursan.Validations.ValidationCode
                     }
                     else
                     {
-                        result = new Result(true, "Donanim Okundu!");
+                        bool fgt = AddDonanimCount(Barcode, izGeneraciq).Success;
+                        if (fgt)
+                        {
+                            result = new Result(true, "Donanim Okundu!");
+                        }
+                        else
+                        {
+                            result = new Result(false, "Donanim Yazdirilamadi!");
+                        }
                     }
                 }
 

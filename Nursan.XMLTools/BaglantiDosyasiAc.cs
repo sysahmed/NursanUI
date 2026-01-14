@@ -1,4 +1,5 @@
 ﻿using System.Xml;
+using System.IO;
 
 namespace Nursan.XMLTools
 {
@@ -9,7 +10,8 @@ namespace Nursan.XMLTools
             XmlDocument xmlDocument = new XmlDocument();
             try
             {
-                xmlDocument.Load("Baglanti.xml");
+                string xmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Baglanti.xml");
+                xmlDocument.Load(xmlPath);
             }
             catch (Exception)
             {

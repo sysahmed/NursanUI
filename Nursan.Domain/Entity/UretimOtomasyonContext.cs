@@ -80,6 +80,8 @@ namespace Nursan.Domain.Entity
         public virtual DbSet<UrPersonalTakib> UrPersonalTakibs { get; set; }
         public virtual DbSet<UrVardiya> UrVardiyas { get; set; }
 
+        public virtual DbSet<ApiKey> ApiKeys { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 
             => optionsBuilder.UseSqlServer($"Server={sqlConnectionString};Database = UretimOtomasyon; User Id = sa; Password = wrjkd34mk22; TrustServerCertificate = True");
@@ -1924,6 +1926,26 @@ namespace Nursan.Domain.Entity
                 entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
                 entity.Property(e => e.Name).HasMaxLength(50);
                 entity.Property(e => e.UpdateDate).HasDefaultValueSql("(getdate())");
+            });
+
+            modelBuilder.Entity<ApiKey>(entity =>
+            {
+                entity.ToTable("ApiKeys");
+
+                entity.Property(e => e.DeviceId).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.DeviceName).HasMaxLength(200);
+                entity.Property(e => e.IsActive).HasDefaultValueSql("((1))");
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.KeyValue).IsRequired().HasMaxLength(500);
+                entity.Property(e => e.CreatedBy).HasMaxLength(100);
+                entity.Property(e => e.Description).HasMaxLength(500);
+                entity.Property(e => e.RequestCount).HasDefaultValue(0);
+                
+                // Уникален индекс върху DeviceId (всеки клиент има един ключ)
+                entity.HasIndex(e => e.DeviceId).IsUnique();
+                
+                // Индекс върху KeyValue за по-бързо търсене
+                entity.HasIndex(e => e.KeyValue);
             });
 
             OnModelCreatingPartial(modelBuilder);

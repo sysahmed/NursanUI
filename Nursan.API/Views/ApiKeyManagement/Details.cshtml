@@ -1,0 +1,109 @@
+@model Nursan.API.Controllers.ApiKeyDetailsViewModel
+@{
+    ViewData["Title"] = $"Детайли - {Model.DeviceId}";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h4>Детайли за станция: @Model.DeviceId</h4>
+            </div>
+            <div class="card-body">
+                @if (!string.IsNullOrEmpty(Model.ApiKey))
+                {
+                    <div class="alert alert-warning">
+                        <strong>ВНИМАНИЕ:</strong> Това е последният път, когато виждате този API Key! Запишете го на безопасно място.
+                        <div class="mt-2">
+                            <strong>API Key:</strong>
+                            <code class="d-block p-2 bg-light mt-1">@Model.ApiKey</code>
+                        </div>
+                    </div>
+                }
+
+                <dl class="row">
+                    <dt class="col-sm-3">Device ID:</dt>
+                    <dd class="col-sm-9"><strong>@Model.DeviceId</strong></dd>
+
+                    <dt class="col-sm-3">Име на станция:</dt>
+                    <dd class="col-sm-9">@(Model.DeviceName ?? "-")</dd>
+
+                    <dt class="col-sm-3">Статус:</dt>
+                    <dd class="col-sm-9">
+                        @if (Model.IsActive)
+                        {
+                            <span class="badge bg-success">Активен</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Деактивиран</span>
+                        }
+                    </dd>
+
+                    <dt class="col-sm-3">Създаден:</dt>
+                    <dd class="col-sm-9">@(Model.CreatedDate?.ToString("dd.MM.yyyy HH:mm:ss") ?? "-")</dd>
+
+                    <dt class="col-sm-3">Последно използване:</dt>
+                    <dd class="col-sm-9">@(Model.LastUsedDate?.ToString("dd.MM.yyyy HH:mm:ss") ?? "Никога")</dd>
+
+                    <dt class="col-sm-3">Брой заявки:</dt>
+                    <dd class="col-sm-9">@Model.RequestCount</dd>
+
+                    <dt class="col-sm-3">Създаден от:</dt>
+                    <dd class="col-sm-9">@(Model.CreatedBy ?? "-")</dd>
+
+                    <dt class="col-sm-3">Описание:</dt>
+                    <dd class="col-sm-9">@(Model.Description ?? "-")</dd>
+                </dl>
+
+                <div class="mt-4">
+                    <h5>Действия:</h5>
+                    <div class="btn-group">
+                        @if (Model.IsActive)
+                        {
+                            <form method="post" asp-action="Revoke" style="display: inline;" onsubmit="return confirm('Сигурни ли сте, че искате да деактивирате този API Key?');">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="deviceId" value="@Model.DeviceId" />
+                                <button type="submit" class="btn btn-warning">Деактивирай</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form method="post" asp-action="Activate" style="display: inline;">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="deviceId" value="@Model.DeviceId" />
+                                <button type="submit" class="btn btn-success">Активирай</button>
+                            </form>
+                        }
+                        
+                        <form method="post" asp-action="Regenerate" style="display: inline;" onsubmit="return confirm('Сигурни ли сте? Старият ключ няма да работи!');">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="deviceId" value="@Model.DeviceId" />
+                            <input type="hidden" name="deviceName" value="@Model.DeviceName" />
+                            <button type="submit" class="btn btn-secondary">Регенерирай ключ</button>
+                        </form>
+                        
+                        <a href="@Url.Action("Index")" class="btn btn-secondary">Назад</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-header bg-secondary text-white">
+                <h5>Инструкции за използване</h5>
+            </div>
+            <div class="card-body">
+                <p>За да използвате този API Key във фронтенд приложението:</p>
+                <ol>
+                    <li>Копирайте API Key-а (ако все още е видим по-горе)</li>
+                    <li>Отворете <code>Baglanti.xml</code> файла в директорията на ElTestvApi приложението</li>
+                    <li>Добавете или актуализирайте: <code>&lt;apiKey Value="вашия-api-key-here" DeviceId="@Model.DeviceId" /&gt;</code></li>
+                    <li>Рестартирайте приложението</li>
+                </ol>
+                <p class="text-muted"><small>При следващо стартиране, приложението ще провери дали ключът е актуален и валиден.</small></p>
+            </div>
+        </div>
+    </div>
+</div>
+

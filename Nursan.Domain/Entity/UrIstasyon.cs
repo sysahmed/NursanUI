@@ -49,6 +49,10 @@ public partial class UrIstasyon
 
     public bool? Activ { get; set; }
 
+    public string? SecureKeyHash { get; set; }
+
+    public string? SecureKeySalt { get; set; }
+
     public virtual OrFamily? Family { get; set; }
 
     public virtual ICollection<IzCoaxCableCount> IzCoaxCableCounts { get; set; } = new List<IzCoaxCableCount>();

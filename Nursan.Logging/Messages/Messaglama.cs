@@ -84,26 +84,56 @@ namespace Nursan.Logging.Messages
         }
         public static void MessagException(string Message)
         {
-            string path = AppDomain.CurrentDomain.BaseDirectory + $"\\{Environment.MachineName}LogsError";
-            if (!Directory.Exists(path))
+            try
             {
-                Directory.CreateDirectory(path);
-            }
-            string filepath = AppDomain.CurrentDomain.BaseDirectory + $"\\{Environment.MachineName}LogsError\\Hata_" + tarihStatick.Date.ToShortDateString().Replace('/', '_') + ".txt";
-            if (!File.Exists(filepath))
-            {
-                // Create a file to write to.   
-                using (StreamWriter sw = File.CreateText(filepath))
+                string path = AppDomain.CurrentDomain.BaseDirectory + $"\\{Environment.MachineName}LogsError";
+                if (!Directory.Exists(path))
                 {
-                    sw.WriteLine(Message + " " + tarihStatick);
+                    Directory.CreateDirectory(path);
+                }
+                string filepath = AppDomain.CurrentDomain.BaseDirectory + $"\\{Environment.MachineName}LogsError\\Hata_" + tarihStatick.Date.ToShortDateString().Replace('/', '_') + ".txt";
+                
+                // Използваме FileShare.ReadWrite за да избегнем file locking проблеми
+                // и retry логика ако файлът е заключен
+                int maxRetries = 3;
+                int retryDelay = 100; // milliseconds
+                
+                for (int attempt = 0; attempt < maxRetries; attempt++)
+                {
+                    try
+                    {
+                        if (!File.Exists(filepath))
+                        {
+                            // Create a file to write to with FileShare.ReadWrite
+                            using (var fs = new FileStream(filepath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
+                            using (StreamWriter sw = new StreamWriter(fs))
+                            {
+                                sw.WriteLine(Message + " " + tarihStatick);
+                            }
+                        }
+                        else
+                        {
+                            // Append to existing file with FileShare.ReadWrite
+                            using (var fs = new FileStream(filepath, FileMode.Append, FileAccess.Write, FileShare.ReadWrite))
+                            using (StreamWriter sw = new StreamWriter(fs))
+                            {
+                                sw.WriteLine(Message + " " + tarihStatick);
+                            }
+                        }
+                        // Успешно записано, излизаме от retry loop
+                        return;
+                    }
+                    catch (IOException) when (attempt < maxRetries - 1)
+                    {
+                        // Файлът е заключен, чакаме и опитваме отново
+                        System.Threading.Thread.Sleep(retryDelay);
+                        retryDelay *= 2; // Exponential backoff
+                    }
                 }
             }
-            else
+            catch
             {
-                using (StreamWriter sw = File.AppendText(filepath))
-                {
-                    sw.WriteLine(Message + " " + tarihStatick);
-                }
+                // Игнорираме грешки при логване - не искаме да прекъсваме основния процес
             }
         }
     }

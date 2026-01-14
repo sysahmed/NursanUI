@@ -1,0 +1,111 @@
+@{
+    ViewData["Title"] = "Вход";
+    bool requireTwoFactor = ViewBag.RequireTwoFactor == true;
+    string? userId = ViewBag.UserId?.ToString();
+    string? twoFactorCode = ViewBag.TwoFactorCode?.ToString();
+}
+
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4>@(requireTwoFactor ? "2-Факторна Аутентикация" : "Вход в системата")</h4>
+            </div>
+            <div class="card-body">
+                @if (!requireTwoFactor)
+                {
+                    <!-- Първа стъпка: Username и Password -->
+                    <form method="post" asp-action="Login">
+                        @Html.AntiForgeryToken()
+                        
+                        @if (ViewBag.Error != null)
+                        {
+                            <div class="alert alert-danger" role="alert">
+                                @ViewBag.Error
+                            </div>
+                        }
+
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Потребителско име</label>
+                            <input type="text" class="form-control" id="username" name="username" required autofocus>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Парола</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Вход</button>
+                        </div>
+                    </form>
+                }
+                else
+                {
+                    <!-- Втора стъпка: 2FA код -->
+                    <form method="post" asp-action="VerifyTwoFactor">
+                        @Html.AntiForgeryToken()
+                        
+                        @if (ViewBag.Error != null)
+                        {
+                            <div class="alert alert-danger" role="alert">
+                                @ViewBag.Error
+                            </div>
+                        }
+
+                        @if (!string.IsNullOrEmpty(twoFactorCode))
+                        {
+                            <div class="alert alert-info" role="alert">
+                                <strong>ВНИМАНИЕ (Development режим):</strong> За демонстрация кодът е: <strong>@twoFactorCode</strong><br>
+                                <small>В production кодът ще се изпраща по email или SMS!</small>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-info" role="alert">
+                                <strong>2-Факторна Аутентикация</strong><br>
+                                Моля, въведете 6-цифрения код, който сте получили.
+                            </div>
+                        }
+
+                        <div class="mb-3">
+                            <label for="twoFactorCode" class="form-label">2FA Код</label>
+                            <input type="text" 
+                                   class="form-control text-center" 
+                                   id="twoFactorCode" 
+                                   name="twoFactorCode" 
+                                   maxlength="6" 
+                                   pattern="[0-9]{6}" 
+                                   placeholder="000000"
+                                   style="font-size: 24px; letter-spacing: 8px;"
+                                   required 
+                                   autofocus>
+                            <small class="form-text text-muted">Въведете 6-цифрения код</small>
+                            @if (!string.IsNullOrEmpty(userId))
+                            {
+                                <input type="hidden" name="userId" value="@userId" />
+                            }
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Потвърди</button>
+                            <a href="@Url.Action("Login", "Home")" class="btn btn-secondary">Отказ</a>
+                        </div>
+                    </form>
+
+                    <script>
+                        // Auto-focus и auto-submit при въвеждане на 6 цифри
+                        document.getElementById('twoFactorCode').addEventListener('input', function(e) {
+                            this.value = this.value.replace(/\D/g, ''); // Само цифри
+                            if (this.value.length === 6) {
+                                // Опционално: auto-submit след 6 цифри
+                                // this.form.submit();
+                            }
+                        });
+                    </script>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
