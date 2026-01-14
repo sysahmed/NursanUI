@@ -84,48 +84,7 @@ namespace Nursan.UI
                 bool licenseInitialized = false;
                 string licenseError = string.Empty;
                 
-                //try
-                //{
-                //    licenseInitialized = LicenseContext.TryInitialize(out licenseError);
-                //}
-                //catch (Exception ex)
-                //{
-                //    // Ако има изключение при опит за достъп до API, записваме грешката
-                //    licenseError = $"Грешка при достъп до лицензния API: {ex.Message}";
-                //    licenseInitialized = false;
-                //}
-                
-                //// Ако не успее (не може да достъпи API или лицензът не е валиден), показваме формата за активация
-                //if (!licenseInitialized)
-                //{
-                //    try
-                //    {
-                //        using (var licenseForm = new Lisanslama())
-                //        {
-                //            // Показваме формата модално - приложението ще чака докато се затвори
-                //            licenseForm.ShowDialog();
-                //        }
-                        
-                //        // След затваряне на формата, опитваме отново да инициализираме лиценза
-                //        try
-                //        {
-                //            licenseInitialized = LicenseContext.TryInitialize(out licenseError);
-                //        }
-                //        catch (Exception ex)
-                //        {
-                //            // Ако отново има проблем с API, продължаваме със старата логика
-                //            licenseError = $"Грешка при повторен опит за достъп до API: {ex.Message}";
-                //            licenseInitialized = false;
-                //        }
-                //    }
-                //    catch (Exception ex)
-                //    {
-                //        // Ако има проблем при създаването или показването на формата, показваме съобщение
-                //        MessageBox.Show($"Грешка при отваряне на формата за лиценз: {ex.Message}\n\nОригинална грешка: {licenseError}", 
-                //            "Лиценз", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                //    }
-                //}
-
+           
                 var builder = CreateHostBuilder();
                 builder.Build();
                 UretimOtomasyonContext _context = new();
@@ -232,23 +191,23 @@ namespace Nursan.UI
 
                     // Създава детайлно съобщение за грешката
                     string errorDetails = $@"
-ГРЕШКА В ПРИЛОЖЕНИЕТО
-ФОРМА: {formName}
-КОНТЕКСТ: {context}
-ДАТА/ЧАС: {DateTime.Now:dd.MM.yyyy HH:mm:ss}
-МАШИНА: {Environment.MachineName}
-ПОТРЕБИТЕЛ: {Environment.UserName}
-
-СЪОБЩЕНИЕ ЗА ГРЕШКА:
-{ex.Message}
-
-STACK TRACE:
-{ex.StackTrace}
-
-ВЪТРЕШНА ГРЕШКА:
-{ex.InnerException?.Message ?? "Няма"}
-{ex.InnerException?.StackTrace ?? ""}
-";
+                    ГРЕШКА В ПРИЛОЖЕНИЕТО
+                    ФОРМА: {formName}
+                    КОНТЕКСТ: {context}
+                    ДАТА/ЧАС: {DateTime.Now:dd.MM.yyyy HH:mm:ss}
+                    МАШИНА: {Environment.MachineName}
+                    ПОТРЕБИТЕЛ: {Environment.UserName}
+                    
+                    СЪОБЩЕНИЕ ЗА ГРЕШКА:
+                    {ex.Message}
+                    
+                    STACK TRACE:
+                    {ex.StackTrace}
+                    
+                    ВЪТРЕШНА ГРЕШКА:
+                    {ex.InnerException?.Message ?? "Няма"}
+                    {ex.InnerException?.StackTrace ?? ""}
+                    ";
 
                     // Изпраща автоматичен тикет към IT системата
                     Task.Run(async () =>
@@ -347,17 +306,7 @@ STACK TRACE:
                 return new SQLiteConnection($"Data Source={AppDomain.CurrentDomain.BaseDirectory}OptionDB.db; Version=3;New=true; Password=myPassword;");
 
             }
-
-            //public void ConfigureServices(IServiceCollection services)
-            //{
-            //    services.AddScoped<UnitOfWork>(); // Scoped ����� ���� ��������� �� ������ (request)
-            //    services.AddSingleton<DonanimService>(); // Singleton ����� ���� ��������� �� ����� ������ ����� �� ������������
-            //    services.AddSingleton<ToplamV769Services>();
-            //    services.AddScoped<PersonalValidasyonu>();
-            //    services.AddScoped<OzelReferansControlEt>();
-            //}
         }
-
     }
 }
 

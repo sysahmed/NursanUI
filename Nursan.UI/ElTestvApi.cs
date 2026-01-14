@@ -548,9 +548,12 @@ namespace Nursan.UI
                 // Тикетите имат свой отделен адрес в ticketTracking node
                 string masterApiAddress = XMLSeverIp.XmlMasterApiAddress();
                 
-                // Определяме протокола: за localhost използваме http, за останалото https
+                // Определяме протокола: за localhost и вътрешни IP адреси използваме http, за останалото https
+                // API сървърът работи на HTTP (порт 5226), не на HTTPS
                 string protocol = (masterApiAddress.StartsWith("localhost", StringComparison.OrdinalIgnoreCase) || 
-                                  masterApiAddress.StartsWith("127.0.0.1")) ? "http" : "https";
+                                  masterApiAddress.StartsWith("127.0.0.1") ||
+                                  masterApiAddress.StartsWith("10.168.0.") ||
+                                  masterApiAddress.StartsWith("192.168.")) ? "http" : "https";
                 string apiUrl = $"{protocol}://{masterApiAddress}/api/auth/validate-api-key";
                 
                 if (!string.IsNullOrEmpty(deviceId))

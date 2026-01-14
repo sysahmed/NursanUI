@@ -266,7 +266,7 @@ namespace Nursan.UI
                 {
                     var firstItem = veriler.FirstOrDefault();
                     if (firstItem == null || string.IsNullOrEmpty(firstItem.DayOfYear))
-                    {
+                {
                         return;
                     }
                     string[] parca = firstItem.DayOfYear.Split('*');

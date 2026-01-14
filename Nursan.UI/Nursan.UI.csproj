@@ -6,7 +6,6 @@
 		<UseWindowsForms>true</UseWindowsForms>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UserSecretsId>9fabd8c2-4d0b-40d3-99e2-bb25d4ca41f8</UserSecretsId>
-		<ApplicationIcon>favicon.ico</ApplicationIcon>
 		<Platforms>AnyCPU;x64</Platforms>
 		<PackageIcon>eliteadmin-logo.png</PackageIcon>
 		<PackageReleaseNotes>@DateTime.Year</PackageReleaseNotes>

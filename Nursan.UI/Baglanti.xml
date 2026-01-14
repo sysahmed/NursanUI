@@ -22,10 +22,10 @@
   </webapi>
   <!-- Master API Address - основен адрес за всички API заявки (ElTest, Tork и др.) -->
   <!-- Тикетите имат свой отделен адрес в ticketTracking node по-долу -->
-  <masterApiAddress Address="localhost:5226">
+  <masterApiAddress Address="10.168.0.252:5226">
   </masterApiAddress>
   <!-- Video API Address - отделен адрес за видео API заявки -->
-  <videoApiAddress Address="http://10.168.0.252:5151" Token="">
+  <videoApiAddress Address="http://10.168.0.252:5151" Token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNGIwNjAiLCJqdGkiOiI2MTYwODY4OC05NDAyLTQ0NjktYjI4YS0yOGFiZjI2M2QwMjAiLCJtYWNoaW5lX25hbWUiOiIxNGIwNjAiLCJ0b2tlbl90eXBlIjoibWFjaGluZSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiIxNGIwNjAiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJNYWNoaW5lIiwiZXhwIjoxNzY4Mzg5OTAxLCJpc3MiOiJWaWRlb1dlYiIsImF1ZCI6IlZpZGVvV2ViQXBpIn0.JY2hqKPmdYJUS16o38sWq5v29Fw4-Mbn1uOUB2kJSvM">
   </videoApiAddress>
   <ticketTracking UrlTemplate="https://bakimnbg.nursanbulgaria.com/Islem/Details/{ticketId}">
   </ticketTracking>
